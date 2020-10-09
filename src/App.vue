@@ -9,7 +9,10 @@
                 <span >{{ note.title}}</span>
                 <p class="note-text">{{ note.text }}</p>
                 
-                <div class='note-date'>{{ note.deadline | moment('YYYY-MM-DD')}}까지</div>
+                <div class='note-date'>
+                  <span>{{ note.regist_date | moment('YYYY-MM-DD')}} 등록</span>
+                  <span>{{ note.deadline | moment('YYYY-MM-DD')}} 까지</span>
+                </div>
             </div>
         </div>
     </div>

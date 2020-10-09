@@ -9,7 +9,7 @@
                 <span>등록일  </span>
                 <div class="note-editor-registdate">{{regist_date}}</div>
                 <span>마감일  </span>
-                <v-date-picker v-model='deadline'/>
+                <v-date-picker :available-dates='{start: new Date(), end: null}' v-model='deadline'/>
             </div>
                   
             <div class="note-editor-bottom">
