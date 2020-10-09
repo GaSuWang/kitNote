@@ -121,10 +121,33 @@ body {
     align-items: flex-end;
     flex-wrap: wrap;
 }
+.note-editor-date{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.note-editor-registdate{
+    margin-top: 0.7%;
+    margin-bottom: 0.7%;
+    border-radius: 3px;
+    border: 1px solid rgb(203,213,224);
+    padding: 1.5%;
+    font-size: 16.5px;
+}
 
 .delete {
     position: absolute;
     right: 25px;
     top: 25px;
+}
+
+.note-date{
+    color: gray;
+    font-size: 13px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
