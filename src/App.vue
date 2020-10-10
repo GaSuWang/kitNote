@@ -8,6 +8,11 @@
                 <span class="delete" @click.prevent="deleteNote(index)"><i class="fas fa-times"></i></span> 
                 <span >{{ note.title}}</span>
                 <p class="note-text">{{ note.text }}</p>
+                
+                <div class='note-date'>
+                  <span>{{ note.regist_date | moment('YYYY-MM-DD')}} 등록</span>
+                  <span>{{ note.deadline | moment('YYYY-MM-DD')}} 까지</span>
+                </div>
             </div>
         </div>
     </div>
@@ -18,22 +23,13 @@
 import NoteEditor from './components/NoteEditor.vue';
 import Header from './components/Header.vue';
 
+
 export default {
   name: 'App',
   data: function() {
     return {
       editorOpen: false,
       notes: [
-        {
-          title: 'Code',
-          text: '1131111222',
-          theme: '#FF8A80',
-        },
-        {
-          title: 'event',
-          text: 'event',
-          theme: '#DDA0DD',
-        },
       ],      
     }
   },
@@ -41,8 +37,8 @@ export default {
 		
 	},
   methods: {   
-    newNote(title, text, theme) {
-      this.notes.push({title: title, text: text, theme: theme});
+    newNote(title, text, theme, regist_date, deadline) {
+      this.notes.push({title: title, text: text, theme: theme, regist_date: regist_date, deadline:deadline});
     },
     deleteNote(index) {
       this.notes.splice(index, 1)
