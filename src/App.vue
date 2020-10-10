@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <app-header @openEditor="editorOpen = !editorOpen"></app-header>
+    <app-header @openEditor="clickAddBtn"></app-header>
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -39,6 +39,7 @@
 <script>
 import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
+//import Vue from "vue";
 
 export default {
   name: "App",
@@ -61,23 +62,45 @@ export default {
         regist_date: regist_date,
         deadline: deadline,
       });
+      this.editorOpen = false;
     },
     deleteNote(index) {
       this.notes.splice(index, 1);
+      this.editorOpen = false;
+    },
+    clickAddBtn() {
+      this.editorOpen = !this.editorOpen;
+      this.modify = false;
+      this.tempIdx = null;
+      this.tempNote = {};
     },
     toggleNote(index) {
+      this.tempIdx = index;
       this.tempNote = this.notes[index];
       this.modify = true;
       this.editorOpen = !this.editorOpen;
     },
-    modifiedNote(index, title, text, theme, regist_date, deadline) {
-      this.notes[index] = {
+    modifiedNote({ index, title, text, theme, regist_date, deadline }) {
+      /*this.notes[index] = {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
-      };
+      };*/
+      this.deleteNote(index);
+      this.notes.push({
+        title: title,
+        text: text,
+        theme: theme,
+        regist_date: regist_date,
+        deadline: deadline,
+      });
+      this.editorOpen = false;
+      this.tempNote = {};
+      this.modify = false;
+      this.tempIdx = null;
+      console.log(this.notes[index]);
     },
   },
   mounted() {

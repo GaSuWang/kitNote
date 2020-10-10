@@ -19,7 +19,7 @@
         <div class="note-editor-registdate">{{ regist_date }}</div>
         <span>마감일 </span>
         <v-date-picker
-          :picker-date.sync="beforeEditNote.deadline"
+          :picker-date.sync="temp"
           :available-dates="{ start: new Date(), end: null }"
           v-model="deadline"
         />
@@ -44,17 +44,46 @@ export default {
       text: "",
       regist_date: new Date().toLocaleDateString(),
       deadline: "",
+      temp: new Date(),
     };
   },
+  watch: {
+    modifyMode(newValue) {
+      if (!newValue) {
+        this.title = "";
+        this.text = "";
+        this.theme = "";
+        this.regist_date = new Date().toLocaleDateString();
+        this.deadline = "";
+      }
+      console.log(newValue);
+    },
+  },
   mounted() {
-    if (this.beforeEditNote) {
+    if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
       this.theme = this.beforeEditNote.theme;
       this.text = this.beforeEditNote.text;
       this.regist_date = this.beforeEditNote.regist_date;
-      this.deadline = this.beforeEditNote.deadline.split("T")[0];
+      this.deadline = new Date(this.beforeEditNote.deadline);
+      this.temp = new Date(this.deadline);
       console.log(this.deadline);
+    } else {
+      this.title = "";
+      this.theme = "";
+      this.text = "";
+      this.regist_date = new Date().toLocaleDateString();
+      this.deadline = "";
+      this.temp = new Date();
     }
+  },
+  beforeDestroy() {
+    this.title = "";
+    this.text = "";
+    this.theme = "";
+    this.regist_date = new Date().toLocaleDateString();
+    this.deadline = "";
+    console.log("123123");
   },
   methods: {
     createNew() {
@@ -65,15 +94,16 @@ export default {
       } else if (!this.deadline) {
         alert("어서 마감일을 지정해주세요");
       } else {
-        if (this.modifyMode) this.modifyNote();
-        else {
+        if (this.modifyMode) {
+          this.modifyNote();
+        } else {
           this.$emit(
             "noteAdded",
             this.title,
             this.text,
             this.theme,
             this.regist_date,
-            this.deadline
+            this.deadline.toLocaleDateString()
           );
         }
         this.title = "";
@@ -87,22 +117,14 @@ export default {
       this.$emit("noteDeleted", index);
     },
     modifyNote() {
-      this.$emit(
-        "noteModified",
-        this.tempIdx,
-        this.title,
-        this.text,
-        this.theme,
-        this.regist_date,
-        this.deadline
-      );
-      this.modifyMode = false;
-
-      this.title = "";
-      this.text = "";
-      this.theme = "";
-      this.regist_date = new Date().toLocaleDateString();
-      this.deadline = "";
+      this.$emit("noteModified", {
+        index: this.tempIdx,
+        title: this.title,
+        text: this.text,
+        theme: this.theme,
+        regist_date: this.regist_date,
+        deadline: this.deadline,
+      });
     },
   },
 };
