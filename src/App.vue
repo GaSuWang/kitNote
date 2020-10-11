@@ -33,13 +33,14 @@
         </div>
       </div>
     </div>
+    <app-calendar :events="notes"></app-calendar>
   </div>
 </template>
 
 <script>
 import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
-//import Vue from "vue";
+import Calendar from "./components/Calendar.vue";
 
 export default {
   name: "App",
@@ -111,6 +112,7 @@ export default {
   components: {
     appNoteEditor: NoteEditor,
     appHeader: Header,
+    appCalendar: Calendar,
   },
 };
 </script>
