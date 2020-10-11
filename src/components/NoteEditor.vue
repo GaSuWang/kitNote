@@ -50,13 +50,8 @@ export default {
   watch: {
     modifyMode(newValue) {
       if (!newValue) {
-        this.title = "";
-        this.text = "";
-        this.theme = "";
-        this.regist_date = new Date().toLocaleDateString();
-        this.deadline = "";
+        this.initData();
       }
-      console.log(newValue);
     },
   },
   mounted() {
@@ -67,23 +62,10 @@ export default {
       this.regist_date = this.beforeEditNote.regist_date;
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
-      console.log(this.deadline);
-    } else {
-      this.title = "";
-      this.theme = "";
-      this.text = "";
-      this.regist_date = new Date().toLocaleDateString();
-      this.deadline = "";
-      this.temp = new Date();
     }
   },
   beforeDestroy() {
-    this.title = "";
-    this.text = "";
-    this.theme = "";
-    this.regist_date = new Date().toLocaleDateString();
-    this.deadline = "";
-    console.log("123123");
+    this.initData();
   },
   methods: {
     createNew() {
@@ -106,11 +88,7 @@ export default {
             this.deadline.toLocaleDateString()
           );
         }
-        this.title = "";
-        this.text = "";
-        this.theme = "";
-        this.regist_date = new Date().toLocaleDateString();
-        this.deadline = "";
+        this.initData();
       }
     },
     deleteNote(index) {
@@ -125,6 +103,13 @@ export default {
         regist_date: this.regist_date,
         deadline: this.deadline,
       });
+    },
+    initData() {
+      this.title = "";
+      this.text = "";
+      this.theme = "";
+      this.regist_date = new Date().toLocaleDateString();
+      this.deadline = "";
     },
   },
 };

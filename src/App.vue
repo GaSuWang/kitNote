@@ -81,26 +81,18 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
     modifiedNote({ index, title, text, theme, regist_date, deadline }) {
-      /*this.notes[index] = {
-        title: title,
-        text: text,
-        theme: theme,
-        regist_date: regist_date,
-        deadline: deadline,
-      };*/
-      this.deleteNote(index);
-      this.notes.push({
+      this.notes.splice(index, 1, {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
       });
+
       this.editorOpen = false;
       this.tempNote = {};
       this.modify = false;
       this.tempIdx = null;
-      console.log(this.notes[index]);
     },
   },
   mounted() {
