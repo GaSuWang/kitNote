@@ -56,17 +56,22 @@
 
 <script>
 export default {
-  data() {
+  props: ["notes"],
+  data: function () {
     return {
       dateOpen: false,
       start: "",
       type: "month",
-      typeOptions: [
-        { text: "Day", value: "day" },
-        { text: "Week", value: "week" },
-        { text: "Month", value: "month" },
-      ],
+      events: [],
     };
+  },
+
+  methods: {
+    /*
+    parsingFromNotes() {
+      for (i = 0; i < notes.length; i++) {}
+    },
+    */
   },
 };
 </script>

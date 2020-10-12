@@ -118,5 +118,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/styles/global.scss";
+@import "./styles/global.scss";
 </style>
