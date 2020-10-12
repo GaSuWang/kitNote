@@ -8,8 +8,8 @@
         <option>마감일순</option>
         <option>제목순</option>
       </select>
-      <button @click.prevent="ascendingSort">오름차순</button>
-      <button @click.prevent="decendingSort">내림차순</button>
+      <button @click.prevent="ascendingSort"><i class="fas fa-sort-up"></i></button>
+      <button @click.prevent="decendingSort"><i class="fas fa-sort-down"></i></button>
       
     </div>
 </template>
@@ -18,7 +18,7 @@
     export default {
       data: function () {
         return {
-          sort_criterion:""
+          sort_criterion:"등록일순"
         };
       },
        methods:{
