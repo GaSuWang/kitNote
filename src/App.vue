@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <app-header @openEditor="clickAddBtn"></app-header>
+    <app-header @openEditor="clickAddBtn"
+      @ascendingSort="ascendingSort"
+      @decendingSort="decendingSort" 
+     ></app-header>
+
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -10,6 +14,7 @@
       :modifyMode="modify"
       :index="tempIdx"
     ></app-note-editor>
+
     <div class="noteContainer">
       <div
         v-for="(note, index) in notes"
@@ -80,6 +85,7 @@ export default {
       this.modify = true;
       this.editorOpen = !this.editorOpen;
     },
+
     modifiedNote({ index, title, text, theme, regist_date, deadline }) {
       this.notes.splice(index, 1, {
         title: title,
@@ -94,6 +100,45 @@ export default {
       this.modify = false;
       this.tempIdx = null;
     },
+
+    ascendingSort(sort_criterion){
+        console.log(sort_criterion)
+        if(sort_criterion=='등록일순'){
+            
+          this.notes.sort(function (a,b){
+              return a.regist_date<b.regist_date ? -1: a.regist_date>b.regist_date ? 1 : 0;
+            
+          });
+          console.log("ddd");
+        }
+        else if(sort_criterion=='마감일순'){
+          this.notes.sort(function (a,b){
+              return a.deadline<b.deadline ? -1: a.deadline>b.deadline ? 1 : 0;
+          });
+        }
+        else if(sort_criterion=='제목순'){
+          this.notes.sort(function (a,b){
+              return a.title<b.title ? -1: a.title>b.title?1:0;
+          });
+        }
+    },
+    decendingSort(sort_criterion){
+     if(sort_criterion=='등록일순'){
+          this.notes.sort(function (a,b){
+              return a.regist_date>b.regist_date ? -1: a.regist_date<b.regist_date ? 1 : 0;
+          });
+        }
+        else if(sort_criterion=='마감일순'){
+          this.notes.sort(function (a,b){
+              return a.deadline>b.deadline ? -1: a.deadline<b.deadline ? 1 : 0;
+          });
+        }
+        else if(sort_criterion=='제목순'){
+          this.notes.sort(function (a,b){
+              return a.title>b.title ? -1: a.title<b.title?1:0;
+          });
+        }
+    }
   },
   mounted() {
     if (localStorage.getItem("notes"))
