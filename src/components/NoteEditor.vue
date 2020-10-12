@@ -96,7 +96,6 @@ export default {
     },
     modifyNote() {
       this.$emit("noteModified", {
-        index: this.tempIdx,
         title: this.title,
         text: this.text,
         theme: this.theme,
