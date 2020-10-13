@@ -1,7 +1,14 @@
 
 
 <template>
-  <div class="note-grid">
+  <div
+    class="note-grid"
+    :class="{
+      animation: eventFlag[0] || eventFlag[1],
+      'open-ani': eventFlag[0],
+      'close-ani': eventFlag[1],
+    }"
+  >
     <div class="note-editor">
       <input
         class="title-input"
@@ -36,7 +43,7 @@
 
 <script>
 export default {
-  props: ["beforeEditNote", "modifyMode", "index"],
+  props: ["beforeEditNote", "modifyMode", "index", "eventFlag"],
   data: function () {
     return {
       title: "",

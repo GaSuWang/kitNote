@@ -43,7 +43,7 @@
       :beforeEditNote="tempNote"
       :modifyMode="modify"
       :index="tempIdx"
-      style="c"
+      :eventFlag="eventFlag_noteEditor"
     ></app-note-editor>
   </div>
 </template>
@@ -62,7 +62,8 @@ export default {
       tempNote: {},
       modify: false,
       tempIdx: null,
-      aniTime: 500,
+      aniTime: 600,
+      eventFlag_noteEditor: [false, false],
     };
   },
   computed: {},
@@ -77,15 +78,15 @@ export default {
         eventFlag1: false, // create
         eventFlag2: false, // delete
       });
-      this.editorOpen = false;
+
       setTimeout(() => {
+        this.editorOpen = false;
         var idx = this.notes.length - 1;
         this.notes[idx].eventFlag1 = true;
         setTimeout(() => {
-          console.log("123");
           this.notes[idx].eventFlag1 = false;
         }, this.aniTime);
-      }, 800);
+      }, this.aniTime);
     },
     deleteNote(index) {
       if (this.notes[index].eventFlag2) {
@@ -130,7 +131,6 @@ export default {
     },
 
     ascendingSort(sort_criterion) {
-      console.log(sort_criterion);
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
@@ -139,7 +139,6 @@ export default {
             ? 1
             : 0;
         });
-        console.log("ddd");
       } else if (sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
@@ -181,6 +180,24 @@ export default {
         localStorage.setItem("notes", JSON.stringify(newNotes));
       },
       deep: true,
+    },
+    editorOpen: {
+      handler() {
+        if (this.eventFlag_noteEditor[0] || this.eventFlag_noteEditor[1])
+          return;
+
+        if (this.editorOpen) {
+          this.eventFlag_noteEditor[0] = true;
+          setTimeout(() => {
+            this.eventFlag_noteEditor[0] = false;
+          }, this.aniTime);
+        } else {
+          this.eventFlag_noteEditor[1] = true;
+          setTimeout(() => {
+            this.eventFlag_noteEditor[1] = false;
+          }, this.aniTime);
+        }
+      },
     },
   },
   components: {

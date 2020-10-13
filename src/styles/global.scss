@@ -60,17 +60,9 @@ body {
 }   
 
 .note-editor {    
-    position: absolute;
-    max-width: 700px auto;
-    left: 150px;
-    right: 150px;
-    top: 80px;
     display: flex;
     flex-direction: column;
-    background: #fff;
-    padding: 16px;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    border-radius: 3px;
+
     textarea {
         padding: 10px;
         resize: none;
@@ -82,19 +74,30 @@ body {
             outline: 0;
         }
     }
+}
+
+.note-grid {
+    position: absolute;
+    left: 150px;
+    right: 150px;
+    top: 80px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+
     /* animation */
+    transition: transform 0.6s ease-in-out;
     &.open-ani {
-        transition: transform 0.5s ease-in-out;
-        
-        &.animation{
-            transform: translateY(390px, 0);
+        transform: scale(0);
+        &.animation {
+            transform: scale(1);
         }
     }
     &.close-ani {
-        transition: transform 0.5s ease-in-out;
-        transform: scale(0);
-        &.animation{
-            transform: scale(1);
+        transform: scale(1);
+        &.animation {
+            transform: scale(0);
         }
     }
     /* animation end */
@@ -133,15 +136,14 @@ body {
     grid-row-end: span 1;
 
     /* animation */
+    transition: transform 0.6s ease-in-out;
     &.delete-ani {
-        transition: transform 0.5s ease-in-out;
         transform: scale(1);
         &.animation{
             transform: scale(0);
         }
     }
     &.create-ani {
-        transition: transform 0.8s ease-in-out;
         transform: scale(0);
         &.animation{
             transform: scale(1);
@@ -193,7 +195,8 @@ body {
 }
 
 .calendar {
-    position: absolute;
-    right: 25px;
-    bottom: 40px;
+    display: inline-block;
+    position: sticky;
+    left: 80%;
+    bottom: 10px;
 }
