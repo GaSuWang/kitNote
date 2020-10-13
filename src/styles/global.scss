@@ -60,8 +60,11 @@ body {
 }   
 
 .note-editor {    
-    max-width: 600px;
-    margin: 30px auto;
+    position: absolute;
+    max-width: 700px auto;
+    left: 150px;
+    right: 150px;
+    top: 80px;
     display: flex;
     flex-direction: column;
     background: #fff;
@@ -79,7 +82,22 @@ body {
             outline: 0;
         }
     }
-    
+    /* animation */
+    &.open-ani {
+        transition: transform 0.5s ease-in-out;
+        
+        &.animation{
+            transform: translateY(390px, 0);
+        }
+    }
+    &.close-ani {
+        transition: transform 0.5s ease-in-out;
+        transform: scale(0);
+        &.animation{
+            transform: scale(1);
+        }
+    }
+    /* animation end */
 }
 
 .note-title {
@@ -115,15 +133,15 @@ body {
     grid-row-end: span 1;
 
     /* animation */
-    &.delete-ani{
+    &.delete-ani {
         transition: transform 0.5s ease-in-out;
         transform: scale(1);
         &.animation{
             transform: scale(0);
         }
     }
-    &.create-ani{
-        transition: transform 0.5s ease-out;
+    &.create-ani {
+        transition: transform 0.8s ease-in-out;
         transform: scale(0);
         &.animation{
             transform: scale(1);

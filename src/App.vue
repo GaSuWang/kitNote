@@ -6,16 +6,6 @@
       @decendingSort="decendingSort"
     ></app-header>
 
-    <app-note-editor
-      v-if="editorOpen"
-      @noteAdded="newNote"
-      @noteDeleted="deleteNote"
-      @noteModified="modifiedNote"
-      :beforeEditNote="tempNote"
-      :modifyMode="modify"
-      :index="tempIdx"
-    ></app-note-editor>
-
     <div class="noteContainer">
       <div
         v-for="(note, index) in notes"
@@ -45,6 +35,16 @@
       </div>
     </div>
     <app-calendar :events="notes"></app-calendar>
+    <app-note-editor
+      v-if="editorOpen"
+      @noteAdded="newNote"
+      @noteDeleted="deleteNote"
+      @noteModified="modifiedNote"
+      :beforeEditNote="tempNote"
+      :modifyMode="modify"
+      :index="tempIdx"
+      style="c"
+    ></app-note-editor>
   </div>
 </template>
 
@@ -78,12 +78,14 @@ export default {
         eventFlag2: false, // delete
       });
       this.editorOpen = false;
-
-      var idx = this.notes.length - 1;
-      this.notes[idx].eventFlag1 = true;
       setTimeout(() => {
-        this.notes[idx].eventFlag1 = false;
-      }, this.aniTime);
+        var idx = this.notes.length - 1;
+        this.notes[idx].eventFlag1 = true;
+        setTimeout(() => {
+          console.log("123");
+          this.notes[idx].eventFlag1 = false;
+        }, this.aniTime);
+      }, 800);
     },
     deleteNote(index) {
       if (this.notes[index].eventFlag2) {
@@ -169,11 +171,8 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.getItem("notes")) {
+    if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-
-      for (var i = 0; i < this.notes.length; i++) this.eventFlag.push(false);
-    }
   },
   watch: {
     notes: {
