@@ -113,6 +113,23 @@ body {
     word-break: break-word;
     cursor: pointer;
     grid-row-end: span 1;
+
+    /* animation */
+    &.delete-ani{
+        transition: transform 0.5s ease-in-out;
+        transform: scale(1);
+        &.animation{
+            transform: scale(0);
+        }
+    }
+    &.create-ani{
+        transition: transform 0.5s ease-out;
+        transform: scale(0);
+        &.animation{
+            transform: scale(1);
+        }
+    }
+    /* animation end */
 }
 
 .note-editor-bottom {
@@ -162,4 +179,3 @@ body {
     right: 25px;
     bottom: 40px;
 }
-

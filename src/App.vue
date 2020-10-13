@@ -21,6 +21,11 @@
         v-for="(note, index) in notes"
         :key="`note-${index}`"
         class="note"
+        :class="{
+          animation: note.eventFlag1 || note.eventFlag2,
+          'create-ani': note.eventFlag1,
+          'delete-ani': note.eventFlag2,
+        }"
         :style="{ 'background-color': note.theme }"
       >
         <div>
@@ -57,6 +62,7 @@ export default {
       tempNote: {},
       modify: false,
       tempIdx: null,
+      aniTime: 500,
     };
   },
   computed: {},
@@ -68,12 +74,28 @@ export default {
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        eventFlag1: false, // create
+        eventFlag2: false, // delete
       });
       this.editorOpen = false;
+
+      var idx = this.notes.length - 1;
+      this.notes[idx].eventFlag1 = true;
+      setTimeout(() => {
+        this.notes[idx].eventFlag1 = false;
+      }, this.aniTime);
     },
     deleteNote(index) {
-      this.notes.splice(index, 1);
+      if (this.notes[index].eventFlag2) {
+        return;
+      }
+
       this.editorOpen = false;
+      this.notes[index].eventFlag2 = true;
+      setTimeout(() => {
+        this.notes.splice(index, 1);
+        this.notes[index].eventFlag2 = false;
+      }, this.aniTime);
     },
     clickAddBtn() {
       this.editorOpen = !this.editorOpen;
@@ -95,6 +117,8 @@ export default {
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        eventFlag1: false,
+        eventFlag2: false,
       });
 
       this.editorOpen = false;
@@ -145,8 +169,11 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.getItem("notes"))
+    if (localStorage.getItem("notes")) {
       this.notes = JSON.parse(localStorage.getItem("notes"));
+
+      for (var i = 0; i < this.notes.length; i++) this.eventFlag.push(false);
+    }
   },
   watch: {
     notes: {
