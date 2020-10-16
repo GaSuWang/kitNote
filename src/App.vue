@@ -24,6 +24,7 @@
         :style="{ 'background-color': note.theme }"
       >
         <div>
+
           <span class="modify" @click.prevent="toggleNote(index)"
             ><i class="far fa-edit"></i
           ></span>
@@ -35,7 +36,9 @@
           <div class="note-date">
             <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
+            <span>{{note.category}}</span>
           </div>
+          
         </div>
       </div>
     </div>
@@ -61,13 +64,14 @@ export default {
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, regist_date, deadline) {
+    newNote(title, text, theme, regist_date, deadline,category) {
       this.notes.push({
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        category: category
       });
       this.editorOpen = false;
     },
@@ -88,13 +92,14 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
 
-    modifiedNote({ title, text, theme, regist_date, deadline }) {
+    modifiedNote({ title, text, theme, regist_date, deadline,category }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        category: category
       });
 
       this.editorOpen = false;

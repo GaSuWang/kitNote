@@ -9,6 +9,10 @@
         v-model="title"
         placeholder="Title"
       />
+      <select v-model="category">
+        <option>기타</option>
+        <option>과제</option>
+      </select>
       <textarea
         rows="10"
         v-model="text"
@@ -44,6 +48,7 @@ export default {
       text: "",
       regist_date: new Date().toLocaleDateString(),
       deadline: "",
+      category:"기타",
       temp: new Date(),
     };
   },
@@ -62,6 +67,7 @@ export default {
       this.regist_date = this.beforeEditNote.regist_date;
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
+      this.category=this.beforeEditNote.category
     }
   },
   beforeDestroy() {
@@ -85,7 +91,8 @@ export default {
             this.text,
             this.theme,
             this.regist_date,
-            this.deadline.toLocaleDateString()
+            this.deadline.toLocaleDateString(),
+            this.category
           );
         }
         this.initData();
@@ -101,6 +108,7 @@ export default {
         theme: this.theme,
         regist_date: this.regist_date,
         deadline: this.deadline,
+        category: this.category
       });
     },
     initData() {
@@ -109,6 +117,7 @@ export default {
       this.theme = "";
       this.regist_date = new Date().toLocaleDateString();
       this.deadline = "";
+      this.category="기타"
     },
   },
 };
