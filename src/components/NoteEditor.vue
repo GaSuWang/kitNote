@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="note-grid">
     <div class="note-editor">
@@ -9,9 +7,11 @@
         v-model="title"
         placeholder="Title"
       />
-      <select v-model="category">
-        <option>기타</option>
-        <option>과제</option>
+      <select v-model="selected_category"
+      >
+        <option  v-for="(category, index) in categories"
+        :key="`note-${index}`">{{category}}</option>
+
       </select>
       <textarea
         rows="10"
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  props: ["beforeEditNote", "modifyMode", "index"],
+  props: ["beforeEditNote", "modifyMode", "index","categorylist"],
   data: function () {
     return {
       title: "",
@@ -48,7 +48,8 @@ export default {
       text: "",
       regist_date: new Date().toLocaleDateString(),
       deadline: "",
-      category:"기타",
+      selected_category:"",
+      categories:[],
       temp: new Date(),
     };
   },
@@ -60,6 +61,7 @@ export default {
     },
   },
   mounted() {
+    this.categories=this.categorylist.slice();
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
       this.theme = this.beforeEditNote.theme;
@@ -92,7 +94,7 @@ export default {
             this.theme,
             this.regist_date,
             this.deadline.toLocaleDateString(),
-            this.category
+            this.selected_category
           );
         }
         this.initData();
@@ -108,7 +110,7 @@ export default {
         theme: this.theme,
         regist_date: this.regist_date,
         deadline: this.deadline,
-        category: this.category
+        category: this.selected_category
       });
     },
     initData() {
