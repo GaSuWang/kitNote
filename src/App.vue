@@ -1,41 +1,43 @@
 <template>
   <div id="app">
-    <app-header
-      @openEditor="clickAddBtn"
-      @ascendingSort="ascendingSort"
-      @decendingSort="decendingSort"
-      @openCategoryList="clickCategoryList"
-    ></app-header>
-
-    <div class="noteContainer">
-      <div
-        v-for="(note, index) in notes"
-        :key="`note-${index}`"
-        class="note"
-        :class="{
-          animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
-          'create-ani': note.eventFlag1,
-          'delete-ani': note.eventFlag2,
-        }"
-        :style="{ 'background-color': note.theme }"
-      >
-        <div>
-          <span class="modify" @click.prevent="toggleNote(index)"
-            ><i class="far fa-edit"></i
-          ></span>
-          <span class="delete" @click.prevent="deleteNote(index)"
-            ><i class="fas fa-times"></i
-          ></span>
-          <span>{{ note.title }}</span>
-          <p class="note-text">{{ note.text }}</p>
-          <div class="note-date">
-            <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
-            <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
-            <span>{{ note.category }}</span>
+    <div class="mainContents">
+      <app-header
+        @openEditor="clickAddBtn"
+        @ascendingSort="ascendingSort"
+        @decendingSort="decendingSort"
+        @openCategoryList="clickCategoryList"
+      ></app-header>
+      <div class="noteContainer">
+        <div
+          v-for="(note, index) in notes"
+          :key="`note-${index}`"
+          class="note"
+          :class="{
+            animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
+            'create-ani': note.eventFlag1,
+            'delete-ani': note.eventFlag2,
+          }"
+          :style="{ 'background-color': note.theme }"
+        >
+          <div>
+            <span class="modify" @click.prevent="toggleNote(index)"
+              ><i class="far fa-edit"></i
+            ></span>
+            <span class="delete" @click.prevent="deleteNote(index)"
+              ><i class="fas fa-times"></i
+            ></span>
+            <span>{{ note.title }}</span>
+            <p class="note-text">{{ note.text }}</p>
+            <div class="note-date">
+              <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
+              <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
+              <span>{{ note.category }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="sidebar"></div>
     <app-calendar :events="notes"></app-calendar>
     <app-note-editor
       v-if="editorOpen"
