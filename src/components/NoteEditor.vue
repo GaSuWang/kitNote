@@ -7,11 +7,9 @@
         v-model="title"
         placeholder="Title"
       />
-      <select v-model="selected_category"
-      >
+      <select v-model="selected_category">
         <option  v-for="(category, index) in categories"
         :key="`note-${index}`">{{category}}</option>
-
       </select>
       <textarea
         rows="10"
@@ -62,6 +60,7 @@ export default {
   },
   mounted() {
     this.categories=this.categorylist.slice();
+    this.selected_category=this.categories[0]
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
       this.theme = this.beforeEditNote.theme;
@@ -69,7 +68,7 @@ export default {
       this.regist_date = this.beforeEditNote.regist_date;
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
-      this.category=this.beforeEditNote.category
+      this.selected_category=this.beforeEditNote.category
     }
   },
   beforeDestroy() {
