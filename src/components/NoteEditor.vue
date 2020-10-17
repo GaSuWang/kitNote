@@ -1,5 +1,3 @@
-
-
 <template>
   <div
     class="note-grid"
@@ -17,9 +15,14 @@
         placeholder="Title"
       />
       <select v-model="selected_category">
+<<<<<<< HEAD
         <option v-for="(category, index) in categories" :key="`note-${index}`">
           {{ category }}
         </option>
+=======
+        <option  v-for="(category, index) in categories"
+        :key="`note-${index}`">{{category}}</option>
+>>>>>>> origin/master
       </select>
       <textarea
         rows="10"
@@ -48,7 +51,11 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
+=======
+  props: ["beforeEditNote", "modifyMode", "index","categorylist"],
+>>>>>>> origin/master
   data: function () {
     return {
       title: "",
@@ -56,8 +63,13 @@ export default {
       text: "",
       regist_date: new Date().toLocaleDateString(),
       deadline: "",
+<<<<<<< HEAD
       selected_category: "",
       categories: [],
+=======
+      selected_category:"",
+      categories:[],
+>>>>>>> origin/master
       temp: new Date(),
     };
   },
@@ -69,9 +81,14 @@ export default {
     },
   },
   mounted() {
+<<<<<<< HEAD
     this.categories = this.categorylist.slice();
     this.selected_category = this.categories[0];
 
+=======
+    this.categories=this.categorylist.slice();
+    this.selected_category=this.categories[0]
+>>>>>>> origin/master
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
       this.theme = this.beforeEditNote.theme;
@@ -79,7 +96,11 @@ export default {
       this.regist_date = this.beforeEditNote.regist_date;
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
+<<<<<<< HEAD
       this.selected_category = this.beforeEditNote.category;
+=======
+      this.selected_category=this.beforeEditNote.category
+>>>>>>> origin/master
     }
   },
   beforeDestroy() {
@@ -120,7 +141,11 @@ export default {
         theme: this.theme,
         regist_date: this.regist_date,
         deadline: this.deadline,
+<<<<<<< HEAD
         category: this.selected_category,
+=======
+        category: this.selected_category
+>>>>>>> origin/master
       });
     },
     initData() {
@@ -129,7 +154,11 @@ export default {
       this.theme = "";
       this.regist_date = new Date().toLocaleDateString();
       this.deadline = "";
+<<<<<<< HEAD
       this.category = "기타";
+=======
+      this.category="기타"
+>>>>>>> origin/master
     },
   },
 };
