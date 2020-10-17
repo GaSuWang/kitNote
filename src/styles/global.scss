@@ -200,26 +200,3 @@ body {
     left: 80%;
     bottom: 10px;
 }
-
-.category-grid{
-    max-width: 300px;
- 
-    margin: 30px auto;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    padding: 16px;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    border-radius: 3px;
-   
-}
-.category-list{
-    overflow: auto;
-    max-height: 200px;
-    border-radius: 3px;
-    box-shadow: 0 2px 2px rgba(0,90,250,0.05),
-      0 4px 4px rgba(0,90,250,0.05),
-      0 8px 8px rgba(0,90,250,0.05),
-      0 16px 16px rgba(0,90,250,0.05);
-      margin-bottom: 10px;
-}

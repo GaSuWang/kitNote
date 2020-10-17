@@ -4,7 +4,6 @@
       @openEditor="clickAddBtn"
       @ascendingSort="ascendingSort"
       @decendingSort="decendingSort"
-      @openCategoryList="clickCategoryList"
     ></app-header>
 
     <div class="noteContainer">
@@ -31,7 +30,6 @@
           <div class="note-date">
             <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
-            <span>{{ note.category }}</span>
           </div>
         </div>
       </div>
@@ -46,14 +44,7 @@
       :modifyMode="modify"
       :index="tempIdx"
       :eventFlag="eventFlag_noteEditor"
-      :categorylist="categories"
     ></app-note-editor>
-    <app-category-list
-      v-if="categoryOpen"
-      @categoryAdd="categoryAdd"
-      @categoryDelete="categoryDelete"
-      :categorylist="categories"
-    ></app-category-list>
   </div>
 </template>
 
@@ -61,7 +52,6 @@
 import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
-import CategoryList from "./components/CategoryList.vue";
 
 export default {
   name: "App",
@@ -72,8 +62,6 @@ export default {
       tempNote: {},
       modify: false,
       tempIdx: null,
-      categoryOpen: false,
-      categories: ["기타"],
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
@@ -81,7 +69,7 @@ export default {
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, regist_date, deadline, category) {
+    newNote(title, text, theme, regist_date, deadline) {
       if (this.animationFlag) {
         return;
       }
@@ -92,7 +80,6 @@ export default {
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
-        category: category,
         eventFlag1: false, // create
         eventFlag2: false, // delete
       });
@@ -137,14 +124,13 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
 
-    modifiedNote({ title, text, theme, regist_date, deadline, category }) {
+    modifiedNote({ title, text, theme, regist_date, deadline }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
-        category: category,
         eventFlag1: false,
         eventFlag2: false,
       });
@@ -193,31 +179,10 @@ export default {
         });
       }
     },
-
-    clickCategoryList() {
-      this.categoryOpen = !this.categoryOpen;
-    },
-
-    categoryAdd(new_category) {
-      this.categories.push(new_category);
-    },
-
-    categoryDelete(index) {
-      for (let i = 0; i < this.notes.length; i++) {
-        if (this.notes[i].category == this.categories[index])
-          this.notes[i].category = this.categories[0];
-      }
-      this.categories.splice(index, 1);
-    },
   },
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-    if (localStorage.getItem("categories")) {
-      var temp = JSON.parse(localStorage.getItem("categories"));
-
-      this.categories.splice(1, ...temp);
-    }
   },
   watch: {
     notes: {
@@ -227,15 +192,6 @@ export default {
       },
       deep: true,
     },
-
-    categories: {
-      handler() {
-        var newCategory = this.categories;
-        localStorage.setItem("categories", JSON.stringify(newCategory));
-      },
-      deep: true,
-    },
-
     editorOpen: {
       handler() {
         if (this.eventFlag_noteEditor[0] || this.eventFlag_noteEditor[1])
@@ -259,7 +215,6 @@ export default {
     appNoteEditor: NoteEditor,
     appHeader: Header,
     appCalendar: Calendar,
-    appCategoryList: CategoryList,
   },
 };
 </script>
