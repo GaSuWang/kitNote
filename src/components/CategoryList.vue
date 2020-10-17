@@ -8,7 +8,7 @@
     >
        <div>
          {{category}}
-          <span @click="categoryDelete(index)"><i class="fas fa-times"></i></span>
+          <span @click="categoryDelete(index)" v-if="index!=0"><i class="fas fa-times"></i></span>
        </div>
 
     </div>

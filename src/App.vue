@@ -70,7 +70,7 @@ export default {
       modify: false,
       tempIdx: null,
       categoryOpen: false,
-      categories:[],
+      categories:["기타"],
     };
   },
   computed: {},
@@ -165,15 +165,25 @@ export default {
       this.categories.push(new_category);
     },
     categoryDelete(index){
+     
+      for(let i=0;i<this.notes.length;i++){
+        if(this.notes[i].category==this.categories[index]) this.notes[i].category=this.categories[0]
+      }
       this.categories.splice(index,1);
+
     }
 
   },
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-    if(localStorage.getItem("categories"))
-      this.categories = JSON.parse(localStorage.getItem("categories"));
+    if(localStorage.getItem("categories")){
+      var temp = JSON.parse(localStorage.getItem("categories"))
+      
+       this.categories.splice(1,...temp)
+    }
+
+     
   },
   watch: {
     notes: {
