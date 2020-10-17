@@ -15,6 +15,10 @@ body {
     margin: 0;
 }
 
+#app {
+    position: relative;
+}
+
 ::placeholder {
     color: #ccc;
     font-size: 15px;
@@ -27,7 +31,9 @@ body {
     // justify-content: center;
     background: #000;
     color: #fff;
-    margin-bottom: 50px;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 0px;
     & p {
         font-size:25px;
         margin:25px;
@@ -85,22 +91,6 @@ body {
     padding: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
-
-    /* animation */
-    /*transition: transform 0.6s ease-in-out;
-    &.open-ani {
-        transform: scale(0);
-        &.animation {
-            transform: scale(1);
-        }
-    }
-    &.close-ani {
-        transform: scale(1);
-        &.animation {
-            transform: scale(0);
-        }
-    }*/
-    /* animation end */
 }
 
 .note-title {
@@ -109,11 +99,12 @@ body {
 }
 
 .noteContainer {
+    position: relative;
     column-count: 4;
     column-gap: 1em;
-    margin: 50px 25px;
+    padding: 50px 25px;
+    box-sizing: border-box;
 }
-
 
 .note {
     position: relative;
@@ -123,7 +114,6 @@ body {
       0 8px 8px rgba(0,90,250,0.05),
       0 16px 16px rgba(0,90,250,0.05);
     box-sizing: border-box;
-    position: relative;
     display: flex;
     flex-direction: column;
     display: inline-block;
@@ -158,13 +148,13 @@ body {
     align-items: flex-end;
     flex-wrap: wrap;
 }
-.note-editor-date{
+.note-editor-date {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
 }
 
-.note-editor-registdate{
+.note-editor-registdate {
     margin-top: 0.7%;
     margin-bottom: 0.7%;
     border-radius: 3px;
@@ -185,24 +175,24 @@ body {
     top: 25px;
 }
 
-.note-date{
+.note-date {
     color: gray;
     font-size: 13px;
     display: flex;
-    flex-direction: column;;
+    flex-direction: column;
     align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .calendar {
     display: inline-block;
-    position: sticky;
-    left: 80%;
-    bottom: 10px;
+    position: fixed;
+    right: 3%;
+    bottom: 5%;
 }
-.category-grid{
+
+.category-grid {
     max-width: 300px;
- 
     margin: 30px auto;
     display: flex;
     flex-direction: column;
@@ -210,9 +200,9 @@ body {
     padding: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
-   
 }
-.category-list{
+
+.category-list {
     overflow: auto;
     max-height: 200px;
     border-radius: 3px;
@@ -221,4 +211,34 @@ body {
       0 8px 8px rgba(0,90,250,0.05),
       0 16px 16px rgba(0,90,250,0.05);
       margin-bottom: 10px;
+}
+
+.sidebar {
+    position: absolute;
+    z-index: 1;
+    width: 20%;
+    background-color: #175a33;
+    height: 100%;
+    top:0;
+    left:0;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+}
+.sidebar a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.dim{
+    opacity: 0.7;
+    background: #000;
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    left:0;
 }

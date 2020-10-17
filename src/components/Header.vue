@@ -1,5 +1,6 @@
 <template>
   <div class="header">
+    <button @click.prevent="openSidebar"><p>open</p></button>
     <img src="../assets/logo.png" />
     <p>Vue.JS Sticky Notes</p>
     <button class="add-btn" @click.prevent="openEditor">
@@ -40,6 +41,9 @@ export default {
     },
     openCategoryList: function () {
       this.$emit("openCategoryList");
+    },
+    openSidebar: function () {
+      this.$emit("openSidebar");
     },
   },
 };

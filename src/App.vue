@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <div class="mainContents">
-      <app-header
-        @openEditor="clickAddBtn"
-        @ascendingSort="ascendingSort"
-        @decendingSort="decendingSort"
-        @openCategoryList="clickCategoryList"
-      ></app-header>
+    <app-header
+      @openEditor="clickAddBtn"
+      @ascendingSort="ascendingSort"
+      @decendingSort="decendingSort"
+      @openCategoryList="clickCategoryList"
+      @openSidebar="clickSidebar"
+    ></app-header>
+    <app-sidebar v-if="sidebarOpen"></app-sidebar>
+    <div class="contents">
       <div class="noteContainer">
         <div
           v-for="(note, index) in notes"
@@ -37,8 +39,8 @@
         </div>
       </div>
     </div>
-    <div class="sidebar"></div>
     <app-calendar :events="notes"></app-calendar>
+    <div class="dim" v-if="sidebarOpen"></div>
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -64,6 +66,7 @@ import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
 import CategoryList from "./components/CategoryList.vue";
+import Sidebar from "./components/Sidebar.vue";
 
 export default {
   name: "App",
@@ -79,6 +82,7 @@ export default {
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
+      sidebarOpen: false,
     };
   },
   computed: {},
@@ -98,7 +102,7 @@ export default {
         eventFlag1: false, // create
         eventFlag2: false, // delete
       });
-      //setTimeout(() => {
+
       var idx = this.notes.length - 1;
       this.notes[idx].eventFlag1 = true;
       this.$nextTick(() => {
@@ -108,7 +112,6 @@ export default {
           this.animationFlag = false;
         }, this.aniTime);
       });
-      //}, this.aniTime);
     },
     deleteNote(index) {
       if (this.animationFlag) {
@@ -211,7 +214,12 @@ export default {
       }
       this.categories.splice(index, 1);
     },
+
+    clickSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+    },
   },
+
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
@@ -262,6 +270,7 @@ export default {
     appHeader: Header,
     appCalendar: Calendar,
     appCategoryList: CategoryList,
+    appSidebar: Sidebar,
   },
 };
 </script>
