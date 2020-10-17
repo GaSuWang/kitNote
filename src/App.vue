@@ -12,7 +12,7 @@
         :key="`note-${index}`"
         class="note"
         :class="{
-          animation: note.eventFlag1 || note.eventFlag2,
+          animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
           'create-ani': note.eventFlag1,
           'delete-ani': note.eventFlag2,
         }"
@@ -64,11 +64,16 @@ export default {
       tempIdx: null,
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
+      animationFlag: false,
     };
   },
   computed: {},
   methods: {
     newNote(title, text, theme, regist_date, deadline) {
+      if (this.animationFlag) {
+        return;
+      }
+      this.editorOpen = false;
       this.notes.push({
         title: title,
         text: text,
@@ -78,27 +83,33 @@ export default {
         eventFlag1: false, // create
         eventFlag2: false, // delete
       });
-
-      setTimeout(() => {
-        this.editorOpen = false;
-        var idx = this.notes.length - 1;
-        this.notes[idx].eventFlag1 = true;
+      //setTimeout(() => {
+      var idx = this.notes.length - 1;
+      this.notes[idx].eventFlag1 = true;
+      this.$nextTick(() => {
+        this.animationFlag = true;
         setTimeout(() => {
           this.notes[idx].eventFlag1 = false;
+          this.animationFlag = false;
         }, this.aniTime);
-      }, this.aniTime);
+      });
+      //}, this.aniTime);
     },
     deleteNote(index) {
-      if (this.notes[index].eventFlag2) {
+      if (this.animationFlag) {
         return;
       }
 
       this.editorOpen = false;
       this.notes[index].eventFlag2 = true;
-      setTimeout(() => {
-        this.notes.splice(index, 1);
-        this.notes[index].eventFlag2 = false;
-      }, this.aniTime);
+      this.$nextTick(() => {
+        this.animationFlag = true;
+        setTimeout(() => {
+          this.notes[index].eventFlag2 = false;
+          this.notes.splice(index, 1);
+          this.animationFlag = false;
+        }, this.aniTime);
+      });
     },
     clickAddBtn() {
       this.editorOpen = !this.editorOpen;
