@@ -19,6 +19,7 @@
     ></app-note-editor>
     <app-category-list v-if="categoryOpen"
       @categoryAdd="categoryAdd"
+      @categoryDelete="categoryDelete"
       :categorylist="categories"
     >
       </app-category-list>
@@ -162,9 +163,10 @@ export default {
     },
     categoryAdd(new_category){
       this.categories.push(new_category);
-
-
     },
+    categoryDelete(index){
+      this.categories.splice(index,1);
+    }
 
   },
   mounted() {
