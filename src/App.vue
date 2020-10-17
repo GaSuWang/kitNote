@@ -5,11 +5,13 @@
       @ascendingSort="ascendingSort"
       @decendingSort="decendingSort"
       @openCategoryList="clickCategoryList"
+      @selectCategory="categoryFiltering"
+      :categorylist="categories"
     ></app-header>
 
     <div class="noteContainer">
       <div
-        v-for="(note, index) in notes"
+        v-for="(note, index) in viewNotes"
         :key="`note-${index}`"
         class="note"
         :class="{
@@ -69,6 +71,7 @@ export default {
     return {
       editorOpen: false,
       notes: [],
+      viewNotes:[],
       tempNote: {},
       modify: false,
       tempIdx: null,
@@ -77,6 +80,7 @@ export default {
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
+      selectedCategory:"전체"
     };
   },
   computed: {},
@@ -112,7 +116,6 @@ export default {
       if (this.animationFlag) {
         return;
       }
-
       this.editorOpen = false;
       this.notes[index].eventFlag2 = true;
       this.$nextTick(() => {
@@ -157,7 +160,7 @@ export default {
 
     ascendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.regist_date < b.regist_date
             ? -1
             : a.regist_date > b.regist_date
@@ -165,18 +168,18 @@ export default {
             : 0;
         });
       } else if (sort_criterion == "마감일순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
         });
       } else if (sort_criterion == "제목순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
       }
     },
     decendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.regist_date > b.regist_date
             ? -1
             : a.regist_date < b.regist_date
@@ -184,11 +187,11 @@ export default {
             : 0;
         });
       } else if (sort_criterion == "마감일순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.deadline > b.deadline ? -1 : a.deadline < b.deadline ? 1 : 0;
         });
       } else if (sort_criterion == "제목순") {
-        this.notes.sort(function (a, b) {
+        this.viewNotes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
       }
@@ -209,21 +212,54 @@ export default {
       }
       this.categories.splice(index, 1);
     },
+    categoryFiltering(selectedCategory){
+      this.viewNotes=[]
+      this.selectedCategory=selectedCategory
+      if(selectedCategory=="전체"){
+        this.viewNotes.push(...this.notes)
+      }
+      else{
+        for(let i=0;i<this.notes.length;i++){
+          if(this.notes[i].category==selectedCategory){
+            this.viewNotes.push(this.notes[i])
+          }
+        }
+      }
+     
+    }
+
   },
+
+
+  created(){
+    if (localStorage.getItem("categories")) {
+      var temp = JSON.parse(localStorage.getItem("categories"));
+      this.categories.splice(1, ...temp);
+    }
+  },
+
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-    if (localStorage.getItem("categories")) {
-      var temp = JSON.parse(localStorage.getItem("categories"));
-
-      this.categories.splice(1, ...temp);
-    }
+    this.viewNotes.push(...this.notes)
   },
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
+         this.viewNotes=[]
+        if(this.selectedCategory=="전체"){
+          this.viewNotes.push(...this.notes)
+        }
+        
+        else{
+          for(let i=0;i<this.notes.length;i++){
+            if(this.notes[i].category==this.selectedCategory){
+              this.viewNotes.push(this.notes[i])
+            }
+          }
+        }
       },
       deep: true,
     },
