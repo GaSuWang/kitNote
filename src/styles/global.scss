@@ -60,14 +60,9 @@ body {
 }   
 
 .note-editor {    
-    max-width: 600px;
-    margin: 30px auto;
     display: flex;
     flex-direction: column;
-    background: #fff;
-    padding: 16px;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-    border-radius: 3px;
+
     textarea {
         padding: 10px;
         resize: none;
@@ -79,7 +74,33 @@ body {
             outline: 0;
         }
     }
-    
+}
+
+.note-grid {
+    position: absolute;
+    left: 150px;
+    right: 150px;
+    top: 80px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+
+    /* animation */
+    /*transition: transform 0.6s ease-in-out;
+    &.open-ani {
+        transform: scale(0);
+        &.animation {
+            transform: scale(1);
+        }
+    }
+    &.close-ani {
+        transform: scale(1);
+        &.animation {
+            transform: scale(0);
+        }
+    }*/
+    /* animation end */
 }
 
 .note-title {
@@ -113,6 +134,22 @@ body {
     word-break: break-word;
     cursor: pointer;
     grid-row-end: span 1;
+
+    /* animation */
+    transition: transform 0.6s ease-in-out;
+    &.delete-ani {
+        transform: scale(1);
+        &.animation{
+            transform: scale(0);
+        }
+    }
+    &.create-ani {
+        transform: scale(0);
+        &.animation{
+            transform: scale(1);
+        }
+    }
+    /* animation end */
 }
 
 .note-editor-bottom {
@@ -158,9 +195,10 @@ body {
 }
 
 .calendar {
-    position: absolute;
-    right: 25px;
-    bottom: 40px;
+    display: inline-block;
+    position: sticky;
+    left: 80%;
+    bottom: 10px;
 }
 .category-grid{
     max-width: 300px;
@@ -189,3 +227,25 @@ body {
 
 
 
+.category-grid{
+    max-width: 300px;
+ 
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+   
+}
+.category-list{
+    overflow: auto;
+    max-height: 200px;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px rgba(0,90,250,0.05),
+      0 4px 4px rgba(0,90,250,0.05),
+      0 8px 8px rgba(0,90,250,0.05),
+      0 16px 16px rgba(0,90,250,0.05);
+      margin-bottom: 10px;
+}
