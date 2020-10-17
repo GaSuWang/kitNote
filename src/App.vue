@@ -7,26 +7,6 @@
       @openCategoryList="clickCategoryList"
     ></app-header>
 
-<<<<<<< HEAD
-=======
-    <app-note-editor
-      v-if="editorOpen"
-      @noteAdded="newNote"
-      @noteDeleted="deleteNote"
-      @noteModified="modifiedNote"
-      :beforeEditNote="tempNote"
-      :modifyMode="modify"
-      :index="tempIdx"
-      :categorylist="categories"
-    ></app-note-editor>
-    <app-category-list v-if="categoryOpen"
-      @categoryAdd="categoryAdd"
-      @categoryDelete="categoryDelete"
-      :categorylist="categories"
-    >
-      </app-category-list>
-
->>>>>>> origin/master
     <div class="noteContainer">
       <div
         v-for="(note, index) in notes"
@@ -40,7 +20,6 @@
         :style="{ 'background-color': note.theme }"
       >
         <div>
-
           <span class="modify" @click.prevent="toggleNote(index)"
             ><i class="far fa-edit"></i
           ></span>
@@ -52,13 +31,8 @@
           <div class="note-date">
             <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
-<<<<<<< HEAD
             <span>{{ note.category }}</span>
-=======
-            <span>{{note.category}}</span>
->>>>>>> origin/master
           </div>
-          
         </div>
       </div>
     </div>
@@ -99,40 +73,28 @@ export default {
       modify: false,
       tempIdx: null,
       categoryOpen: false,
-<<<<<<< HEAD
       categories: ["기타"],
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
-=======
-      categories:["기타"],
->>>>>>> origin/master
     };
   },
   computed: {},
   methods: {
-<<<<<<< HEAD
     newNote(title, text, theme, regist_date, deadline, category) {
       if (this.animationFlag) {
         return;
       }
       this.editorOpen = false;
-=======
-    newNote(title, text, theme, regist_date, deadline,category) {
->>>>>>> origin/master
       this.notes.push({
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
-<<<<<<< HEAD
         category: category,
         eventFlag1: false, // create
         eventFlag2: false, // delete
-=======
-        category: category
->>>>>>> origin/master
       });
       //setTimeout(() => {
       var idx = this.notes.length - 1;
@@ -175,24 +137,16 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
 
-<<<<<<< HEAD
     modifiedNote({ title, text, theme, regist_date, deadline, category }) {
-=======
-    modifiedNote({ title, text, theme, regist_date, deadline,category }) {
->>>>>>> origin/master
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
-<<<<<<< HEAD
         category: category,
         eventFlag1: false,
         eventFlag2: false,
-=======
-        category: category
->>>>>>> origin/master
       });
 
       this.editorOpen = false;
@@ -210,10 +164,6 @@ export default {
             ? 1
             : 0;
         });
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
       } else if (sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
@@ -241,9 +191,8 @@ export default {
         this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
-      }  
+      }
     },
-<<<<<<< HEAD
 
     clickCategoryList() {
       this.categoryOpen = !this.categoryOpen;
@@ -260,42 +209,15 @@ export default {
       }
       this.categories.splice(index, 1);
     },
-=======
-    clickCategoryList(){
-      this.categoryOpen=!this.categoryOpen
-    },
-    categoryAdd(new_category){
-      this.categories.push(new_category);
-    },
-    categoryDelete(index){
-     
-      for(let i=0;i<this.notes.length;i++){
-        if(this.notes[i].category==this.categories[index]) this.notes[i].category=this.categories[0]
-      }
-      this.categories.splice(index,1);
-
-    }
-
->>>>>>> origin/master
   },
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-<<<<<<< HEAD
     if (localStorage.getItem("categories")) {
       var temp = JSON.parse(localStorage.getItem("categories"));
 
       this.categories.splice(1, ...temp);
     }
-=======
-    if(localStorage.getItem("categories")){
-      var temp = JSON.parse(localStorage.getItem("categories"))
-      
-       this.categories.splice(1,...temp)
-    }
-
-     
->>>>>>> origin/master
   },
   watch: {
     notes: {
@@ -305,7 +227,6 @@ export default {
       },
       deep: true,
     },
-<<<<<<< HEAD
 
     categories: {
       handler() {
@@ -333,15 +254,6 @@ export default {
         }
       },
     },
-=======
-    categories:{
-      handler(){
-        var newCategory = this.categories;
-        localStorage.setItem("categories",JSON.stringify(newCategory));
-      },
-      deep: true,
-    },
->>>>>>> origin/master
   },
   components: {
     appNoteEditor: NoteEditor,
