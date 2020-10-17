@@ -16,6 +16,11 @@
         v-model="title"
         placeholder="Title"
       />
+      <select v-model="selected_category">
+        <option v-for="(category, index) in categories" :key="`note-${index}`">
+          {{ category }}
+        </option>
+      </select>
       <textarea
         rows="10"
         v-model="text"
@@ -43,7 +48,7 @@
 
 <script>
 export default {
-  props: ["beforeEditNote", "modifyMode", "index", "eventFlag"],
+  props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
     return {
       title: "",
@@ -51,6 +56,8 @@ export default {
       text: "",
       regist_date: new Date().toLocaleDateString(),
       deadline: "",
+      selected_category: "",
+      categories: [],
       temp: new Date(),
     };
   },
@@ -62,6 +69,9 @@ export default {
     },
   },
   mounted() {
+    this.categories = this.categorylist.slice();
+    this.selected_category = this.categories[0];
+
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
       this.theme = this.beforeEditNote.theme;
@@ -69,6 +79,7 @@ export default {
       this.regist_date = this.beforeEditNote.regist_date;
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
+      this.selected_category = this.beforeEditNote.category;
     }
   },
   beforeDestroy() {
@@ -92,7 +103,8 @@ export default {
             this.text,
             this.theme,
             this.regist_date,
-            this.deadline.toLocaleDateString()
+            this.deadline.toLocaleDateString(),
+            this.selected_category
           );
         }
         this.initData();
@@ -108,6 +120,7 @@ export default {
         theme: this.theme,
         regist_date: this.regist_date,
         deadline: this.deadline,
+        category: this.selected_category,
       });
     },
     initData() {
@@ -116,6 +129,7 @@ export default {
       this.theme = "";
       this.regist_date = new Date().toLocaleDateString();
       this.deadline = "";
+      this.category = "기타";
     },
   },
 };
