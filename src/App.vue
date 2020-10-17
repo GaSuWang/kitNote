@@ -203,6 +203,7 @@ export default {
 
     categoryAdd(new_category) {
       this.categories.push(new_category);
+   
     },
 
     categoryDelete(index) {
@@ -211,6 +212,7 @@ export default {
           this.notes[i].category = this.categories[0];
       }
       this.categories.splice(index, 1);
+     
     },
     categoryFiltering(selectedCategory){
       this.viewNotes=[]

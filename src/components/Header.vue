@@ -57,7 +57,14 @@ export default {
       this.$emit("selectCategory",this.selectedCategory)
     }
   },
-
+ watch: {
+    categorylist: {
+      handler() {
+        this.categories=[]
+          this.categories = this.categorylist.slice();
+      }
+    },
+ }
 
 };
 </script>
