@@ -4,6 +4,7 @@
       @openEditor="clickAddBtn"
       @ascendingSort="ascendingSort"
       @decendingSort="decendingSort"
+      @openCategoryList="clickCategoryList"
     ></app-header>
 
     <app-note-editor
@@ -14,7 +15,14 @@
       :beforeEditNote="tempNote"
       :modifyMode="modify"
       :index="tempIdx"
+      :categorylist="categories"
     ></app-note-editor>
+    <app-category-list v-if="categoryOpen"
+      @categoryAdd="categoryAdd"
+      @categoryDelete="categoryDelete"
+      :categorylist="categories"
+    >
+      </app-category-list>
 
     <div class="noteContainer">
       <div
@@ -24,6 +32,7 @@
         :style="{ 'background-color': note.theme }"
       >
         <div>
+
           <span class="modify" @click.prevent="toggleNote(index)"
             ><i class="far fa-edit"></i
           ></span>
@@ -35,7 +44,9 @@
           <div class="note-date">
             <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
+            <span>{{note.category}}</span>
           </div>
+          
         </div>
       </div>
     </div>
@@ -47,6 +58,7 @@
 import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
+import CategoryList from "./components/CategoryList.vue";
 
 export default {
   name: "App",
@@ -57,17 +69,20 @@ export default {
       tempNote: {},
       modify: false,
       tempIdx: null,
+      categoryOpen: false,
+      categories:["기타"],
     };
   },
   computed: {},
   methods: {
-    newNote(title, text, theme, regist_date, deadline) {
+    newNote(title, text, theme, regist_date, deadline,category) {
       this.notes.push({
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        category: category
       });
       this.editorOpen = false;
     },
@@ -88,13 +103,14 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
 
-    modifiedNote({ title, text, theme, regist_date, deadline }) {
+    modifiedNote({ title, text, theme, regist_date, deadline,category }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
         theme: theme,
         regist_date: regist_date,
         deadline: deadline,
+        category: category
       });
 
       this.editorOpen = false;
@@ -104,7 +120,6 @@ export default {
     },
 
     ascendingSort(sort_criterion) {
-      console.log(sort_criterion);
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
@@ -113,7 +128,7 @@ export default {
             ? 1
             : 0;
         });
-        console.log("ddd");
+
       } else if (sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
@@ -141,12 +156,34 @@ export default {
         this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
-      }
+      }  
     },
+    clickCategoryList(){
+      this.categoryOpen=!this.categoryOpen
+    },
+    categoryAdd(new_category){
+      this.categories.push(new_category);
+    },
+    categoryDelete(index){
+     
+      for(let i=0;i<this.notes.length;i++){
+        if(this.notes[i].category==this.categories[index]) this.notes[i].category=this.categories[0]
+      }
+      this.categories.splice(index,1);
+
+    }
+
   },
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
+    if(localStorage.getItem("categories")){
+      var temp = JSON.parse(localStorage.getItem("categories"))
+      
+       this.categories.splice(1,...temp)
+    }
+
+     
   },
   watch: {
     notes: {
@@ -156,11 +193,19 @@ export default {
       },
       deep: true,
     },
+    categories:{
+      handler(){
+        var newCategory = this.categories;
+        localStorage.setItem("categories",JSON.stringify(newCategory));
+      },
+      deep: true,
+    },
   },
   components: {
     appNoteEditor: NoteEditor,
     appHeader: Header,
     appCalendar: Calendar,
+    appCategoryList: CategoryList,
   },
 };
 </script>

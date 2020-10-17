@@ -10,7 +10,7 @@
       </select>
       <button @click.prevent="ascendingSort"><i class="fas fa-sort-up"></i></button>
       <button @click.prevent="decendingSort"><i class="fas fa-sort-down"></i></button>
-      
+      <button @click.prevent="openCategoryList">카테고리</button>
     </div>
 </template>
 
@@ -31,6 +31,10 @@
           },
           decendingSort: function(){
             this.$emit('decendingSort',this.sort_criterion)
+          },
+          openCategoryList: function(){
+            this.$emit('openCategoryList')
+
           }
         }
     }
