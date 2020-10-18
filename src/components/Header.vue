@@ -38,12 +38,13 @@ export default {
     openEditor: function () {
       this.$emit("openEditor");
     },
-    openCategoryList: function () {
-      this.$emit("openCategoryList");
-    },
     openSidebar: function () {
       this.$emit("openSidebar");
     },
+    selectCategory: function(){
+      this.$emit("selectCategory",this.selectedCategory)
+    }
+
   },
   watch: {
     categorylist: {
