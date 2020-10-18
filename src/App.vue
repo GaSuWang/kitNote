@@ -35,6 +35,18 @@
             <span class="delete" @click.prevent="deleteNote(index)"
               ><i class="fas fa-times"></i
             ></span>
+            <span
+              class="unfixed"
+              @click.prevent="fixNote(index)"
+              v-if="!note.isFix"
+              ><i class="fas fa-thumbtack"></i
+            ></span>
+            <span
+              class="fixed"
+              @click.prevent="fixNote(index)"
+              v-if="note.isFix"
+              ><i class="fas fa-thumbtack"></i
+            ></span>
             <span>{{ note.title }}</span>
             <p class="note-text">{{ note.text }}</p>
             <div class="note-date">
@@ -45,43 +57,42 @@
           </div>
         </div>
       </div>
-    </div>
-    <app-calendar :events="notes"></app-calendar>
-    <div class="dim" v-if="sidebarOpen" >
-      <div class="categoryPolicy" v-if="sideFlag[0]">
-        <app-category-list
-          @categoryAdd="categoryAdd"
-          @categoryDelete="categoryDelete"
+      <app-calendar :events="notes"></app-calendar>
+      <div class="dim" v-if="sidebarOpen">
+        <div class="categoryPolicy" v-if="sideFlag[0]">
+          <app-category-list
+            @categoryAdd="categoryAdd"
+            @categoryDelete="categoryDelete"
+            :categorylist="categories"
+          ></app-category-list>
+        </div>
+
+        <div class="sortMenu" v-if="sideFlag[1]">
+          <select v-model="sort_criterion">
+            <option>등록일순</option>
+            <option>마감일순</option>
+            <option>제목순</option>
+          </select>
+          <button @click.prevent="ascendingSort">
+            <i class="fas fa-sort-up"></i>
+          </button>
+          <button @click.prevent="decendingSort">
+            <i class="fas fa-sort-down"></i>
+          </button>
+        </div>
+      </div>
+      <app-note-editor
+        v-if="editorOpen"
+        @noteAdded="newNote"
+        @noteDeleted="deleteNote"
+        @noteModified="modifiedNote"
+        :beforeEditNote="tempNote"
+        :modifyMode="modify"
+        :index="tempIdx"
+        :eventFlag="eventFlag_noteEditor"
         :categorylist="categories"
-        ></app-category-list>
-      </div>
-
-      <div class="sortMenu" v-if="sideFlag[1]" >
-        <select v-model="sort_criterion">
-          <option>등록일순</option>
-          <option>마감일순</option>
-          <option>제목순</option>
-        </select>
-        <button @click.prevent="ascendingSort">
-          <i class="fas fa-sort-up"></i>
-        </button>
-        <button @click.prevent="decendingSort">
-          <i class="fas fa-sort-down"></i>
-        </button>
-      </div>
+      ></app-note-editor>
     </div>
-    <app-note-editor
-      v-if="editorOpen"
-      @noteAdded="newNote"
-      @noteDeleted="deleteNote"
-      @noteModified="modifiedNote"
-      :beforeEditNote="tempNote"
-      :modifyMode="modify"
-      :index="tempIdx"
-      :eventFlag="eventFlag_noteEditor"
-      :categorylist="categories"
-    ></app-note-editor>
-
   </div>
 </template>
 
@@ -108,7 +119,7 @@ export default {
       selectedCategory: "전체",
       sidebarOpen: false,
       sideFlag: [false, false],
-      sort_criterion:"제목순"
+      sort_criterion: "제목순",
     };
   },
   computed: {},
@@ -129,6 +140,7 @@ export default {
         eventFlag1: false, // create
         eventFlag2: false, // delete
         isView: true,
+        isFix: false,
       });
 
       var idx = this.notes.length - 1;
@@ -176,14 +188,13 @@ export default {
 
     openSettingCategory() {
       this.sideFlag[1] = false;
-      this.sideFlag.splice(0,1)
+      this.sideFlag.splice(0, 1);
       this.sideFlag.unshift(true);
-   
     },
 
     openSortPolicy() {
       this.sideFlag[0] = false;
-      this.sideFlag.splice(1,1)
+      this.sideFlag.splice(1, 1);
       this.sideFlag.push(true);
     },
 
@@ -202,6 +213,8 @@ export default {
         category: category,
         eventFlag1: false,
         eventFlag2: false,
+        isView: true,
+        isFix: false,
       });
 
       this.editorOpen = false;
@@ -229,6 +242,15 @@ export default {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
       }
+
+      var temp = [];
+      for (var i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].isFix) {
+          temp.push(...this.notes.splice(i, 1));
+          i--;
+        }
+      }
+      this.notes.unshift(...temp);
     },
 
     decendingSort() {
@@ -249,9 +271,16 @@ export default {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
       }
+      var temp = [];
+      for (var i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].isFix) {
+          temp.push(...this.notes.splice(i, 1));
+          i--;
+        }
+      }
+      this.notes.unshift(...temp);
     },
     /* Sort Policy End */
-
 
     categoryAdd(new_category) {
       this.categories.push(new_category);
@@ -306,6 +335,14 @@ export default {
       handler() {
         var newCategory = this.categories;
         localStorage.setItem("categories", JSON.stringify(newCategory));
+      },
+      deep: true,
+    },
+
+    isFix: {
+      handler() {
+        var newNotes = this.notes;
+        localStorage.setItem("notes", JSON.stringify(newNotes));
       },
       deep: true,
     },
