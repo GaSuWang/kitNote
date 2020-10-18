@@ -1,21 +1,12 @@
 <template>
   <div class="header">
-    <button @click.prevent="openSidebar"><p>open</p></button>
+    <span @click.prevent="openSidebar">
+      <i class="fas fa-bars"></i>
+    </span>
     <img src="../assets/logo.png" />
     <p>Vue.JS Sticky Notes</p>
     <button class="add-btn" @click.prevent="openEditor">
       <i class="fas fa-plus"></i>
-    </button>
-    <select v-model="sort_criterion">
-      <option>등록일순</option>
-      <option>마감일순</option>
-      <option>제목순</option>
-    </select>
-    <button @click.prevent="ascendingSort">
-      <i class="fas fa-sort-up"></i>
-    </button>
-    <button @click.prevent="decendingSort">
-      <i class="fas fa-sort-down"></i>
     </button>
     <button @click.prevent="openCategoryList">카테고리</button>
   </div>

@@ -7,7 +7,11 @@
       @openCategoryList="clickCategoryList"
       @openSidebar="clickSidebar"
     ></app-header>
-    <app-sidebar v-if="sidebarOpen"></app-sidebar>
+    <app-sidebar
+      v-if="sidebarOpen"
+      @openSettingCategory="openSettingCategory"
+      @openSortPolicy="openSortPolicy"
+    ></app-sidebar>
     <div class="contents">
       <div class="noteContainer">
         <div
@@ -40,7 +44,21 @@
       </div>
     </div>
     <app-calendar :events="notes"></app-calendar>
-    <div class="dim" v-if="sidebarOpen"></div>
+    <div class="dim" v-if="sidebarOpen">
+      <div class="sortMenu">
+        <select v-model="sort_criterion">
+          <option>등록일순</option>
+          <option>마감일순</option>
+          <option>제목순</option>
+        </select>
+        <button @click.prevent="ascendingSort">
+          <i class="fas fa-sort-up"></i>
+        </button>
+        <button @click.prevent="decendingSort">
+          <i class="fas fa-sort-down"></i>
+        </button>
+      </div>
+    </div>
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -87,6 +105,7 @@ export default {
   },
   computed: {},
   methods: {
+    /* Note Manage */
     newNote(title, text, theme, regist_date, deadline, category) {
       if (this.animationFlag) {
         return;
@@ -113,6 +132,7 @@ export default {
         }, this.aniTime);
       });
     },
+
     deleteNote(index) {
       if (this.animationFlag) {
         return;
@@ -129,18 +149,27 @@ export default {
         }, this.aniTime);
       });
     },
+    /* Note Manage End */
+
+    /* UI */
     clickAddBtn() {
       this.editorOpen = !this.editorOpen;
       this.modify = false;
       this.tempIdx = null;
       this.tempNote = {};
     },
+
     toggleNote(index) {
       this.tempIdx = index;
       this.tempNote = this.notes[index];
       this.modify = true;
       this.editorOpen = !this.editorOpen;
     },
+
+    openSettingCategory() {},
+
+    openSortPolicy() {},
+    /* UI End */
 
     modifiedNote({ title, text, theme, regist_date, deadline, category }) {
       this.notes.splice(this.tempIdx, 1, {
@@ -160,6 +189,7 @@ export default {
       this.tempIdx = null;
     },
 
+    /* Sort Policy */
     ascendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
@@ -179,6 +209,7 @@ export default {
         });
       }
     },
+
     decendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
@@ -198,6 +229,7 @@ export default {
         });
       }
     },
+    /* Sort Policy End */
 
     clickCategoryList() {
       this.categoryOpen = !this.categoryOpen;
