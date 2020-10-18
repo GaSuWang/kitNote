@@ -28,6 +28,12 @@
           <span class="delete" @click.prevent="deleteNote(index)"
             ><i class="fas fa-times"></i
           ></span>
+           <span class="unfixed" @click.prevent="fixNote(index)" v-if="!note.isFix"
+            ><i class="fas fa-thumbtack"></i
+          ></span>
+           <span class="fixed" @click.prevent="fixNote(index)" v-if="note.isFix"
+            ><i class="fas fa-thumbtack"></i
+          ></span>
           <span>{{ note.title }}</span>
           <p class="note-text">{{ note.text }}</p>
           <div class="note-date">
@@ -80,7 +86,8 @@ export default {
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
-      selectedCategory:"전체"
+      selectedCategory:"전체",
+    
     };
   },
   computed: {},
@@ -100,6 +107,7 @@ export default {
         eventFlag1: false, // create
         eventFlag2: false, // delete
         isView: true,
+        isFix: false,
       });
       //setTimeout(() => {
       var idx = this.notes.length - 1;
@@ -135,13 +143,14 @@ export default {
       this.tempNote = {};
     },
     toggleNote(index) {
+ 
       this.tempIdx = index;
       this.tempNote = this.notes[index];
       this.modify = true;
       this.editorOpen = !this.editorOpen;
     },
 
-    modifiedNote({ title, text, theme, regist_date, deadline, category }) {
+    modifiedNote({ title, text, theme, regist_date, deadline, category,isView,isFix }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
@@ -151,6 +160,8 @@ export default {
         category: category,
         eventFlag1: false,
         eventFlag2: false,
+        isView: isView,
+        isFix: isFix,
       });
 
       this.editorOpen = false;
@@ -160,6 +171,7 @@ export default {
     },
 
     ascendingSort(sort_criterion) {
+   
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
@@ -177,8 +189,18 @@ export default {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
       }
+     
+      var temp=[]
+      for(var i=0; i<this.notes.length;i++){
+        if(this.notes[i].isFix){
+          temp.push(...this.notes.splice(i,1));
+          i--;
+        }
+      }
+      this.notes.unshift(...temp)
     },
     decendingSort(sort_criterion) {
+      
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date > b.regist_date
@@ -187,15 +209,25 @@ export default {
             ? 1
             : 0;
         });
-      } else if (sort_criterion == "마감일순") {
+      } 
+      else if (sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline > b.deadline ? -1 : a.deadline < b.deadline ? 1 : 0;
         });
-      } else if (sort_criterion == "제목순") {
+      } 
+      else if (sort_criterion == "제목순") {
         this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
       }
+      var temp=[]
+      for(var i=0; i<this.notes.length;i++){
+        if(this.notes[i].isFix){
+          temp.push(...this.notes.splice(i,1));
+          i--;
+        }
+      }
+      this.notes.unshift(...temp)            
     },
 
     clickCategoryList() {
@@ -227,13 +259,23 @@ export default {
               this.notes[j].isView=true
             }
             else{
-              this.notes[j].isView=false
+              if(this.notes[j].isFix) this.notes[j].isView=true
+              else this.notes[j].isView=false
             }
           }
         }
-     
-    }
+   
+    },
 
+    fixNote(index){
+      this.notes[index].isFix=!this.notes[index].isFix;
+      if(this.notes[index].isFix){
+        var temp= this.notes[index]
+        this.notes.splice(index,1)
+        this.notes.unshift(temp)
+        
+      }
+    }
   },
 
 
@@ -264,6 +306,14 @@ export default {
       handler() {
         var newCategory = this.categories;
         localStorage.setItem("categories", JSON.stringify(newCategory));
+      },
+      deep: true,
+    },
+
+    isFix:{
+      handler(){
+           var newNotes = this.notes;
+        localStorage.setItem("notes", JSON.stringify(newNotes));
       },
       deep: true,
     },

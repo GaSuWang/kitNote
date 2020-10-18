@@ -80,6 +80,8 @@ export default {
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
       this.selected_category = this.beforeEditNote.category;
+      this.isView=this.beforeEditNote.isView
+      this.isFix=this.beforeEditNote.isFix
     }
   },
   beforeDestroy() {
@@ -121,6 +123,8 @@ export default {
         regist_date: this.regist_date,
         deadline: this.deadline,
         category: this.selected_category,
+        isView: this.isView,
+        isFix: this.isFix
       });
     },
     initData() {
