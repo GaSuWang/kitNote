@@ -17,22 +17,34 @@
       <i class="fas fa-sort-down"></i>
     </button>
     <button @click.prevent="openCategoryList">카테고리</button>
+    <select v-model="selectedCategory" @change="selectCategory" >
+      <option>전체</option>
+      <option  v-for="(category, index) in categories"
+        :key="`category-${index}`">
+        {{category}}
+      </option>
+    </select>
   </div>
 </template>
 
 <script>
 export default {
+   props: ["categorylist"],
   data: function () {
     return {
       sort_criterion: "등록일순",
+      selectedCategory:"전체",
+      categories:[]
     };
+  },
+   mounted() {
+    this.categories = this.categorylist.slice();
   },
   methods: {
     openEditor: function () {
       this.$emit("openEditor");
     },
     ascendingSort: function () {
-      console.log(this.sort_criterion);
       this.$emit("ascendingSort", this.sort_criterion);
     },
     decendingSort: function () {
@@ -41,6 +53,18 @@ export default {
     openCategoryList: function () {
       this.$emit("openCategoryList");
     },
+    selectCategory: function(){
+      this.$emit("selectCategory",this.selectedCategory)
+    }
   },
+ watch: {
+    categorylist: {
+      handler() {
+        this.categories=[]
+          this.categories = this.categorylist.slice();
+      }
+    },
+ }
+
 };
 </script>

@@ -5,20 +5,22 @@
       @ascendingSort="ascendingSort"
       @decendingSort="decendingSort"
       @openCategoryList="clickCategoryList"
+      @selectCategory="categoryFiltering"
+      :categorylist="categories"
     ></app-header>
 
     <div class="noteContainer">
       <div
         v-for="(note, index) in notes"
         :key="`note-${index}`"
-        class="note"
-        :class="{
+        :style="{ 'background-color': note.theme }"
+      >
+      <div class="note" v-if="note.isView"
+      :class="{
           animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
           'create-ani': note.eventFlag1,
           'delete-ani': note.eventFlag2,
-        }"
-        :style="{ 'background-color': note.theme }"
-      >
+        }">
         <div>
           <span class="modify" @click.prevent="toggleNote(index)"
             ><i class="far fa-edit"></i
@@ -33,6 +35,7 @@
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
             <span>{{ note.category }}</span>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -77,6 +80,7 @@ export default {
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
+      selectedCategory:"전체"
     };
   },
   computed: {},
@@ -95,6 +99,7 @@ export default {
         category: category,
         eventFlag1: false, // create
         eventFlag2: false, // delete
+        isView: true,
       });
       //setTimeout(() => {
       var idx = this.notes.length - 1;
@@ -112,7 +117,6 @@ export default {
       if (this.animationFlag) {
         return;
       }
-
       this.editorOpen = false;
       this.notes[index].eventFlag2 = true;
       this.$nextTick(() => {
@@ -200,6 +204,7 @@ export default {
 
     categoryAdd(new_category) {
       this.categories.push(new_category);
+   
     },
 
     categoryDelete(index) {
@@ -208,22 +213,49 @@ export default {
           this.notes[i].category = this.categories[0];
       }
       this.categories.splice(index, 1);
+     
     },
+    categoryFiltering(selectedCategory){
+        if(selectedCategory =="전체"){
+          for(var i=0;i<this.notes.length;i++){
+            this.notes[i].isView=true
+          }
+        }
+        else{
+           for(var j=0;j<this.notes.length;j++){
+            if(this.notes[j].category==selectedCategory){
+              this.notes[j].isView=true
+            }
+            else{
+              this.notes[j].isView=false
+            }
+          }
+        }
+     
+    }
+
   },
+
+
+  created(){
+    if (localStorage.getItem("categories")) {
+      var temp = JSON.parse(localStorage.getItem("categories"));
+      this.categories.splice(1, ...temp);
+    }
+  },
+
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-    if (localStorage.getItem("categories")) {
-      var temp = JSON.parse(localStorage.getItem("categories"));
-
-      this.categories.splice(1, ...temp);
-    }
+  
   },
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
+
+   
       },
       deep: true,
     },
