@@ -4,7 +4,6 @@
       @openEditor="clickAddBtn"
       @ascendingSort="ascendingSort"
       @decendingSort="decendingSort"
-      @openCategoryList="clickCategoryList"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
       @openSidebar="clickSidebar"
@@ -49,7 +48,15 @@
     </div>
     <app-calendar :events="notes"></app-calendar>
     <div class="dim" v-if="sidebarOpen">
-      <div class="sortMenu" v-if="sideFlag[0]">
+      <div class="categoryPolicy" v-if="sideFlag[0]">
+        <app-category-list
+          @categoryAdd="categoryAdd"
+          @categoryDelete="categoryDelete"
+        :categorylist="categories"
+        ></app-category-list>
+      </div>
+
+      <div class="sortMenu" v-if="sideFlag[1]">
         <select v-model="sort_criterion">
           <option>등록일순</option>
           <option>마감일순</option>
@@ -74,12 +81,7 @@
       :eventFlag="eventFlag_noteEditor"
       :categorylist="categories"
     ></app-note-editor>
-    <app-category-list
-      v-if="categoryOpen"
-      @categoryAdd="categoryAdd"
-      @categoryDelete="categoryDelete"
-      :categorylist="categories"
-    ></app-category-list>
+
   </div>
 </template>
 
@@ -99,7 +101,6 @@ export default {
       tempNote: {},
       modify: false,
       tempIdx: null,
-      categoryOpen: false,
       categories: ["기타"],
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
@@ -107,6 +108,7 @@ export default {
       selectedCategory: "전체",
       sidebarOpen: false,
       sideFlag: [false, false],
+      sort_criterion:"제목순"
     };
   },
   computed: {},
@@ -206,8 +208,8 @@ export default {
     },
 
     /* Sort Policy */
-    ascendingSort(sort_criterion) {
-      if (sort_criterion == "등록일순") {
+    ascendingSort() {
+      if (this.sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
             ? -1
@@ -215,19 +217,19 @@ export default {
             ? 1
             : 0;
         });
-      } else if (sort_criterion == "마감일순") {
+      } else if (this.sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
         });
-      } else if (sort_criterion == "제목순") {
+      } else if (this.sort_criterion == "제목순") {
         this.notes.sort(function (a, b) {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
       }
     },
 
-    decendingSort(sort_criterion) {
-      if (sort_criterion == "등록일순") {
+    decendingSort() {
+      if (this.sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
           return a.regist_date > b.regist_date
             ? -1
@@ -235,11 +237,11 @@ export default {
             ? 1
             : 0;
         });
-      } else if (sort_criterion == "마감일순") {
+      } else if (this.sort_criterion == "마감일순") {
         this.notes.sort(function (a, b) {
           return a.deadline > b.deadline ? -1 : a.deadline < b.deadline ? 1 : 0;
         });
-      } else if (sort_criterion == "제목순") {
+      } else if (this.sort_criterion == "제목순") {
         this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
@@ -247,9 +249,6 @@ export default {
     },
     /* Sort Policy End */
 
-    clickCategoryList() {
-      this.categoryOpen = !this.categoryOpen;
-    },
 
     categoryAdd(new_category) {
       this.categories.push(new_category);

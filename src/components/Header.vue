@@ -8,7 +8,6 @@
     <button class="add-btn" @click.prevent="openEditor">
       <i class="fas fa-plus"></i>
     </button>
-    <button @click.prevent="openCategoryList">카테고리</button>
     <select v-model="selectedCategory" @change="selectCategory">
       <option>전체</option>
       <option
@@ -26,7 +25,7 @@ export default {
   props: ["categorylist"],
   data: function () {
     return {
-      sort_criterion: "등록일순",
+ 
       selectedCategory: "전체",
       categories: [],
     };
@@ -37,9 +36,6 @@ export default {
   methods: {
     openEditor: function () {
       this.$emit("openEditor");
-    },
-    openCategoryList: function () {
-      this.$emit("openCategoryList");
     },
     openSidebar: function () {
       this.$emit("openSidebar");
