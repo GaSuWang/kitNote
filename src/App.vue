@@ -47,7 +47,7 @@
       </div>
     </div>
     <app-calendar :events="notes"></app-calendar>
-    <div class="dim" v-if="sidebarOpen">
+    <div class="dim" v-if="sidebarOpen" >
       <div class="categoryPolicy" v-if="sideFlag[0]">
         <app-category-list
           @categoryAdd="categoryAdd"
@@ -56,7 +56,7 @@
         ></app-category-list>
       </div>
 
-      <div class="sortMenu" v-if="sideFlag[1]">
+      <div class="sortMenu" v-if="sideFlag[1]" >
         <select v-model="sort_criterion">
           <option>등록일순</option>
           <option>마감일순</option>
@@ -175,13 +175,16 @@ export default {
     },
 
     openSettingCategory() {
-      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
-      this.sideFlag[0] = true;
+      this.sideFlag[1] = false;
+      this.sideFlag.splice(0,1)
+      this.sideFlag.unshift(true);
+   
     },
 
     openSortPolicy() {
-      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
-      this.sideFlag[1] = true;
+      this.sideFlag[0] = false;
+      this.sideFlag.splice(1,1)
+      this.sideFlag.push(true);
     },
 
     clickSidebar() {
