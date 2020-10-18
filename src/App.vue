@@ -7,39 +7,62 @@
       @openCategoryList="clickCategoryList"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
+      @openSidebar="clickSidebar"
     ></app-header>
-
+    <app-sidebar
+      v-if="sidebarOpen"
+      @openSettingCategory="openSettingCategory"
+      @openSortPolicy="openSortPolicy"
+    ></app-sidebar>
     <div class="noteContainer">
       <div
         v-for="(note, index) in notes"
         :key="`note-${index}`"
         :style="{ 'background-color': note.theme }"
       >
-      <div class="note" v-if="note.isView"
-      :class="{
-          animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
-          'create-ani': note.eventFlag1,
-          'delete-ani': note.eventFlag2,
-        }">
-        <div>
-          <span class="modify" @click.prevent="toggleNote(index)"
-            ><i class="far fa-edit"></i
-          ></span>
-          <span class="delete" @click.prevent="deleteNote(index)"
-            ><i class="fas fa-times"></i
-          ></span>
-          <span>{{ note.title }}</span>
-          <p class="note-text">{{ note.text }}</p>
-          <div class="note-date">
-            <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
-            <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
-            <span>{{ note.category }}</span>
+        <div
+          class="note"
+          v-if="note.isView"
+          :class="{
+            animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
+            'create-ani': note.eventFlag1,
+            'delete-ani': note.eventFlag2,
+          }"
+        >
+          <div>
+            <span class="modify" @click.prevent="toggleNote(index)"
+              ><i class="far fa-edit"></i
+            ></span>
+            <span class="delete" @click.prevent="deleteNote(index)"
+              ><i class="fas fa-times"></i
+            ></span>
+            <span>{{ note.title }}</span>
+            <p class="note-text">{{ note.text }}</p>
+            <div class="note-date">
+              <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
+              <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
+              <span>{{ note.category }}</span>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
     <app-calendar :events="notes"></app-calendar>
+    <div class="dim" v-if="sidebarOpen">
+      <div class="sortMenu" v-if="sideFlag[0]">
+        <select v-model="sort_criterion">
+          <option>등록일순</option>
+          <option>마감일순</option>
+          <option>제목순</option>
+        </select>
+        <button @click.prevent="ascendingSort">
+          <i class="fas fa-sort-up"></i>
+        </button>
+        <button @click.prevent="decendingSort">
+          <i class="fas fa-sort-down"></i>
+        </button>
+      </div>
+    </div>
     <app-note-editor
       v-if="editorOpen"
       @noteAdded="newNote"
@@ -65,6 +88,7 @@ import NoteEditor from "./components/NoteEditor.vue";
 import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
 import CategoryList from "./components/CategoryList.vue";
+import Sidebar from "./components/Sidebar.vue";
 
 export default {
   name: "App",
@@ -80,11 +104,14 @@ export default {
       aniTime: 600,
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
-      selectedCategory:"전체"
+      selectedCategory: "전체",
+      sidebarOpen: false,
+      sideFlag: [false, false],
     };
   },
   computed: {},
   methods: {
+    /* Note Manage */
     newNote(title, text, theme, regist_date, deadline, category) {
       if (this.animationFlag) {
         return;
@@ -101,7 +128,7 @@ export default {
         eventFlag2: false, // delete
         isView: true,
       });
-      //setTimeout(() => {
+
       var idx = this.notes.length - 1;
       this.notes[idx].eventFlag1 = true;
       this.$nextTick(() => {
@@ -111,8 +138,8 @@ export default {
           this.animationFlag = false;
         }, this.aniTime);
       });
-      //}, this.aniTime);
     },
+
     deleteNote(index) {
       if (this.animationFlag) {
         return;
@@ -128,18 +155,37 @@ export default {
         }, this.aniTime);
       });
     },
+    /* Note Manage End */
+
+    /* UI */
     clickAddBtn() {
       this.editorOpen = !this.editorOpen;
       this.modify = false;
       this.tempIdx = null;
       this.tempNote = {};
     },
+
     toggleNote(index) {
       this.tempIdx = index;
       this.tempNote = this.notes[index];
       this.modify = true;
       this.editorOpen = !this.editorOpen;
     },
+
+    openSettingCategory() {
+      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
+      this.sideFlag[0] = true;
+    },
+
+    openSortPolicy() {
+      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
+      this.sideFlag[1] = true;
+    },
+
+    clickSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+    },
+    /* UI End */
 
     modifiedNote({ title, text, theme, regist_date, deadline, category }) {
       this.notes.splice(this.tempIdx, 1, {
@@ -159,6 +205,7 @@ export default {
       this.tempIdx = null;
     },
 
+    /* Sort Policy */
     ascendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
@@ -178,6 +225,7 @@ export default {
         });
       }
     },
+
     decendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
         this.notes.sort(function (a, b) {
@@ -197,6 +245,7 @@ export default {
         });
       }
     },
+    /* Sort Policy End */
 
     clickCategoryList() {
       this.categoryOpen = !this.categoryOpen;
@@ -204,7 +253,6 @@ export default {
 
     categoryAdd(new_category) {
       this.categories.push(new_category);
-   
     },
 
     categoryDelete(index) {
@@ -213,31 +261,25 @@ export default {
           this.notes[i].category = this.categories[0];
       }
       this.categories.splice(index, 1);
-     
     },
-    categoryFiltering(selectedCategory){
-        if(selectedCategory =="전체"){
-          for(var i=0;i<this.notes.length;i++){
-            this.notes[i].isView=true
+    categoryFiltering(selectedCategory) {
+      if (selectedCategory == "전체") {
+        for (var i = 0; i < this.notes.length; i++) {
+          this.notes[i].isView = true;
+        }
+      } else {
+        for (var j = 0; j < this.notes.length; j++) {
+          if (this.notes[j].category == selectedCategory) {
+            this.notes[j].isView = true;
+          } else {
+            this.notes[j].isView = false;
           }
         }
-        else{
-           for(var j=0;j<this.notes.length;j++){
-            if(this.notes[j].category==selectedCategory){
-              this.notes[j].isView=true
-            }
-            else{
-              this.notes[j].isView=false
-            }
-          }
-        }
-     
-    }
-
+      }
+    },
   },
 
-
-  created(){
+  created() {
     if (localStorage.getItem("categories")) {
       var temp = JSON.parse(localStorage.getItem("categories"));
       this.categories.splice(1, ...temp);
@@ -247,15 +289,13 @@ export default {
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-  
   },
+
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
-
-   
       },
       deep: true,
     },
@@ -292,6 +332,7 @@ export default {
     appHeader: Header,
     appCalendar: Calendar,
     appCategoryList: CategoryList,
+    appSidebar: Sidebar,
   },
 };
 </script>

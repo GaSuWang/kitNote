@@ -5,7 +5,7 @@ html {
 *,
 *:before,
 *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body {
@@ -13,6 +13,10 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
     margin: 0;
+}
+
+#app {
+    position: relative;
 }
 
 ::placeholder {
@@ -27,7 +31,10 @@ body {
     // justify-content: center;
     background: #000;
     color: #fff;
-    margin-bottom: 50px;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 0px;
+    padding-left: 20px;
     & p {
         font-size:25px;
         margin:25px;
@@ -85,22 +92,6 @@ body {
     padding: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
-
-    /* animation */
-    /*transition: transform 0.6s ease-in-out;
-    &.open-ani {
-        transform: scale(0);
-        &.animation {
-            transform: scale(1);
-        }
-    }
-    &.close-ani {
-        transform: scale(1);
-        &.animation {
-            transform: scale(0);
-        }
-    }*/
-    /* animation end */
 }
 
 .note-title {
@@ -109,11 +100,12 @@ body {
 }
 
 .noteContainer {
+    position: relative;
     column-count: 4;
     column-gap: 1em;
-    margin: 50px 25px;
+    padding: 50px 25px;
+    box-sizing: border-box;
 }
-
 
 .note {
     position: relative;
@@ -123,7 +115,6 @@ body {
       0 8px 8px rgba(0,90,250,0.05),
       0 16px 16px rgba(0,90,250,0.05);
     box-sizing: border-box;
-    position: relative;
     display: flex;
     flex-direction: column;
     display: inline-block;
@@ -158,13 +149,13 @@ body {
     align-items: flex-end;
     flex-wrap: wrap;
 }
-.note-editor-date{
+.note-editor-date {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
 }
 
-.note-editor-registdate{
+.note-editor-registdate {
     margin-top: 0.7%;
     margin-bottom: 0.7%;
     border-radius: 3px;
@@ -185,25 +176,24 @@ body {
     top: 25px;
 }
 
-.note-date{
+.note-date {
     color: gray;
     font-size: 13px;
     display: flex;
-    flex-direction: column;;
+    flex-direction: column;
     align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .calendar {
     display: inline-block;
-    position: sticky;
-    left: 80%;
-    bottom: 10px;
+    position: fixed;
+    right: 3%;
+    bottom: 5%;
 }
 
-.category-grid{
+.category-grid {
     max-width: 300px;
- 
     margin: 30px auto;
     display: flex;
     flex-direction: column;
@@ -211,9 +201,9 @@ body {
     padding: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
-   
 }
-.category-list{
+
+.category-list {
     overflow: auto;
     max-height: 200px;
     border-radius: 3px;
@@ -222,4 +212,54 @@ body {
       0 8px 8px rgba(0,90,250,0.05),
       0 16px 16px rgba(0,90,250,0.05);
       margin-bottom: 10px;
+}
+
+.sidebar {
+    position: absolute;
+    z-index: 1;
+    width: 18%;
+    background-color: whitesmoke;
+    height: 100vh;
+    top:0;
+    left:0;
+    margin-top: 80px;
+    padding-top: 50px;
+    display: inline-block;
+}
+
+.sidebar .menu {
+    padding-left: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #4CAF50
+    }
+}
+
+.sidebar p {
+    display: block;
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+}
+.sidebar a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.dim{
+    opacity: 0.7;
+    background: #000;
+    margin-top: 80px;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
 }
