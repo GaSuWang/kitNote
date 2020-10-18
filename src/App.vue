@@ -45,7 +45,7 @@
     </div>
     <app-calendar :events="notes"></app-calendar>
     <div class="dim" v-if="sidebarOpen">
-      <div class="sortMenu">
+      <div class="sortMenu" v-if="sideFlag[0]">
         <select v-model="sort_criterion">
           <option>등록일순</option>
           <option>마감일순</option>
@@ -101,6 +101,7 @@ export default {
       eventFlag_noteEditor: [false, false],
       animationFlag: false,
       sidebarOpen: false,
+      sideFlag: [false, false],
     };
   },
   computed: {},
@@ -166,9 +167,15 @@ export default {
       this.editorOpen = !this.editorOpen;
     },
 
-    openSettingCategory() {},
+    openSettingCategory() {
+      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
+      this.sideFlag[0] = true;
+    },
 
-    openSortPolicy() {},
+    openSortPolicy() {
+      for (var i = 0; i < this.sideFlag.length; i++) this.sideFlag[i] = false;
+      this.sideFlag[1] = true;
+    },
     /* UI End */
 
     modifiedNote({ title, text, theme, regist_date, deadline, category }) {

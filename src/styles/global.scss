@@ -218,22 +218,28 @@ body {
     position: absolute;
     z-index: 1;
     width: 18%;
-    background-color: #175a33;
+    background-color: whitesmoke;
     height: 100%;
     top:0;
     left:0;
     margin-top: 80px;
     padding-top: 50px;
-    padding-left: 20px;
 }
 
 .sidebar .menu {
-    margin-bottom: 30px;
+    padding-left: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #4CAF50
+    }
 }
 
 .sidebar p {
     display: block;
-    color: black;
+    color: white;
     padding: 16px;
     text-decoration: none;
 }
@@ -251,6 +257,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
