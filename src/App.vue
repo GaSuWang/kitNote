@@ -11,16 +11,16 @@
 
     <div class="noteContainer">
       <div
-        v-for="(note, index) in viewNotes"
+        v-for="(note, index) in notes"
         :key="`note-${index}`"
-        class="note"
-        :class="{
+        :style="{ 'background-color': note.theme }"
+      >
+      <div class="note" v-if="note.isView"
+      :class="{
           animation: (note.eventFlag1 || note.eventFlag2) && animationFlag,
           'create-ani': note.eventFlag1,
           'delete-ani': note.eventFlag2,
-        }"
-        :style="{ 'background-color': note.theme }"
-      >
+        }">
         <div>
           <span class="modify" @click.prevent="toggleNote(index)"
             ><i class="far fa-edit"></i
@@ -35,6 +35,7 @@
             <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
             <span>{{ note.category }}</span>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -71,7 +72,6 @@ export default {
     return {
       editorOpen: false,
       notes: [],
-      viewNotes:[],
       tempNote: {},
       modify: false,
       tempIdx: null,
@@ -99,6 +99,7 @@ export default {
         category: category,
         eventFlag1: false, // create
         eventFlag2: false, // delete
+        isView: true,
       });
       //setTimeout(() => {
       var idx = this.notes.length - 1;
@@ -160,7 +161,7 @@ export default {
 
     ascendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
             ? -1
             : a.regist_date > b.regist_date
@@ -168,18 +169,18 @@ export default {
             : 0;
         });
       } else if (sort_criterion == "마감일순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
         });
       } else if (sort_criterion == "제목순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
       }
     },
     decendingSort(sort_criterion) {
       if (sort_criterion == "등록일순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.regist_date > b.regist_date
             ? -1
             : a.regist_date < b.regist_date
@@ -187,11 +188,11 @@ export default {
             : 0;
         });
       } else if (sort_criterion == "마감일순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.deadline > b.deadline ? -1 : a.deadline < b.deadline ? 1 : 0;
         });
       } else if (sort_criterion == "제목순") {
-        this.viewNotes.sort(function (a, b) {
+        this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
       }
@@ -215,18 +216,21 @@ export default {
      
     },
     categoryFiltering(selectedCategory){
-      this.viewNotes=[]
-      this.selectedCategory=selectedCategory
-      if(selectedCategory=="전체"){
-        this.viewNotes.push(...this.notes)
-      }
-      else{
-        for(let i=0;i<this.notes.length;i++){
-          if(this.notes[i].category==selectedCategory){
-            this.viewNotes.push(this.notes[i])
+        if(selectedCategory =="전체"){
+          for(var i=0;i<this.notes.length;i++){
+            this.notes[i].isView=true
           }
         }
-      }
+        else{
+           for(var j=0;j<this.notes.length;j++){
+            if(this.notes[j].category==selectedCategory){
+              this.notes[j].isView=true
+            }
+            else{
+              this.notes[j].isView=false
+            }
+          }
+        }
      
     }
 
@@ -243,25 +247,15 @@ export default {
   mounted() {
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
-    this.viewNotes.push(...this.notes)
+  
   },
   watch: {
     notes: {
       handler() {
         var newNotes = this.notes;
         localStorage.setItem("notes", JSON.stringify(newNotes));
-         this.viewNotes=[]
-        if(this.selectedCategory=="전체"){
-          this.viewNotes.push(...this.notes)
-        }
-        
-        else{
-          for(let i=0;i<this.notes.length;i++){
-            if(this.notes[i].category==this.selectedCategory){
-              this.viewNotes.push(this.notes[i])
-            }
-          }
-        }
+
+   
       },
       deep: true,
     },
