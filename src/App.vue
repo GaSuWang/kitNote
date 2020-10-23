@@ -329,12 +329,11 @@ export default {
       var temp = JSON.parse(localStorage.getItem("categories"));
       this.categories.splice(1, ...temp);
     }
-  },
-
-  mounted() {
-    if (localStorage.getItem("notes"))
+       if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
   },
+
+  
 
   watch: {
     notes: {
