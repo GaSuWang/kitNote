@@ -65,12 +65,24 @@ computed: {
         isComplete: false,
         dates: this.events[i].deadline, // Every Friday
         color: 'red',
-      }
-
-      )
-    
-      
-   }
+      })
+   },
+    watch: {
+    events: {
+      handler() {
+        this.todos=[]
+        for( var i =0; i<this.events.length;i++)
+      this.todos.push(
+         {
+        description: this.events[i].title,
+        isComplete: false,
+        dates: this.events[i].deadline, // Every Friday
+        color: 'red',
+      })
+      },
+      deep: true,
+    },
+    }
 
 };
 </script>
