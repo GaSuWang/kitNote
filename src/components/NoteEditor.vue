@@ -36,6 +36,10 @@
       </div>
 
       <div class="note-editor-bottom">
+        <div class="note-editor-bottom-left">
+          <input type="checkbox" id="addTodo" v-model="checked" />
+          <a>Check List에 추가</a>
+        </div>
         <button @click="createNew" class="fas fas-check-circle">
           <i class="fas fa-check-circle"></i>
         </button>
@@ -78,8 +82,8 @@ export default {
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
       this.selected_category = this.beforeEditNote.category;
-      this.isView=this.beforeEditNote.isView
-      this.isFix=this.beforeEditNote.isFix
+      this.isView = this.beforeEditNote.isView;
+      this.isFix = this.beforeEditNote.isFix;
     }
   },
   beforeDestroy() {
@@ -122,7 +126,7 @@ export default {
         deadline: this.deadline,
         category: this.selected_category,
         isView: this.isView,
-        isFix: this.isFix
+        isFix: this.isFix,
       });
     },
     initData() {

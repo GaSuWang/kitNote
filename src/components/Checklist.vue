@@ -1,8 +1,8 @@
 <template>
-  <div id="todo-list">
+  <div id="checklist">
     <ul>
       <li
-        is="todo-item"
+        is="checklist"
         v-for="(todo, index) in todos"
         v-bind:key="todo.id"
         v-bind:title="todo.title"

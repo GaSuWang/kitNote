@@ -262,3 +262,16 @@ body {
     justify-content: center;
     float: right;
 }
+
+.checklist {
+    display: inline-block;
+    position: fixed;
+    right: 20%;
+    bottom: 5%;
+}
+
+.note-editor-bottom-left {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+}

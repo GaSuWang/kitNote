@@ -58,6 +58,7 @@
         </div>
       </div>
       <app-calendar :events="notes"></app-calendar>
+      <app-checklist :todos="todos"></app-checklist>
       <div class="dim" v-if="sidebarOpen">
         <div class="categoryPolicy" v-if="sideFlag[0]">
           <app-category-list
@@ -102,6 +103,7 @@ import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
 import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
+import Checklist from "./components/Checklist.vue";
 
 export default {
   name: "App",
@@ -120,6 +122,7 @@ export default {
       sidebarOpen: false,
       sideFlag: [false, false],
       sort_criterion: "제목순",
+      todo: [],
     };
   },
   computed: {},
@@ -372,6 +375,7 @@ export default {
     appCalendar: Calendar,
     appCategoryList: CategoryList,
     appSidebar: Sidebar,
+    appChecklist: Checklist,
   },
 };
 </script>
