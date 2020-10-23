@@ -12,6 +12,7 @@
       v-if="sidebarOpen"
       @openSettingCategory="openSettingCategory"
       @openSortPolicy="openSortPolicy"
+      @openCheckList="openCheckList"
     ></app-sidebar>
     <div class="noteContainer">
       <div
@@ -58,6 +59,7 @@
         </div>
       </div>
       <app-calendar :events="notes"></app-calendar>
+
       <div class="dim" v-if="sidebarOpen">
         <div class="categoryPolicy" v-if="sideFlag[0]">
           <app-category-list
@@ -80,6 +82,8 @@
             <i class="fas fa-sort-down"></i>
           </button>
         </div>
+        <app-check-list class="checklistMenu" v-if="sideFlag[2]">
+          </app-check-list>>
       </div>
       <app-note-editor
         v-if="editorOpen"
@@ -102,6 +106,7 @@ import Header from "./components/Header.vue";
 import Calendar from "./components/Calendar.vue";
 import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
+import CheckList from "./components/CheckList.vue";
 
 export default {
   name: "App",
@@ -118,7 +123,7 @@ export default {
       animationFlag: false,
       selectedCategory: "전체",
       sidebarOpen: false,
-      sideFlag: [false, false],
+      sideFlag: [false, false, false],
       sort_criterion: "제목순",
     };
   },
@@ -188,13 +193,22 @@ export default {
 
     openSettingCategory() {
       this.sideFlag[1] = false;
+      this.sideFlag[2] = false;
       this.sideFlag.splice(0, 1);
       this.sideFlag.unshift(true);
     },
 
     openSortPolicy() {
       this.sideFlag[0] = false;
-      this.sideFlag.splice(1, 1);
+      this.sideFlag[2] = false;
+      this.sideFlag.splice(1, 1,true);
+      
+    },
+
+    openCheckList() {
+      this.sideFlag[0] = false;
+      this.sideFlag[1] = false;
+      this.sideFlag.splice(2, 1);
       this.sideFlag.push(true);
     },
 
@@ -372,6 +386,7 @@ export default {
     appCalendar: Calendar,
     appCategoryList: CategoryList,
     appSidebar: Sidebar,
+    appCheckList: CheckList,
   },
 };
 </script>

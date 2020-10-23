@@ -4,9 +4,15 @@
       <i class="fas fa-bars"></i>
       <a> Category Setting</a>
     </div>
+
     <div class="menu" @click.prevent="openSortPolicy">
       <i class="fas fa-sort-amount-up"></i>
       <a> Sort Policy</a>
+    </div>
+
+    <div class="menu" @click.prevent="openCheckList">
+      
+      <a> CheckList</a>
     </div>
   </div>
 </template>
@@ -23,6 +29,9 @@ export default {
     openSortPolicy: function () {
       this.$emit("openSortPolicy");
     },
+    openCheckList: function(){
+      this.$emit("openCheckList")
+    }
   },
 };
 </script>
