@@ -38,7 +38,7 @@
       <div class="note-editor-bottom">
         <div class="note-editor-bottom-left">
           <input type="checkbox" id="addTodo" v-model="checked" />
-          <a>Check List에 추가</a>
+          <label for="addTodo">Check list에 추가</label>
         </div>
         <button @click="createNew" class="fas fas-check-circle">
           <i class="fas fa-check-circle"></i>
@@ -61,6 +61,7 @@ export default {
       selected_category: "",
       categories: [],
       temp: new Date(),
+      checked: false,
     };
   },
   watch: {
@@ -136,6 +137,7 @@ export default {
       this.regist_date = new Date().toLocaleDateString();
       this.deadline = "";
       this.category = "기타";
+      this.addChecklist = false;
     },
   },
 };
