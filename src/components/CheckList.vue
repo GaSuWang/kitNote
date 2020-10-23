@@ -5,11 +5,10 @@
         v-for="(list, index) in checklists"
         :key="`checklist-${index}`"
         class="list"
-        
       >
-        <div @click.prevent="toggleIsComplete(index)">
+        <div >
             <span v-if="list.isComplete==true"><i class="fas fa-check"></i></span>
-          {{ list.checklist }}
+         <span @click.prevent="toggleIsComplete(index)"> {{ list.checklist }}</span>
           <span @click="listDelete(index)"
             ><i class="fas fa-times"></i
           ></span>
@@ -47,6 +46,7 @@ export default {
       this.checklists.push(newlist);
       this.new_category = "";
     },
+
     listDelete(index) {
       this.checklists.splice(index, 1);
     },
