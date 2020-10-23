@@ -5,9 +5,11 @@
         v-for="(list, index) in checklists"
         :key="`checklist-${index}`"
         class="list"
+        
       >
-        <div>
-          {{ list }}
+        <div @click.prevent="toggleIsComplete(index)">
+            <span v-if="list.isComplete==true"><i class="fas fa-check"></i></span>
+          {{ list.checklist }}
           <span @click="listDelete(index)"
             ><i class="fas fa-times"></i
           ></span>
@@ -18,7 +20,7 @@
     <input
       class="list-input"
       type="text"
-      v-model="new_check"
+      v-model="newCheck"
       placeholder="체크리스트를 입력하세요"
     />
     <button @click.prevent="listAdd">추가</button>
@@ -31,18 +33,26 @@ export default {
   data: function () {
     return {
       checklists: [],
-      new_check: "",
+      newCheck: "",
     };
   },
 
   methods: {
     listAdd() {
-      this.checklists.push(this.new_check);
+      var newlist={
+          checklist : this.newCheck,
+          isComplete : false
+      }
+
+      this.checklists.push(newlist);
       this.new_category = "";
     },
     listDelete(index) {
       this.checklists.splice(index, 1);
     },
+    toggleIsComplete(index){
+        this.checklists[index].isComplete=!this.checklists[index].isComplete
+    }
   },
     mounted() {
     if (localStorage.getItem("checklist"))
