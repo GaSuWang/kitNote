@@ -44,7 +44,7 @@ export default {
       }
 
       this.checklists.push(newlist);
-      this.new_category = "";
+      this.newCheck = "";
     },
 
     listDelete(index) {
