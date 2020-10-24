@@ -2,8 +2,6 @@
   <div id="app">
     <app-header
       @openEditor="clickAddBtn"
-      @ascendingSort="ascendingSort"
-      @decendingSort="decendingSort"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
       @openSidebar="clickSidebar"
@@ -70,20 +68,22 @@
         </div>
 
         <div class="sortMenu" v-if="sideFlag[1]">
-          <select v-model="sort_criterion">
-            <option>등록일순</option>
-            <option>마감일순</option>
-            <option>제목순</option>
-          </select>
-          <button @click.prevent="ascendingSort">
-            <i class="fas fa-sort-up"></i>
-          </button>
-          <button @click.prevent="decendingSort">
-            <i class="fas fa-sort-down"></i>
-          </button>
+          <div class="buttonContainer">
+            <div class="sortButton" @click.prevent="decendingSort(1)">등록일 빠른순</div>
+            <div class="sortButton" @click.prevent="ascendingSort(1)">등록일 느린순</div>
+          </div>
+         <div class="buttonContainer">
+            <div class="sortButton" @click.prevent="decendingSort(2)">마감일 빠른순</div>
+            <div class="sortButton" @click.prevent="ascendingSort(2)">마감일 느린순</div>
+         </div>
+
+          <div class="buttonContainer">
+            <div class="sortButton" @click.prevent="ascendingSort(3)">제목 오름차순</div>
+            <div class="sortButton" @click.prevent="decendingSort(3)">제목 내림차순</div>
+          </div>
         </div>
         <app-check-list class="checklistMenu" v-if="sideFlag[2]">
-          </app-check-list>>
+          </app-check-list>
       </div>
       <app-note-editor
         v-if="editorOpen"
@@ -124,7 +124,6 @@ export default {
       selectedCategory: "전체",
       sidebarOpen: false,
       sideFlag: [false, false, false],
-      sort_criterion: "제목순",
     };
   },
   computed: {},
@@ -238,8 +237,8 @@ export default {
     },
 
     /* Sort Policy */
-    ascendingSort() {
-      if (this.sort_criterion == "등록일순") {
+    ascendingSort(sort_criterion) {
+      if (sort_criterion == 1) {
         this.notes.sort(function (a, b) {
           return a.regist_date < b.regist_date
             ? -1
@@ -247,11 +246,11 @@ export default {
             ? 1
             : 0;
         });
-      } else if (this.sort_criterion == "마감일순") {
+      } else if (sort_criterion == 2) {
         this.notes.sort(function (a, b) {
           return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
         });
-      } else if (this.sort_criterion == "제목순") {
+      } else if (sort_criterion == 3) {
         this.notes.sort(function (a, b) {
           return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
         });
@@ -267,8 +266,8 @@ export default {
       this.notes.unshift(...temp);
     },
 
-    decendingSort() {
-      if (this.sort_criterion == "등록일순") {
+    decendingSort(sort_criterion) {
+      if (sort_criterion == 1) {
         this.notes.sort(function (a, b) {
           return a.regist_date > b.regist_date
             ? -1
@@ -276,11 +275,11 @@ export default {
             ? 1
             : 0;
         });
-      } else if (this.sort_criterion == "마감일순") {
+      } else if (sort_criterion == 2) {
         this.notes.sort(function (a, b) {
           return a.deadline > b.deadline ? -1 : a.deadline < b.deadline ? 1 : 0;
         });
-      } else if (this.sort_criterion == "제목순") {
+      } else if (sort_criterion == 3) {
         this.notes.sort(function (a, b) {
           return a.title > b.title ? -1 : a.title < b.title ? 1 : 0;
         });
@@ -322,6 +321,15 @@ export default {
         }
       }
     },
+     fixNote(index){
+      this.notes[index].isFix=!this.notes[index].isFix;
+      if(this.notes[index].isFix){
+        var temp= this.notes[index]
+        this.notes.splice(index,1)
+        this.notes.unshift(temp)        
+      }
+    }
+
   },
 
   created() {

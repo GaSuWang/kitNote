@@ -262,3 +262,20 @@ body {
     justify-content: center;
     float: right;
 }
+.buttonContainer{
+    margin: 30px auto;
+    display: flex;  
+
+
+}
+
+.sortButton{
+    margin: 15px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+    &:hover {
+        background-color: #4CAF50
+    }
+}
