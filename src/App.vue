@@ -132,6 +132,7 @@ import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
+import Vue from "vue";
 
 export default {
   name: "App",
@@ -356,12 +357,10 @@ export default {
       }
     },
     viewCalender() {
-      this.viewFlag[0] = false;
-      console.log(this.viewFlag[0]);
+      Vue.set(this.viewFlag, 0, !this.viewFlag[0]);
     },
     viewTodo() {
-      this.viewFlag[1] = false;
-      console.log(this.viewFlag[1]);
+      Vue.set(this.viewFlag, 1, !this.viewFlag[1]);
     },
   },
 
@@ -416,9 +415,6 @@ export default {
           }, this.aniTime);
         }
       },
-    },
-    viewFlag: {
-      deep: true,
     },
   },
   components: {
