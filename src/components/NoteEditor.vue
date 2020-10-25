@@ -36,10 +36,6 @@
       </div>
 
       <div class="note-editor-bottom">
-        <div class="note-editor-bottom-left">
-          <input type="checkbox" id="addTodo" v-model="checked" />
-          <label for="addTodo">Check list에 추가</label>
-        </div>
         <button @click="createNew" class="fas fas-check-circle">
           <i class="fas fa-check-circle"></i>
         </button>
