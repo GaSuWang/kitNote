@@ -10,8 +10,8 @@
           <span v-if="list.isComplete == true"
             ><i class="fas fa-check"></i
           ></span>
-          <span @click.prevent="toggleIsComplete(index)">
-            {{ list.checklist }}</span
+          <span >
+            {{ list.title }}</span
           >
           <span @click="listDelete(index)"><i class="fas fa-times"></i></span>
         </div>
@@ -45,7 +45,7 @@ export default {
         isComplete: false,
       })
       this.checklists.push({
-        checklist: this.newCheck,
+        title: this.newCheck,
         isComplete: false,
       })
       this.newCheck=""
@@ -55,9 +55,6 @@ export default {
     listDelete(index) {
       this.checklists.splice(index,1)
       this.$emit("checklistDelete",index)
-    },
-    toggleIsComplete(index) {
-      this.checklists[index].isComplete = !this.checklists[index].isComplete;
     },
   },
   mounted() {  
