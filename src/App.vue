@@ -69,21 +69,33 @@
 
         <div class="sortMenu" v-if="sideFlag[1]">
           <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="decendingSort(1)">등록일 빠른순</div>
-            <div class="sortButton" @click.prevent="ascendingSort(1)">등록일 느린순</div>
+            <div class="sortButton" @click.prevent="decendingSort(1)">
+              등록일 빠른순
+            </div>
+            <div class="sortButton" @click.prevent="ascendingSort(1)">
+              등록일 느린순
+            </div>
           </div>
-         <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="decendingSort(2)">마감일 빠른순</div>
-            <div class="sortButton" @click.prevent="ascendingSort(2)">마감일 느린순</div>
-         </div>
+          <div class="buttonContainer">
+            <div class="sortButton" @click.prevent="decendingSort(2)">
+              마감일 빠른순
+            </div>
+            <div class="sortButton" @click.prevent="ascendingSort(2)">
+              마감일 느린순
+            </div>
+          </div>
 
           <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="ascendingSort(3)">제목 오름차순</div>
-            <div class="sortButton" @click.prevent="decendingSort(3)">제목 내림차순</div>
+            <div class="sortButton" @click.prevent="ascendingSort(3)">
+              제목 오름차순
+            </div>
+            <div class="sortButton" @click.prevent="decendingSort(3)">
+              제목 내림차순
+            </div>
           </div>
         </div>
         <app-check-list class="checklistMenu" v-if="sideFlag[2]">
-          </app-check-list>
+        </app-check-list>
       </div>
       <app-note-editor
         v-if="editorOpen"
@@ -200,8 +212,7 @@ export default {
     openSortPolicy() {
       this.sideFlag[0] = false;
       this.sideFlag[2] = false;
-      this.sideFlag.splice(1, 1,true);
-      
+      this.sideFlag.splice(1, 1, true);
     },
 
     openCheckList() {
@@ -321,15 +332,14 @@ export default {
         }
       }
     },
-     fixNote(index){
-      this.notes[index].isFix=!this.notes[index].isFix;
-      if(this.notes[index].isFix){
-        var temp= this.notes[index]
-        this.notes.splice(index,1)
-        this.notes.unshift(temp)        
+    fixNote(index) {
+      this.notes[index].isFix = !this.notes[index].isFix;
+      if (this.notes[index].isFix) {
+        var temp = this.notes[index];
+        this.notes.splice(index, 1);
+        this.notes.unshift(temp);
       }
-    }
-
+    },
   },
 
   created() {
@@ -337,11 +347,9 @@ export default {
       var temp = JSON.parse(localStorage.getItem("categories"));
       this.categories.splice(1, ...temp);
     }
-       if (localStorage.getItem("notes"))
+    if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
   },
-
-  
 
   watch: {
     notes: {
