@@ -10,8 +10,8 @@
           <span v-if="list.isComplete == true"
             ><i class="fas fa-check"></i
           ></span>
-          <span @click.prevent="toggleIsComplete(index)">
-            {{ list.checklist }}</span
+          <span >
+            {{ list.title }}</span
           >
           <span @click="listDelete(index)"><i class="fas fa-times"></i></span>
         </div>
@@ -24,12 +24,13 @@
       v-model="newCheck"
       placeholder="체크리스트를 입력하세요"
     />
-    <button @click.prevent="listAdd">추가</button>
+    <button @click.prevent="listAdd()">추가</button>
   </div>
 </template>
 
 <script>
 export default {
+  props:['todolist'],
   data: function () {
     return {
       checklists: [],
@@ -39,34 +40,28 @@ export default {
 
   methods: {
     listAdd() {
-      var newlist = {
+      this.$emit("checklistAdd",{
         checklist: this.newCheck,
         isComplete: false,
-      };
-
-      this.checklists.push(newlist);
-      this.newCheck = "";
+      })
+      this.checklists.push({
+        title: this.newCheck,
+        isComplete: false,
+      })
+      this.newCheck=""
+   
     },
 
     listDelete(index) {
-      this.checklists.splice(index, 1);
-    },
-    toggleIsComplete(index) {
-      this.checklists[index].isComplete = !this.checklists[index].isComplete;
+      this.checklists.splice(index,1)
+      this.$emit("checklistDelete",index)
     },
   },
-  mounted() {
-    if (localStorage.getItem("checklist"))
-      this.checklists = JSON.parse(localStorage.getItem("checklist"));
+  mounted() {  
+      for(var i =0; i<this.todolist.length;i++){
+        this.checklists.push(this.todolist[i])
+      }
   },
-  watch: {
-    checklists: {
-      handler() {
-        var newChecklist = this.checklists;
-        localStorage.setItem("checklist", JSON.stringify(newChecklist));
-      },
-      deep: true,
-    },
-  },
+
 };
 </script>
