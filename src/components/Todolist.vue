@@ -7,17 +7,8 @@
         v-for="(todo, index) in todos"
         :key="`todo-${index}`"
       >
-        <p class="text">{{ todo.text }}</p>
-        <button
-          v-if="todo.completed"
-          @click="compelete(index)"
-          class="complete completed"
-        >
-          Complete
-        </button>
-        <button v-else @click="compelete(index)" class="complete">
-          Complete
-        </button>
+        <p class="text">{{ todo }}</p>
+        <button @click="complete(index)" class="complete">Complete</button>
         <button @click="deleteTodo(index)" class="delete">Delete</button>
       </li>
     </ul>
@@ -26,14 +17,14 @@
 
 <script>
 export default {
+  props: ["todos"],
   data() {
-    return {
-      todos: [],
-    };
+    return {};
   },
   methods: {
-    compeleteTodo(index) {
-      this.todos[index].completed = !this.todos[index].completed;
+    complete(index) {
+      index;
+      // App.vue로 todos에서 해당 인덱스 제거 요청
     },
   },
 };

@@ -1,12 +1,11 @@
 <template>
   <div class="calendar">
-    <v-calendar ref="calendar"  :attributes='attributes'></v-calendar>
+    <v-calendar ref="calendar" :attributes="attributes"></v-calendar>
   </div>
 </template>
 
 <script>
 export default {
-  
   props: ["events"],
   data: function () {
     return {
@@ -14,20 +13,19 @@ export default {
       start: "",
       type: "month",
       //todos: [],
-      todos : [
-    ]
+      todos: [],
     };
   },
 
-computed: {
+  computed: {
     attributes() {
       return [
         // Attributes for todos
-        ...this.todos.map(todo => ({
+        ...this.todos.map((todo) => ({
           dates: todo.dates,
           dot: {
             color: todo.color,
-            class: todo.isComplete ? 'opacity-75' : '',
+            class: todo.isComplete ? "opacity-75" : "",
           },
           popover: {
             label: todo.description,
@@ -38,10 +36,9 @@ computed: {
     },
   },
   methods: {
-    
     //attributes(){
-      //return[
-       /* ...this.events.map(todo =>({
+    //return[
+    /* ...this.events.map(todo =>({
           dates: todo.dates,
           dot:{
             color: todo.color,
@@ -54,35 +51,30 @@ computed: {
         }))
       ]*/
     //},
-    
-   
   },
-   mounted() {
-    for( var i =0; i<this.events.length;i++)
-      this.todos.push(
-         {
+  mounted() {
+    for (var i = 0; i < this.events.length; i++)
+      this.todos.push({
         description: this.events[i].title,
         isComplete: false,
         dates: this.events[i].deadline, // Every Friday
-        color: 'red',
-      })
-   },
-    watch: {
+        color: "red",
+      });
+  },
+  watch: {
     events: {
       handler() {
-        this.todos=[]
-        for( var i =0; i<this.events.length;i++)
-      this.todos.push(
-         {
-        description: this.events[i].title,
-        isComplete: false,
-        dates: this.events[i].deadline, // Every Friday
-        color: 'red',
-      })
+        this.todos = [];
+        for (var i = 0; i < this.events.length; i++)
+          this.todos.push({
+            description: this.events[i].title,
+            isComplete: false,
+            dates: this.events[i].deadline, // Every Friday
+            color: "red",
+          });
       },
       deep: true,
     },
-    }
-
+  },
 };
 </script>

@@ -56,13 +56,13 @@
           </div>
         </div>
       </div>
-      <app-calendar :events="notes"></app-calendar>
-      <app-todolist :todos="todos"></app-todolist>
+      <app-calendar :events="notes" v-if="viewFlag[0]"></app-calendar>
+      <app-todolist :todos="todos" v-if="viewFlag[1]"></app-todolist>
       <div class="view-button">
         <div @click.prevent="viewCalender">
           <i class="fas fa-calendar-week" />
         </div>
-        <div @click.prevent="viewChecklist"><i class="fas fa-tasks" /></div>
+        <div @click.prevent="viewTodo"><i class="fas fa-tasks" /></div>
       </div>
       <div class="dim" v-if="sidebarOpen">
         <div class="dim-layer">
@@ -149,6 +149,8 @@ export default {
       selectedCategory: "전체",
       sidebarOpen: false,
       sideFlag: [false, false, false],
+      viewFlag: [true, true],
+      todos: [],
     };
   },
   computed: {},
@@ -353,6 +355,14 @@ export default {
         this.notes.unshift(temp);
       }
     },
+    viewCalender() {
+      this.viewFlag[0] = false;
+      console.log(this.viewFlag[0]);
+    },
+    viewTodo() {
+      this.viewFlag[1] = false;
+      console.log(this.viewFlag[1]);
+    },
   },
 
   created() {
@@ -406,6 +416,9 @@ export default {
           }, this.aniTime);
         }
       },
+    },
+    viewFlag: {
+      deep: true,
     },
   },
   components: {
