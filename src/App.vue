@@ -57,6 +57,7 @@
         </div>
       </div>
       <app-calendar :events="notes"></app-calendar>
+      <app-todolist :todos="todos"></app-todolist>
       <div class="view-button">
         <div @click.prevent="viewCalender">
           <i class="fas fa-calendar-week" />
@@ -130,6 +131,7 @@ import Calendar from "./components/Calendar.vue";
 import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
+import Todolist from "./components/Todolist.vue";
 
 export default {
   name: "App",
@@ -413,6 +415,7 @@ export default {
     appCategoryList: CategoryList,
     appSidebar: Sidebar,
     appCheckList: CheckList,
+    appTodolist: Todolist,
   },
 };
 </script>
