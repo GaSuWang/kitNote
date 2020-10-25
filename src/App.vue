@@ -57,7 +57,11 @@
         </div>
       </div>
       <app-calendar :events="notes" v-if="viewFlag[0]"></app-calendar>
-      <app-todolist :todos="todos" v-if="viewFlag[1]"></app-todolist>
+      <app-todolist 
+        :checklist="todos" 
+        v-if="viewFlag[1]"
+        @completeTodo="todosDelete">
+        </app-todolist>
       <div class="view-button">
         <div @click.prevent="viewCalender">
           <i class="fas fa-calendar-week" />
@@ -105,7 +109,11 @@
           </div>
           <div class="checklistMenu" v-if="sideFlag[2]">
             <h1>체크리스트</h1>
-            <app-check-list> </app-check-list>
+            <app-check-list 
+              @checklistAdd="todosAdd"
+              @checklistDelete="todosDelete"
+              :todolist="todos">
+            </app-check-list>
           </div>
         </div>
       </div>
@@ -362,6 +370,16 @@ export default {
     viewTodo() {
       Vue.set(this.viewFlag, 1, !this.viewFlag[1]);
     },
+
+    todosAdd({checklist, isComplete}){
+      this.todos.push({
+        title: checklist,
+        isComplete: isComplete
+      })
+    },
+    todosDelete(index){
+      this.todos.splice(index,1)
+    }
   },
 
   created() {
@@ -371,6 +389,8 @@ export default {
     }
     if (localStorage.getItem("notes"))
       this.notes = JSON.parse(localStorage.getItem("notes"));
+    if (localStorage.getItem("todos"))
+      this.todos = JSON.parse(localStorage.getItem("todos"));
   },
 
   watch: {
@@ -398,6 +418,15 @@ export default {
       deep: true,
     },
 
+      todos: {
+      handler() {
+        var newTodos = this.todos;
+        localStorage.setItem("todos", JSON.stringify(newTodos));
+      },
+      deep: true,
+    },
+
+   
     editorOpen: {
       handler() {
         if (this.eventFlag_noteEditor[0] || this.eventFlag_noteEditor[1])
