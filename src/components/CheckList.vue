@@ -6,12 +6,14 @@
         :key="`checklist-${index}`"
         class="list"
       >
-        <div >
-            <span v-if="list.isComplete==true"><i class="fas fa-check"></i></span>
-         <span @click.prevent="toggleIsComplete(index)"> {{ list.checklist }}</span>
-          <span @click="listDelete(index)"
-            ><i class="fas fa-times"></i
+        <div>
+          <span v-if="list.isComplete == true"
+            ><i class="fas fa-check"></i
           ></span>
+          <span @click.prevent="toggleIsComplete(index)">
+            {{ list.checklist }}</span
+          >
+          <span @click="listDelete(index)"><i class="fas fa-times"></i></span>
         </div>
       </div>
     </div>
@@ -28,7 +30,6 @@
 
 <script>
 export default {
-
   data: function () {
     return {
       checklists: [],
@@ -38,10 +39,10 @@ export default {
 
   methods: {
     listAdd() {
-      var newlist={
-          checklist : this.newCheck,
-          isComplete : false
-      }
+      var newlist = {
+        checklist: this.newCheck,
+        isComplete: false,
+      };
 
       this.checklists.push(newlist);
       this.newCheck = "";
@@ -50,22 +51,22 @@ export default {
     listDelete(index) {
       this.checklists.splice(index, 1);
     },
-    toggleIsComplete(index){
-        this.checklists[index].isComplete=!this.checklists[index].isComplete
-    }
+    toggleIsComplete(index) {
+      this.checklists[index].isComplete = !this.checklists[index].isComplete;
+    },
   },
-    mounted() {
+  mounted() {
     if (localStorage.getItem("checklist"))
       this.checklists = JSON.parse(localStorage.getItem("checklist"));
   },
-   watch: {
+  watch: {
     checklists: {
       handler() {
-        var newChecklist= this.checklists;
+        var newChecklist = this.checklists;
         localStorage.setItem("checklist", JSON.stringify(newChecklist));
       },
       deep: true,
     },
-   }
+  },
 };
 </script>

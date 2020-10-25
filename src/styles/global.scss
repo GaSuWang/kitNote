@@ -41,7 +41,7 @@ body {
     }
     & img {
         margin-left:25px;
-        height:50px;
+        height:80px;
     }
 }
 
@@ -261,6 +261,10 @@ body {
     align-items: center;
     justify-content: center;
     float: right;
+
+    & h1 {
+        color: rgb(255, 255, 255);
+    }
 }
 .buttonContainer{
     margin: 30px auto;
