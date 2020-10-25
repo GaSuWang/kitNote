@@ -57,6 +57,7 @@ export default {
       selected_category: "",
       categories: [],
       temp: new Date(),
+      checked: false,
     };
   },
   watch: {
@@ -78,8 +79,8 @@ export default {
       this.deadline = new Date(this.beforeEditNote.deadline);
       this.temp = new Date(this.deadline);
       this.selected_category = this.beforeEditNote.category;
-      this.isView=this.beforeEditNote.isView
-      this.isFix=this.beforeEditNote.isFix
+      this.isView = this.beforeEditNote.isView;
+      this.isFix = this.beforeEditNote.isFix;
     }
   },
   beforeDestroy() {
@@ -122,7 +123,7 @@ export default {
         deadline: this.deadline,
         category: this.selected_category,
         isView: this.isView,
-        isFix: this.isFix
+        isFix: this.isFix,
       });
     },
     initData() {
@@ -132,6 +133,7 @@ export default {
       this.regist_date = new Date().toLocaleDateString();
       this.deadline = "";
       this.category = "기타";
+      this.addChecklist = false;
     },
   },
 };
