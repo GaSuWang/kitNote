@@ -57,48 +57,55 @@
         </div>
       </div>
       <app-calendar :events="notes"></app-calendar>
-
+      <div class="view-button">
+        <div @click.prevent="viewCalender">
+          <i class="fas fa-calendar-week" />
+        </div>
+        <div @click.prevent="viewChecklist"><i class="fas fa-tasks" /></div>
+      </div>
       <div class="dim" v-if="sidebarOpen">
-        <div class="categoryPolicy" v-if="sideFlag[0]">
-          <h1>카테고리 설정</h1>
-          <app-category-list
-            @categoryAdd="categoryAdd"
-            @categoryDelete="categoryDelete"
-            :categorylist="categories"
-          ></app-category-list>
-        </div>
-
-        <div class="sortMenu" v-if="sideFlag[1]">
-          <h1>정렬 정책 설정</h1>
-          <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="decendingSort(1)">
-              등록일 빠른순
-            </div>
-            <div class="sortButton" @click.prevent="ascendingSort(1)">
-              등록일 느린순
-            </div>
-          </div>
-          <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="decendingSort(2)">
-              마감일 빠른순
-            </div>
-            <div class="sortButton" @click.prevent="ascendingSort(2)">
-              마감일 느린순
-            </div>
+        <div class="dim-layer">
+          <div class="categoryPolicy" v-if="sideFlag[0]">
+            <h1>카테고리 설정</h1>
+            <app-category-list
+              @categoryAdd="categoryAdd"
+              @categoryDelete="categoryDelete"
+              :categorylist="categories"
+            ></app-category-list>
           </div>
 
-          <div class="buttonContainer">
-            <div class="sortButton" @click.prevent="ascendingSort(3)">
-              제목 오름차순
+          <div class="sortMenu" v-if="sideFlag[1]">
+            <h1>정렬 정책 설정</h1>
+            <div class="buttonContainer">
+              <div class="sortButton" @click.prevent="decendingSort(1)">
+                등록일 빠른순
+              </div>
+              <div class="sortButton" @click.prevent="ascendingSort(1)">
+                등록일 느린순
+              </div>
             </div>
-            <div class="sortButton" @click.prevent="decendingSort(3)">
-              제목 내림차순
+            <div class="buttonContainer">
+              <div class="sortButton" @click.prevent="decendingSort(2)">
+                마감일 빠른순
+              </div>
+              <div class="sortButton" @click.prevent="ascendingSort(2)">
+                마감일 느린순
+              </div>
+            </div>
+
+            <div class="buttonContainer">
+              <div class="sortButton" @click.prevent="ascendingSort(3)">
+                제목 오름차순
+              </div>
+              <div class="sortButton" @click.prevent="decendingSort(3)">
+                제목 내림차순
+              </div>
             </div>
           </div>
-        </div>
-        <div class="checklistMenu" v-if="sideFlag[2]">
-          <h1>체크리스트</h1>
-          <app-check-list> </app-check-list>
+          <div class="checklistMenu" v-if="sideFlag[2]">
+            <h1>체크리스트</h1>
+            <app-check-list> </app-check-list>
+          </div>
         </div>
       </div>
       <app-note-editor
