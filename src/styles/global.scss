@@ -262,10 +262,20 @@ body {
     justify-content: center;
     float: right;
 }
+.buttonContainer{
+    margin: 30px auto;
+    display: flex;  
 
-.checklist {
-    display: inline-block;
-    position: fixed;
-    right: 20%;
-    bottom: 5%;
+
+}
+
+.sortButton{
+    margin: 15px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+    &:hover {
+        background-color: #4CAF50
+    }
 }
