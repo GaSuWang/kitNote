@@ -1,27 +1,69 @@
 <template>
-  <div id="checklist">
-    <ul>
-      <li
-        is="checklist"
-        v-for="(todo, index) in todos"
-        v-bind:key="todo.id"
-        v-bind:title="todo.title"
-        v-on:remove="todos.splice(index, 1)"
-      ></li>
-    </ul>
+  <div class="category-grid">
+    <div class="category-list">
+      <div
+        v-for="(list, index) in checklists"
+        :key="`checklist-${index}`"
+        class="list"
+      >
+        <div>
+          <span v-if="list.isComplete == true"
+            ><i class="fas fa-check"></i
+          ></span>
+          <span @click.prevent="toggleIsComplete(index)">
+            {{ list.checklist }}</span
+          >
+          <span @click="listDelete(index)"><i class="fas fa-times"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <input
+      class="list-input"
+      type="text"
+      v-model="newCheck"
+      placeholder="체크리스트를 입력하세요"
+    />
+    <button @click.prevent="listAdd">추가</button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["todos"],
   data: function () {
-    return {};
+    return {
+      checklists: [],
+      newCheck: "",
+    };
+  },
+
+  methods: {
+    listAdd() {
+      var newlist = {
+        checklist: this.newCheck,
+        isComplete: false,
+      };
+
+      this.checklists.push(newlist);
+      this.newCheck = "";
+    },
+
+    listDelete(index) {
+      this.checklists.splice(index, 1);
+    },
+    toggleIsComplete(index) {
+      this.checklists[index].isComplete = !this.checklists[index].isComplete;
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("checklist"))
+      this.checklists = JSON.parse(localStorage.getItem("checklist"));
   },
   watch: {
-    todos: {
+    checklists: {
       handler() {
-        // todo가 변경되었을 경우 핸들러 추가 바람
+        var newChecklist = this.checklists;
+        localStorage.setItem("checklist", JSON.stringify(newChecklist));
       },
       deep: true,
     },
