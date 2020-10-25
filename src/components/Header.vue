@@ -4,11 +4,11 @@
       <i class="fas fa-bars"></i>
     </span>
     <img src="../assets/logo.png" />
-    <p>Vue.JS Sticky Notes</p>
+    <p>KIT Sticky Notes</p>
     <button class="add-btn" @click.prevent="openEditor">
       <i class="fas fa-plus"></i>
     </button>
-  
+
     <select v-model="selectedCategory" @change="selectCategory">
       <option>전체</option>
       <option
@@ -41,10 +41,9 @@ export default {
     openSidebar: function () {
       this.$emit("openSidebar");
     },
-    selectCategory: function(){
-      this.$emit("selectCategory",this.selectedCategory)
-    }
-
+    selectCategory: function () {
+      this.$emit("selectCategory", this.selectedCategory);
+    },
   },
   watch: {
     categorylist: {
