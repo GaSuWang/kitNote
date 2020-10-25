@@ -60,6 +60,7 @@
 
       <div class="dim" v-if="sidebarOpen">
         <div class="categoryPolicy" v-if="sideFlag[0]">
+          <h1>카테고리 설정</h1>
           <app-category-list
             @categoryAdd="categoryAdd"
             @categoryDelete="categoryDelete"
@@ -68,6 +69,7 @@
         </div>
 
         <div class="sortMenu" v-if="sideFlag[1]">
+          <h1>정렬 정책 설정</h1>
           <div class="buttonContainer">
             <div class="sortButton" @click.prevent="decendingSort(1)">
               등록일 빠른순
@@ -94,8 +96,10 @@
             </div>
           </div>
         </div>
-        <app-check-list class="checklistMenu" v-if="sideFlag[2]">
-        </app-check-list>
+        <div class="checklistMenu" v-if="sideFlag[2]">
+          <h1>체크리스트</h1>
+          <app-check-list> </app-check-list>
+        </div>
       </div>
       <app-note-editor
         v-if="editorOpen"
