@@ -1,15 +1,16 @@
 <template>
   <div class="todo-container">
-    <h5>Todo List</h5>
+    <h5>Check List</h5>
     <ul>
       <li
         class="todo-item"
         v-for="(todo, index) in todos"
         :key="`todo-${index}`"
       >
-        <p class="text">{{ todo.title }}</p>
-        <button @click="complete(index)" class="complete">Complete</button>
-  
+        <div class="text">{{ todo.title }}</div>
+        <div @click="complete(index)">
+          <i class="fas fa-check-circle" />
+        </div>
       </li>
     </ul>
   </div>
@@ -19,31 +20,30 @@
 export default {
   props: ["checklist"],
   data() {
-    return {todos:[]};
+    return { todos: [] };
   },
   methods: {
     complete(index) {
-      this.$emit("completeTodo",index)
-      this.todos.splice(index,1)
+      this.$emit("completeTodo", index);
+      this.todos.splice(index, 1);
     },
   },
-   mounted() {
-        this.todos=[]
-         for(var i =0; i<this.checklist.length;i++){
-        this.todos.push(this.checklist[i])
-      } 
+  mounted() {
+    this.todos = [];
+    for (var i = 0; i < this.checklist.length; i++) {
+      this.todos.push(this.checklist[i]);
+    }
   },
   watch: {
     checklist: {
       handler() {
-                this.todos=[]
-           for(var i =0; i<this.checklist.length;i++){
-              this.todos.push(this.checklist[i])
-           }
+        this.todos = [];
+        for (var i = 0; i < this.checklist.length; i++) {
+          this.todos.push(this.checklist[i]);
+        }
       },
       deep: true,
     },
-  }
-
+  },
 };
 </script>
