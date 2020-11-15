@@ -142,6 +142,9 @@ import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
+
+import ObjectDetection from "./vision_modules/ObjectDetection.vue";
+
 import Vue from "vue";
 
 export default {
@@ -332,6 +335,7 @@ export default {
     },
     /* Sort Policy End */
 
+    /* Category */
     categoryAdd(new_category) {
       this.categories.push(new_category);
     },
@@ -358,6 +362,8 @@ export default {
         }
       }
     },
+
+    /* Category End */
     fixNote(index) {
       this.notes[index].isFix = !this.notes[index].isFix;
       if (this.notes[index].isFix) {
@@ -366,6 +372,8 @@ export default {
         this.notes.unshift(temp);
       }
     },
+
+    /* Calender & Todo */
     viewCalender() {
       Vue.set(this.viewFlag, 0, !this.viewFlag[0]);
     },
@@ -382,6 +390,7 @@ export default {
     todosDelete(index) {
       this.todos.splice(index, 1);
     },
+    /* Calendar & Todo End */
   },
 
   created() {

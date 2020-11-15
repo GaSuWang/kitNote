@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import ObjectDetection from "../vision_modules/ObjectDetection.vue";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -58,6 +59,7 @@ export default {
       categories: [],
       temp: new Date(),
       checked: false,
+      img: null,
     };
   },
   watch: {
@@ -134,6 +136,10 @@ export default {
       this.deadline = "";
       this.category = "기타";
       this.addChecklist = false;
+    },
+
+    loadTagFromNN() {
+      let tags = ObjectDetection.predict(this.img);
     },
   },
 };
