@@ -168,7 +168,16 @@ export default {
   computed: {},
   methods: {
     /* Note Manage */
-    newNote(title, text, theme, regist_date, deadline, category, tags) {
+    newNote(
+      title,
+      text,
+      theme,
+      regist_date,
+      deadline,
+      category,
+      tags,
+      positioning
+    ) {
       if (this.animationFlag) {
         return;
       }
@@ -185,6 +194,7 @@ export default {
         isView: true,
         isFix: false,
         tags: tags,
+        positioning: positioning,
       });
 
       var idx = this.notes.length - 1;
@@ -263,6 +273,7 @@ export default {
       deadline,
       category,
       tags,
+      positioning,
     }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
@@ -276,6 +287,7 @@ export default {
         isView: true,
         isFix: false,
         tags: tags,
+        positioning: positioning,
       });
 
       this.editorOpen = false;

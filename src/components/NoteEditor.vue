@@ -62,6 +62,7 @@ export default {
       temp: new Date(),
       checked: false,
       img: null,
+      positioning: null,
     };
   },
   watch: {
@@ -86,6 +87,7 @@ export default {
       this.isView = this.beforeEditNote.isView;
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
+      this.positioning = this.beforeEditNote.positioning;
     }
   },
 
@@ -113,7 +115,8 @@ export default {
             this.regist_date,
             this.deadline.toLocaleDateString(),
             this.selected_category,
-            this.tags
+            this.tags,
+            this.positioning
           );
         }
         this.initData();
@@ -133,6 +136,7 @@ export default {
         isView: this.isView,
         isFix: this.isFix,
         tags: this.tags,
+        positioning: this.positioning,
       });
     },
     initData() {
