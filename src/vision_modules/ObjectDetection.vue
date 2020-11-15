@@ -2,26 +2,22 @@ import * as cocoSSD from '@tensorflow-models/coco-ssd'
 import * as tf from '@tensorflow/tfjs'
 
 <script>
-export default {
-  methods: {
-    async predict(img) {
-      let predicted = [];
-      let rst = await model.detect(img);
+export default class ObjectDetection {
+  constructor() {
+    this.model = await cocoSSD.load()
+  }
 
-      for (var i = 0; i < rst.length; i++) {
-        predicted.push(rst[i].class);
+  async predict(img) {
+    let predicted = [];
+    let rst = await model.detect(img);
 
-        if (i == 9) break;
-      }
+    for (var i = 0; i < rst.length; i++) {
+      predicted.push(rst[i].class);
 
-      return predicted;
-    },
-  },
+      if (i == 6) break;
+    }
 
-  async mounted() {
-    model = await cocoSSD.load();
-
-    console.log("model loaded");
-  },
-};
+    return predicted;
+  }
+}
 </script>
