@@ -72,7 +72,7 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     this.categories = this.categorylist.slice();
     this.selected_category = this.categories[0];
 
@@ -88,6 +88,7 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
+      this.ObjDetect = await new ObjectDetection();
     }
   },
 
@@ -152,7 +153,7 @@ export default {
     },
 
     loadTagFromNN() {
-      this.temp_tags = ObjectDetection.predict(this.img);
+      this.temp_tags = this.ObjDetect.predict(this.img);
     },
 
     acceptTagFromNN() {
