@@ -45,10 +45,10 @@ export default {
     placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
+        // 검색 목록과 마커를 표출
         displayPlaces(data);
 
-        // 페이지 번호를 표출합니다
+        // 페이지 번호를 표출
         displayPagination(pagination);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
