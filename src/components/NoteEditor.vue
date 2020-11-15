@@ -57,6 +57,8 @@ export default {
       deadline: "",
       selected_category: "",
       categories: [],
+      tags: [],
+      temp_tags: [],
       temp: new Date(),
       checked: false,
       img: null,
@@ -83,11 +85,14 @@ export default {
       this.selected_category = this.beforeEditNote.category;
       this.isView = this.beforeEditNote.isView;
       this.isFix = this.beforeEditNote.isFix;
+      this.tags = this.beforeEditNote.tags;
     }
   },
+
   beforeDestroy() {
     this.initData();
   },
+
   methods: {
     createNew() {
       if (!this.title) {
@@ -107,7 +112,8 @@ export default {
             this.theme,
             this.regist_date,
             this.deadline.toLocaleDateString(),
-            this.selected_category
+            this.selected_category,
+            this.tags
           );
         }
         this.initData();
@@ -126,6 +132,7 @@ export default {
         category: this.selected_category,
         isView: this.isView,
         isFix: this.isFix,
+        tags: this.tags,
       });
     },
     initData() {
@@ -136,10 +143,24 @@ export default {
       this.deadline = "";
       this.category = "기타";
       this.addChecklist = false;
+      this.tags = [];
+      this.temp_tags = [];
     },
 
     loadTagFromNN() {
-      let tags = ObjectDetection.predict(this.img);
+      this.temp_tags = ObjectDetection.predict(this.img);
+    },
+
+    acceptTagFromNN() {
+      for (var i = 0; i < this.temp_tags.length; i++) {
+        this.tags.push(this.temp_tags[i]);
+      }
+
+      this.temp_tags = [];
+    },
+
+    denyTagFromNN() {
+      this.temp_tags = [];
     },
   },
 };

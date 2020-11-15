@@ -143,8 +143,6 @@ import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
 
-import ObjectDetection from "./vision_modules/ObjectDetection.vue";
-
 import Vue from "vue";
 
 export default {
@@ -170,7 +168,7 @@ export default {
   computed: {},
   methods: {
     /* Note Manage */
-    newNote(title, text, theme, regist_date, deadline, category) {
+    newNote(title, text, theme, regist_date, deadline, category, tags) {
       if (this.animationFlag) {
         return;
       }
@@ -186,6 +184,7 @@ export default {
         eventFlag2: false, // delete
         isView: true,
         isFix: false,
+        tags: tags,
       });
 
       var idx = this.notes.length - 1;
@@ -256,7 +255,15 @@ export default {
     },
     /* UI End */
 
-    modifiedNote({ title, text, theme, regist_date, deadline, category }) {
+    modifiedNote({
+      title,
+      text,
+      theme,
+      regist_date,
+      deadline,
+      category,
+      tags,
+    }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
         text: text,
@@ -268,6 +275,7 @@ export default {
         eventFlag2: false,
         isView: true,
         isFix: false,
+        tags: tags,
       });
 
       this.editorOpen = false;
