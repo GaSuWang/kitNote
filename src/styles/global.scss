@@ -482,4 +482,8 @@ body {
       background-color:rgb(92, 91, 91);  
       color: black;
     }
+    &:active{
+        background-color: rgb(20, 20, 20);
+        color: gray
+    }
 }
