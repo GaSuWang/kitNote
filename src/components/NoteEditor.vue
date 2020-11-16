@@ -19,6 +19,10 @@
           {{ category }}
         </option>
       </select>
+      <div class="position">{{positioning}}</div>
+      <app-kakao-map
+        @getPosition="registPosition"
+        ></app-kakao-map>
       <textarea
         rows="10"
         v-model="text"
@@ -45,6 +49,7 @@
 </template>
 
 <script>
+import KakaoMap from "./kakao-map.vue"
 //import ObjectDetection from "../vision_modules/ObjectDetection.vue";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
@@ -152,6 +157,10 @@ export default {
       this.temp_tags = [];
     },
 
+    registPosition(position){
+        this.positioning=position
+    },
+
     loadTagFromNN() {
       this.temp_tags = this.ObjDetect.predict(this.img);
     },
@@ -168,5 +177,9 @@ export default {
       this.temp_tags = [];
     },
   },
+
+  components:{
+      AppKakaoMap:KakaoMap
+  }
 };
 </script>

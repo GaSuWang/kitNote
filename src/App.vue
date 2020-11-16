@@ -3,7 +3,7 @@
     <div class="login" v-if="!isLogin">
       <app-kakao-login @SuccessLogin="successLogin"></app-kakao-login>
     </div>
-
+   
     <app-header
       @clickedProfile="logOutPopup"
       @openEditor="clickAddBtn"
@@ -152,6 +152,7 @@ import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
 import KakaoLogin from "./components/kakao-login.vue";
+
 
 import Vue from "vue";
 
