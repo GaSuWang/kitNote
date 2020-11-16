@@ -1,9 +1,17 @@
 <template>
   <div id="app">
+    <div class="login" v-if="!isLogin">
+        <app-kakao-login
+          @SuccessLogin="successLogin"
+        ></app-kakao-login>
+    </div>
+    
+ 
     <app-header
       @openEditor="clickAddBtn"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
+      :Login="isLogin"
       @openSidebar="clickSidebar"
     ></app-header>
     <app-sidebar
@@ -142,6 +150,8 @@ import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
+import KakaoLogin from "./components/kakao-login.vue";
+
 
 import Vue from "vue";
 
@@ -163,6 +173,8 @@ export default {
       sideFlag: [false, false, false],
       viewFlag: [true, true],
       todos: [],
+      isLogin : false,
+      userProfile:[],
     };
   },
   computed: {},
@@ -411,6 +423,14 @@ export default {
       this.todos.splice(index, 1);
     },
     /* Calendar & Todo End */
+
+    successLogin(userProfile){
+      this.isLogin = true;
+      console.log(this.isLogin)
+      this.userProfile=userProfile
+      //console.log(userProfile)
+    }
+
   },
 
   created() {
@@ -484,6 +504,8 @@ export default {
     appSidebar: Sidebar,
     appCheckList: CheckList,
     appTodolist: Todolist,
+    appKakaoLogin: KakaoLogin,
+
   },
 };
 </script>

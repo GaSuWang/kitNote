@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ObjectDetection from "../vision_modules/ObjectDetection.vue";
+//import ObjectDetection from "../vision_modules/ObjectDetection.vue";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -88,7 +88,7 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
-      this.ObjDetect = await new ObjectDetection();
+      //this.ObjDetect = await new ObjectDetection();
     }
   },
 

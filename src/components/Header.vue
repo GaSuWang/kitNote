@@ -18,21 +18,27 @@
         {{ category }}
       </option>
     </select>
+    <div class="profile" v-if="isLogin">
+        
+    </div>
+    
   </div>
 </template>
 
 <script>
 export default {
-  props: ["categorylist"],
+  props: ["categorylist","Login"],
   data: function () {
     return {
       sort_criterion: "등록일순",
       selectedCategory: "전체",
       categories: [],
+      isLogin:true
     };
   },
   mounted() {
     this.categories = this.categorylist.slice();
+    this.isLogin=this.Login
   },
   methods: {
     openEditor: function () {
@@ -52,6 +58,11 @@ export default {
         this.categories = this.categorylist.slice();
       },
     },
+    Login:{
+      handler(){
+        this.isLogin=this.Login
+      }
+    }
   },
 };
 </script>
