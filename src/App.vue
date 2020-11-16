@@ -1,13 +1,11 @@
 <template>
   <div id="app">
     <div class="login" v-if="!isLogin">
-        <app-kakao-login
-          @SuccessLogin="successLogin"
-        ></app-kakao-login>
+      <app-kakao-login @SuccessLogin="successLogin"></app-kakao-login>
     </div>
-    
- 
+
     <app-header
+      @clickedProfile="logOutPopup"
       @openEditor="clickAddBtn"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
@@ -71,6 +69,9 @@
         @completeTodo="todosDelete"
       >
       </app-todolist>
+      <div v-if="logOutPop" class="logoutPop" @click.prevent="logOut">
+        Log Out
+      </div>
       <div class="view-button">
         <div @click.prevent="viewCalender">
           <i class="fas fa-calendar-week" />
@@ -152,7 +153,6 @@ import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
 import KakaoLogin from "./components/kakao-login.vue";
 
-
 import Vue from "vue";
 
 export default {
@@ -173,8 +173,9 @@ export default {
       sideFlag: [false, false, false],
       viewFlag: [true, true],
       todos: [],
-      isLogin : false,
-      userProfile:[],
+      isLogin: false,
+      userProfile: [],
+      logOutPop: false,
     };
   },
   computed: {},
@@ -424,13 +425,22 @@ export default {
     },
     /* Calendar & Todo End */
 
-    successLogin(userProfile){
+    successLogin(userName, userImg) {
       this.isLogin = true;
-      console.log(this.isLogin)
-      this.userProfile=userProfile
-      //console.log(userProfile)
-    }
 
+      this.userProfile.push(userName);
+      this.userProfile.push(userImg);
+      console.log(this.userProfile);
+    },
+
+    logOutPopup() {
+      this.logOutPop = !this.logOutPop;
+    },
+    logOut() {
+      this.logOutPop = !this.logOutPop;
+      this.isLogin=!this.isLogin
+      alert("쿠키삭제,  페이지 새로고침");
+    },
   },
 
   created() {
@@ -505,7 +515,6 @@ export default {
     appCheckList: CheckList,
     appTodolist: Todolist,
     appKakaoLogin: KakaoLogin,
-
   },
 };
 </script>

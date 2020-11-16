@@ -17,7 +17,8 @@ import KakaoLogin from "vue-kakao-login";
 export default {
     data: function () {
     return {
-      userProfile:[]
+      userName:"",
+      userImg:"",
     };
   },
   components: {
@@ -25,12 +26,13 @@ export default {
   },
 
   methods: {
-    onSuccess() {
+   onSuccess() {
       window.Kakao.API.request({
         url:"/v2/user/me",
-        success: function (res) {
-          this.userProfile=res.kakao_account.profile
-          console.log(this.userProfile)
+        success:  async function (res) {
+          this.userName=JSON.stringify(res.kakao_account.profile.nickname) 
+          this.userImg=JSON.stringify(res.kakao_account.profile.thumbnail_image_url)
+          console.log(this.userImg)
         },
         fail: function (error) {
           alert(
@@ -39,7 +41,9 @@ export default {
           );
         },
       });
-       this.$emit("SuccessLogin",this.userProfile);
+
+      this.$emit("SuccessLogin",this.userName,this.userImg);
+      
     },
     onFailure(data) {
       this.$emit("FailureLogin");

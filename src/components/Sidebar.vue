@@ -11,9 +11,9 @@
     </div>
 
     <div class="menu" @click.prevent="openCheckList">
-      
       <a> CheckList</a>
     </div>
+
   </div>
 </template>
 
