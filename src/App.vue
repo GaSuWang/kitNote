@@ -58,6 +58,7 @@
               <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
               <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
               <span>{{ note.category }}</span>
+              <span>{{note.positioning}} 에서</span>
             </div>
           </div>
         </div>

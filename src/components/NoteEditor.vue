@@ -14,13 +14,22 @@
         v-model="title"
         placeholder="Title"
       />
-      <select v-model="selected_category">
+      
+      <div class="position"> 
+        <div>
+        <span id="span_position">{{positioning}}</span> 
+        <div id="mapButton" @click.prevent="toggleMap">{{mapButton}}</div>
+        </div>
+        
+         <span id="span_category">카테고리</span>
+        <select v-model="selected_category">
         <option v-for="(category, index) in categories" :key="`note-${index}`">
           {{ category }}
         </option>
       </select>
-      <div class="position">{{positioning}}</div>
+        </div>
       <app-kakao-map
+        v-if="is_mapOpen"
         @getPosition="registPosition"
         ></app-kakao-map>
       <textarea
@@ -68,6 +77,8 @@ export default {
       checked: false,
       img: null,
       positioning: null,
+      is_mapOpen:false,
+      mapButton:"지도열기",
     };
   },
   watch: {
@@ -159,6 +170,15 @@ export default {
 
     registPosition(position){
         this.positioning=position
+    },
+    toggleMap(){
+      this.is_mapOpen=!this.is_mapOpen
+      if(this.is_mapOpen){
+        this.mapButton="지도접기"
+      }
+      else{
+        this.mapButton="지도열기"
+      }
     },
 
     loadTagFromNN() {

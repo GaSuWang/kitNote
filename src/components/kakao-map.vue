@@ -1,14 +1,11 @@
 <template>
-  <div class="map_wrap">
+<div class="map_wrap">
     <div id="kakao-map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-
     <div id="menu_wrap" class="bg_white">
         <div class="option">
             <div>
-               
-                    <input type="text" placeholder="검색어를 입력하세요" id="keyword" size="15"> 
-                    <button @click.prevent="searchPlaces">검색하기</button> 
-           
+                <input type="text" placeholder="검색어를 입력하세요" id="keyword" size="15"> 
+                <button @click.prevent="searchPlaces">검색하기</button> 
             </div>
         </div>
         <hr>
@@ -16,15 +13,11 @@
         <div id="pagination"></div>
     </div>
 </div>
-
-  
- 
 </template>
 
 <script>
 var ps;
 var infowindow;
-
 var markers=[];
 var map;
 export default {
@@ -43,7 +36,7 @@ export default {
       var mapTypeControl = new window.kakao.maps.MapTypeControl();
       map.addControl(
         mapTypeControl,
-        window.kakao.maps.ControlPosition.BOTTOMRIGHT
+        window.kakao.maps.ControlPosition.TOPRIGHT
       );
 
       // 검색 기능 생성

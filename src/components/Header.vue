@@ -9,7 +9,7 @@
     <button class="add-btn" @click.prevent="openEditor">
       <i class="fas fa-plus"></i>
     </button>
-
+   
     <select v-model="selectedCategory" @change="selectCategory">
       <option>전체</option>
       <option
