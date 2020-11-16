@@ -1,9 +1,15 @@
 <template>
   <div id="app">
+    <div class="login" v-if="!isLogin">
+      <app-kakao-login @SuccessLogin="successLogin"></app-kakao-login>
+    </div>
+
     <app-header
+      @clickedProfile="logOutPopup"
       @openEditor="clickAddBtn"
       @selectCategory="categoryFiltering"
       :categorylist="categories"
+      :Login="isLogin"
       @openSidebar="clickSidebar"
     ></app-header>
     <app-sidebar
@@ -63,6 +69,9 @@
         @completeTodo="todosDelete"
       >
       </app-todolist>
+      <div v-if="logOutPop" class="logoutPop" @click.prevent="logOut">
+        Log Out
+      </div>
       <div class="view-button">
         <div @click.prevent="viewCalender">
           <i class="fas fa-calendar-week" />
@@ -142,6 +151,7 @@ import CategoryList from "./components/CategoryList.vue";
 import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
+import KakaoLogin from "./components/kakao-login.vue";
 
 import Vue from "vue";
 
@@ -163,6 +173,9 @@ export default {
       sideFlag: [false, false, false],
       viewFlag: [true, true],
       todos: [],
+      isLogin: false,
+      userProfile: [],
+      logOutPop: false,
     };
   },
   computed: {},
@@ -411,6 +424,23 @@ export default {
       this.todos.splice(index, 1);
     },
     /* Calendar & Todo End */
+
+    successLogin(userName, userImg) {
+      this.isLogin = true;
+
+      this.userProfile.push(userName);
+      this.userProfile.push(userImg);
+      console.log(this.userProfile);
+    },
+
+    logOutPopup() {
+      this.logOutPop = !this.logOutPop;
+    },
+    logOut() {
+      this.logOutPop = !this.logOutPop;
+      this.isLogin=!this.isLogin
+      alert("쿠키삭제,  페이지 새로고침");
+    },
   },
 
   created() {
@@ -484,6 +514,7 @@ export default {
     appSidebar: Sidebar,
     appCheckList: CheckList,
     appTodolist: Todolist,
+    appKakaoLogin: KakaoLogin,
   },
 };
 </script>
