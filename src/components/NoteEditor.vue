@@ -14,11 +14,28 @@
         v-model="title"
         placeholder="Title"
       />
-      <select v-model="selected_category">
-        <option v-for="(category, index) in categories" :key="`note-${index}`">
-          {{ category }}
-        </option>
-      </select>
+
+      <div class="position">
+        <div>
+          <span>장소</span>
+          <span id="span_position">{{ positioning }}</span>
+          <div id="mapButton" @click.prevent="toggleMap">{{ mapButton }}</div>
+        </div>
+
+        <span id="span_category">카테고리</span>
+        <select v-model="selected_category">
+          <option
+            v-for="(category, index) in categories"
+            :key="`note-${index}`"
+          >
+            {{ category }}
+          </option>
+        </select>
+      </div>
+      <app-kakao-map
+        v-if="is_mapOpen"
+        @getPosition="registPosition"
+      ></app-kakao-map>
       <textarea
         rows="10"
         v-model="text"
@@ -45,6 +62,7 @@
 </template>
 
 <script>
+import KakaoMap from "./kakao-map.vue";
 //import ObjectDetection from "../vision_modules/ObjectDetection.vue";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
@@ -63,6 +81,8 @@ export default {
       checked: false,
       img: null,
       positioning: null,
+      is_mapOpen: false,
+      mapButton: "지도열기",
     };
   },
   watch: {
@@ -152,6 +172,18 @@ export default {
       this.temp_tags = [];
     },
 
+    registPosition(position) {
+      this.positioning = position;
+    },
+    toggleMap() {
+      this.is_mapOpen = !this.is_mapOpen;
+      if (this.is_mapOpen) {
+        this.mapButton = "지도접기";
+      } else {
+        this.mapButton = "지도열기";
+      }
+    },
+
     loadTagFromNN() {
       this.temp_tags = this.ObjDetect.predict(this.img);
     },
@@ -167,6 +199,10 @@ export default {
     denyTagFromNN() {
       this.temp_tags = [];
     },
+  },
+
+  components: {
+    AppKakaoMap: KakaoMap,
   },
 };
 </script>

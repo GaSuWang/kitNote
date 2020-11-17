@@ -3,7 +3,7 @@
     <div class="login" v-if="!isLogin">
       <app-kakao-login @SuccessLogin="successLogin"></app-kakao-login>
     </div>
-
+   
     <app-header
       @clickedProfile="logOutPopup"
       @openEditor="clickAddBtn"
@@ -58,6 +58,7 @@
               <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
               <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
               <span>{{ note.category }}</span>
+              <span>{{note.positioning}} 에서</span>
             </div>
           </div>
         </div>
@@ -152,6 +153,7 @@ import Sidebar from "./components/Sidebar.vue";
 import CheckList from "./components/CheckList.vue";
 import Todolist from "./components/Todolist.vue";
 import KakaoLogin from "./components/kakao-login.vue";
+
 
 import Vue from "vue";
 
