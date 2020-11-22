@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <div class="login" v-if="!isLogin">
-      <app-kakao-login
-        @SuccessLogin="successLogin"
-        :userProfile="userProfile"
-      ></app-kakao-login>
+      <app-kakao-login @SuccessLogin="successLogin"></app-kakao-login>
     </div>
 
     <app-header
