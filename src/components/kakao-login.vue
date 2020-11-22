@@ -1,7 +1,7 @@
 <template>
   <div id="kakao-app">
     <KakaoLogin
-      api-key="e771531e4a0e8cdfe128bb2363280a74"
+      api-key="cd0852921402270fba77d26ba5bf56a1"
       image="kakao_login_btn_large"
       :on-success="onSuccess"
       :on-failure="onFailure"
@@ -15,25 +15,19 @@ import KakaoLogin from "vue-kakao-login";
 //api-key="cd0852921402270fba77d26ba5bf56a1"
 
 export default {
-    data: function () {
-    return {
-      userName:"",
-      userImg:"",
-    };
+  data: function () {
+    return { userName: null, userImg: null };
   },
+
   components: {
     KakaoLogin,
   },
 
   methods: {
-   onSuccess() {
+    onSuccess() {
       window.Kakao.API.request({
-        url:"/v2/user/me",
-        success:  async function (res) {
-          this.userName=JSON.stringify(res.kakao_account.profile.nickname) 
-          this.userImg=JSON.stringify(res.kakao_account.profile.thumbnail_image_url)
-          console.log(this.userImg)
-        },
+        url: "/v2/user/me",
+        success: this.successCallback,
         fail: function (error) {
           alert(
             "login success, but failed to request user information: " +
@@ -41,18 +35,17 @@ export default {
           );
         },
       });
-
-      this.$emit("SuccessLogin",this.userName,this.userImg);
-      
     },
     onFailure(data) {
       this.$emit("FailureLogin");
       console.log(data);
       console.log("failure");
     },
+    successCallback(res) {
+      this.userName = res.kakao_account.profile.nickname;
+      this.userImg = res.kakao_account.profile.thumbnail_image_url;
+      this.$emit("SuccessLogin", this.userName, this.userImg);
+    },
   },
 };
 </script>
- 
-<style>
-</style>
