@@ -6,7 +6,7 @@ import vueMoment from 'vue-moment'
 Vue.config.productionTip = false
 Vue.use(VCalendar);
 Vue.use(vueMoment);
-window.Kakao.init("e771531e4a0e8cdfe128bb2363280a74")
+window.Kakao.init("cd0852921402270fba77d26ba5bf56a1")
 new Vue({
   render: h => h(App),
 }).$mount('#app')
