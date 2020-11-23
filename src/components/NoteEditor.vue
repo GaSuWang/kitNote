@@ -203,6 +203,14 @@ export default {
     addTag(tag) {
       this.tags.push(tag);
     },
+
+    deleteTag(tag) {
+      const idx = this.tags.findIndex(function (item) {
+        return item === tag;
+      });
+
+      this.tags.splice(idx, 1);
+    },
   },
 
   components: {
