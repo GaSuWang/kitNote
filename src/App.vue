@@ -20,6 +20,7 @@
       @openCheckList="openCheckList"
     ></app-sidebar>
     <div class="noteContainer">
+
       <div
         v-for="(note, index) in notes"
         :key="`note-${index}`"
@@ -34,8 +35,31 @@
             'delete-ani': note.eventFlag2,
           }"
         >
+       
           <div>
-            <span class="modify" @click.prevent="toggleNote(index)"
+             
+            <div class ="noteHeader">
+              <div class="noteHeader2">
+                <img class="noteUserImg">
+                <div class="noteInfo">
+                  <span>name</span>
+                  <span>{{ note.regist_date | moment("YYYY-MM-DD") }} {{note.positioning}}에서</span>
+                  <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
+                </div>
+              </div>
+                <span>{{ note.category }}</span>
+            </div>
+            <span class="note-title">{{ note.title }}</span>
+            <p class="note-text">{{ note.text }}</p>
+            <div class="noteTag">
+                <span>#태그</span>
+            </div>
+            
+
+
+
+          <div class="noteButton">
+              <span class="modify" @click.prevent="toggleNote(index)"
               ><i class="far fa-edit"></i
             ></span>
             <span class="delete" @click.prevent="deleteNote(index)"
@@ -53,14 +77,10 @@
               v-if="note.isFix"
               ><i class="fas fa-thumbtack"></i
             ></span>
-            <span>{{ note.title }}</span>
-            <p class="note-text">{{ note.text }}</p>
-            <div class="note-date">
-              <span>{{ note.regist_date | moment("YYYY-MM-DD") }} 등록</span>
-              <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
-              <span>{{ note.category }}</span>
-              <span>{{ note.positioning }} 에서</span>
-            </div>
+
+          </div>
+          
+           
           </div>
         </div>
       </div>
