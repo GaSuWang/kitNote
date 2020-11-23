@@ -199,6 +199,10 @@ export default {
     denyTagFromNN() {
       this.temp_tags = [];
     },
+
+    addTag(tag) {
+      this.tags.push(tag);
+    },
   },
 
   components: {
