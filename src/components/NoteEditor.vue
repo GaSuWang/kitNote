@@ -41,6 +41,12 @@
         v-model="text"
         placeholder="Take a note..."
       ></textarea>
+      <span>태그</span>
+      <input placeholder="#tag1 #tag2 #tag3" v-model="tagString" />
+      <button @click.prevent="tagSplit">ddddd</button>
+      <div class="tags" :v-for="(tags, index) in tags">
+        <div class="tag"><span>{{ tags.tag }}</span></div>
+      </div>
       <div class="note-editor-date">
         <span>등록일 </span>
         <div class="note-editor-registdate">{{ regist_date }}</div>
@@ -83,6 +89,7 @@ export default {
       positioning: null,
       is_mapOpen: false,
       mapButton: "지도열기",
+      tagString: "",
     };
   },
   watch: {
@@ -91,6 +98,7 @@ export default {
         this.initData();
       }
     },
+   
   },
   async mounted() {
     this.categories = this.categorylist.slice();
@@ -211,10 +219,22 @@ export default {
 
       this.tags.splice(idx, 1);
     },
+    tagSplit() {
+      this.temp_tags = this.tagString.split("#");
+      this.temp_tags.splice(0, 1);
+      this.tags.push(...this.temp_tags);
+      this.temp_tags = [];
+      this.tagString = "";
+      for (var i = 0; i < this.tags.length; i++) {
+        this.tags[i] = { tag: this.tags[i].trim() };
+      }
+      console.log(this.tags);
+    },
   },
-
+ 
   components: {
     AppKakaoMap: KakaoMap,
   },
+
 };
 </script>
