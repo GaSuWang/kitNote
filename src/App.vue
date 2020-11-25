@@ -55,6 +55,7 @@
             <p class="note-text">{{ note.text }}</p>
             <div class="noteTag">
                <i class="fas fa-tags"></i>
+               <span v-for="(tag,index) in note.tags" :key="`tag-${index}`">{{tag}}</span>
             </div>
             
 
