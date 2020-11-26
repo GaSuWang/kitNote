@@ -41,6 +41,19 @@
         v-model="text"
         placeholder="Take a note..."
       ></textarea>
+      <span>태그</span>
+      <div class="input_tag"> 
+        <input placeholder="#tag1 #tag2 #tag3..." v-model="tagString" />
+      <button @click.prevent="tagSplit">태그추가</button></div>
+     
+      <div class="tags" >
+        <div class="tag" v-for="(tag, index) in tags"  :key="`tag-${index}`">
+          {{ tag }}
+          <span class="delete" @click.prevent="deleteTag(index)">
+          <i class="fas fa-times"></i>
+          </span>
+        </div>
+      </div>
       <div class="note-editor-date">
         <span>등록일 </span>
         <div class="note-editor-registdate">{{ regist_date }}</div>
@@ -83,6 +96,7 @@ export default {
       positioning: null,
       is_mapOpen: false,
       mapButton: "지도열기",
+      tagString: "",
     };
   },
   watch: {
@@ -91,6 +105,7 @@ export default {
         this.initData();
       }
     },
+   
   },
   async mounted() {
     this.categories = this.categorylist.slice();
@@ -200,21 +215,27 @@ export default {
       this.temp_tags = [];
     },
 
-    addTag(tag) {
-      this.tags.push(tag);
+
+
+    deleteTag(index) {
+      this.tags.splice(index, 1);
     },
-
-    deleteTag(tag) {
-      const idx = this.tags.findIndex(function (item) {
-        return item === tag;
-      });
-
-      this.tags.splice(idx, 1);
+    tagSplit() {
+      this.temp_tags = this.tagString.split("#");
+      this.temp_tags.splice(0, 1);
+      this.tags.push(...this.temp_tags);
+      this.temp_tags = [];
+      this.tagString = "";
+      for (var i = 0; i < this.tags.length; i++) {
+        this.tags[i] = this.tags[i].trim();
+      }
+      console.log(this.tags);
     },
   },
-
+ 
   components: {
     AppKakaoMap: KakaoMap,
   },
+
 };
 </script>

@@ -180,6 +180,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+ 
 }
 
 .note-editor-registdate {
@@ -450,7 +451,7 @@ body {
     #span_position{
         margin-left: 25px;
         margin-right: 20px;
-        width:80%;
+        width:75%;
         border: solid;
         border-width: 1px;
         border-color: gray;
@@ -514,6 +515,9 @@ body {
 }
 .noteTag{
     font-size: 16px;
+    span{
+        margin-left: 10px;
+    }
 }
 .note-text{
     font-size: 17px;
@@ -523,4 +527,43 @@ body {
     font-size: 17px;
     margin-top: 10px;
     display: block;
+}
+.tags{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.tag{
+    margin-top: 5px;
+    margin-right:10px;
+    padding: 5px;
+    border:solid;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: gray;
+    background-color: rgb(231, 242, 247);
+    transition: 0.5s ;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    &:hover{
+
+        transform: scale(1.2,1.2);    
+    }
+    span{
+        margin-left: 5px;
+        cursor: pointer;
+    }
+}
+.input_tag{
+    width:100%;
+
+    input{
+        height:100%;
+        display: inline-block;
+        width:85%;
+    }
+    button{
+       margin-left: 30px;
+    }
 }
