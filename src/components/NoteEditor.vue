@@ -45,9 +45,14 @@
         ></textarea>
         <div class="image_upload">
           <label for="img_file">이미지 넣기</label>
-          <input type="file" id="img_file" @change="loadImg" accept="image/*" />
-
-          <img v-if="imgSrc" :src="imgSrc"/>
+           <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+          <div v-if="imgSrc" class="editor_img">
+            <img  :src="imgSrc"/>
+            <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
+          </div>
+         
+        
+          
         </div>
       </div>
 
@@ -116,9 +121,7 @@ export default {
         this.initData();
       }
     },
-    imgSrc:{
 
-    }
   },
   async mounted() {
     this.categories = this.categorylist.slice();
@@ -242,7 +245,6 @@ export default {
       for (var i = 0; i < this.tags.length; i++) {
         this.tags[i] = this.tags[i].trim();
       }
-      console.log(this.tags);
     },
 
     loadImg(event) {
@@ -254,12 +256,14 @@ export default {
       var reader = new FileReader( )
       reader.onload = (e)=>{
         this.imgSrc = e.target.result
-        console.log(this.imgSrc);
         //this.loadTagFromNN();
       }
       reader.readAsDataURL(file)
-    }
+    },
 
+    deleteImg(){
+      this.imgSrc="";
+    }
 
 
   },
