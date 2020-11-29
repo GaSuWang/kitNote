@@ -20,7 +20,6 @@
       @openCheckList="openCheckList"
     ></app-sidebar>
     <div class="noteContainer" v-if="isLogin">
-
       <div
         v-for="(note, index) in notes"
         :key="`note-${index}`"
@@ -35,58 +34,52 @@
             'delete-ani': note.eventFlag2,
           }"
         >
-       
           <div>
-             
-            <div class ="noteHeader">
+            <div class="noteHeader">
               <div class="noteHeader2">
-                <img class="noteUserImg" :src="note.user_img">
+                <img class="noteUserImg" :src="note.user_img" />
                 <div class="noteInfo">
-                  <span>{{note.user_name}}</span>
-                  <span>{{ note.regist_date | moment("YYYY-MM-DD") }} {{note.positioning}}에서</span>
+                  <span>{{ note.user_name }}</span>
+                  <span
+                    >{{ note.regist_date | moment("YYYY-MM-DD") }}
+                    {{ note.positioning }}에서</span
+                  >
                   <span>{{ note.deadline | moment("YYYY-MM-DD") }} 까지</span>
                 </div>
               </div>
-                <span>{{ note.category }}</span>
+              <span>{{ note.category }}</span>
             </div>
-              <hr>
+            <hr />
             <span class="note-title">{{ note.title }}</span>
-          
+
             <p class="note-text">{{ note.text }}</p>
             <div class="noteTag">
-               <i class="fas fa-tags"></i>
-               <span v-for="(tag,index) in note.tags" :key="`tag-${index}`">{{tag}}</span>
+              <i class="fas fa-tags"></i>
+              <span v-for="(tag, index) in note.tags" :key="`tag-${index}`">{{
+                tag
+              }}</span>
             </div>
-            
 
-
-          
-          <div class="noteButton">
+            <div class="noteButton">
               <span
-              class="fixed"
-              @click.prevent="fixNote(index)"
-              v-if="note.isFix"
-              ><i class="fas fa-thumbtack"></i
-              
-            ></span>
-             <span
-              class="unfixed"
-              @click.prevent="fixNote(index)"
-              v-if="!note.isFix"
-              ><i class="fas fa-thumbtack"></i
-            ></span>
+                class="fixed"
+                @click.prevent="fixNote(index)"
+                v-if="note.isFix"
+                ><i class="fas fa-thumbtack"></i
+              ></span>
+              <span
+                class="unfixed"
+                @click.prevent="fixNote(index)"
+                v-if="!note.isFix"
+                ><i class="fas fa-thumbtack"></i
+              ></span>
               <span class="modify" @click.prevent="toggleNote(index)"
-              ><i class="far fa-edit"></i
-            ></span>
-            <span class="delete" @click.prevent="deleteNote(index)"
-              ><i class="fas fa-times"></i
-            ></span>
-           
-          
-
-          </div>
-          
-           
+                ><i class="far fa-edit"></i
+              ></span>
+              <span class="delete" @click.prevent="deleteNote(index)"
+                ><i class="fas fa-times"></i
+              ></span>
+            </div>
           </div>
         </div>
       </div>
@@ -166,6 +159,7 @@
         :index="tempIdx"
         :eventFlag="eventFlag_noteEditor"
         :categorylist="categories"
+        :ObjDetect="ObjDetect"
       ></app-note-editor>
     </div>
   </div>
@@ -217,9 +211,7 @@ export default {
       deadline,
       category,
       tags,
-      positioning,
-    
-
+      positioning
     ) {
       if (this.animationFlag) {
         return;
@@ -241,7 +233,7 @@ export default {
         user_name: this.userProfile[0],
         user_img: this.userProfile[1],
       });
-      console.log(this.notes[-1].user_img)
+      console.log(this.notes[-1].user_img);
       var idx = this.notes.length - 1;
       this.notes[idx].eventFlag1 = true;
       this.$nextTick(() => {
@@ -477,7 +469,7 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     if (localStorage.getItem("categories")) {
       var temp = JSON.parse(localStorage.getItem("categories"));
       this.categories.splice(1, ...temp);

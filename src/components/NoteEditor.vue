@@ -42,15 +42,16 @@
         placeholder="Take a note..."
       ></textarea>
       <span>태그</span>
-      <div class="input_tag"> 
+      <div class="input_tag">
         <input placeholder="#tag1 #tag2 #tag3..." v-model="tagString" />
-      <button @click.prevent="tagSplit">태그추가</button></div>
-     
-      <div class="tags" >
-        <div class="tag" v-for="(tag, index) in tags"  :key="`tag-${index}`">
+        <button @click.prevent="tagSplit">태그추가</button>
+      </div>
+
+      <div class="tags">
+        <div class="tag" v-for="(tag, index) in tags" :key="`tag-${index}`">
           {{ tag }}
           <span class="delete" @click.prevent="deleteTag(index)">
-          <i class="fas fa-times"></i>
+            <i class="fas fa-times"></i>
           </span>
         </div>
       </div>
@@ -76,7 +77,7 @@
 
 <script>
 import KakaoMap from "./kakao-map.vue";
-//import ObjectDetection from "../vision_modules/ObjectDetection.vue";
+import ObjectDetection from "../vision_modules/ObjectDetection.js";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -97,6 +98,7 @@ export default {
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
+      ObjDetect: null,
     };
   },
   watch: {
@@ -105,11 +107,11 @@ export default {
         this.initData();
       }
     },
-   
   },
   async mounted() {
     this.categories = this.categorylist.slice();
     this.selected_category = this.categories[0];
+    this.ObjDetect = await Object.assign(ObjectDetection, {});
 
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
@@ -123,7 +125,6 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
-      //this.ObjDetect = await new ObjectDetection();
     }
   },
 
@@ -215,8 +216,6 @@ export default {
       this.temp_tags = [];
     },
 
-
-
     deleteTag(index) {
       this.tags.splice(index, 1);
     },
@@ -232,10 +231,9 @@ export default {
       console.log(this.tags);
     },
   },
- 
+
   components: {
     AppKakaoMap: KakaoMap,
   },
-
 };
 </script>
