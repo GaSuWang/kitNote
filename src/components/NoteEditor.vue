@@ -36,21 +36,32 @@
         v-if="is_mapOpen"
         @getPosition="registPosition"
       ></app-kakao-map>
-      <textarea
-        rows="10"
-        v-model="text"
-        placeholder="Take a note..."
-      ></textarea>
+
+      <div class="note_content">
+        <textarea
+          rows="10"
+          v-model="text"
+          placeholder="Take a note..."
+        ></textarea>
+        <div class="image_upload">
+          <label for="img_file">이미지 넣기</label>
+          <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+
+          <img v-if="imgSrc" :src="imgSrc"/>
+        </div>
+      </div>
+
       <span>태그</span>
-      <div class="input_tag"> 
+      <div class="input_tag">
         <input placeholder="#tag1 #tag2 #tag3..." v-model="tagString" />
-      <button @click.prevent="tagSplit">태그추가</button></div>
-     
-      <div class="tags" >
-        <div class="tag" v-for="(tag, index) in tags"  :key="`tag-${index}`">
+        <button @click.prevent="tagSplit">태그추가</button>
+      </div>
+
+      <div class="tags">
+        <div class="tag" v-for="(tag, index) in tags" :key="`tag-${index}`">
           {{ tag }}
           <span class="delete" @click.prevent="deleteTag(index)">
-          <i class="fas fa-times"></i>
+            <i class="fas fa-times"></i>
           </span>
         </div>
       </div>
@@ -92,11 +103,11 @@ export default {
       temp_tags: [],
       temp: new Date(),
       checked: false,
-      img: null,
       positioning: null,
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
+      imgSrc:"",
     };
   },
   watch: {
@@ -105,7 +116,9 @@ export default {
         this.initData();
       }
     },
-   
+    imgSrc:{
+
+    }
   },
   async mounted() {
     this.categories = this.categorylist.slice();
@@ -123,7 +136,8 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
-      //this.ObjDetect = await new ObjectDetection();
+      this.imgSrc=this.beforeEditNote.imgSrc;
+     // this.ObjDetect = await new ObjectDetection();
     }
   },
 
@@ -152,7 +166,8 @@ export default {
             this.deadline.toLocaleDateString(),
             this.selected_category,
             this.tags,
-            this.positioning
+            this.positioning,
+            this.imgSrc
           );
         }
         this.initData();
@@ -173,6 +188,7 @@ export default {
         isFix: this.isFix,
         tags: this.tags,
         positioning: this.positioning,
+        imgSrc:this.imgSrc
       });
     },
     initData() {
@@ -185,6 +201,7 @@ export default {
       this.addChecklist = false;
       this.tags = [];
       this.temp_tags = [];
+      this.imgSrc="";
     },
 
     registPosition(position) {
@@ -200,7 +217,8 @@ export default {
     },
 
     loadTagFromNN() {
-      this.temp_tags = this.ObjDetect.predict(this.img);
+      this.temp_tags = this.ObjDetect.predict(this.imgSrc);
+      this.acceptTagFromNN();
     },
 
     acceptTagFromNN() {
@@ -211,15 +229,10 @@ export default {
       this.temp_tags = [];
     },
 
-    denyTagFromNN() {
-      this.temp_tags = [];
-    },
-
-
-
     deleteTag(index) {
       this.tags.splice(index, 1);
     },
+
     tagSplit() {
       this.temp_tags = this.tagString.split("#");
       this.temp_tags.splice(0, 1);
@@ -231,11 +244,28 @@ export default {
       }
       console.log(this.tags);
     },
+
+    loadImg(event) {
+      var selectImg = event.target.files || event.dataTransfer.files
+      this.createImg(selectImg[0]);
+    },
+
+    createImg(file){
+      var reader = new FileReader( )
+      reader.onload = (e)=>{
+        this.imgSrc = e.target.result
+        console.log(this.imgSrc);
+        //this.loadTagFromNN();
+      }
+      reader.readAsDataURL(file)
+    }
+
+
+
   },
- 
+
   components: {
     AppKakaoMap: KakaoMap,
   },
-
 };
 </script>

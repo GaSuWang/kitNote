@@ -51,8 +51,8 @@
             </div>
               <hr>
             <span class="note-title">{{ note.title }}</span>
-          
             <p class="note-text">{{ note.text }}</p>
+             <img class="note_img" :src="note.imgSrc"/>
             <div class="noteTag">
                <i class="fas fa-tags"></i>
                <span v-for="(tag,index) in note.tags" :key="`tag-${index}`">{{tag}}</span>
@@ -218,7 +218,7 @@ export default {
       category,
       tags,
       positioning,
-    
+      imgSrc,
 
     ) {
       if (this.animationFlag) {
@@ -240,6 +240,7 @@ export default {
         positioning: positioning,
         user_name: this.userProfile[0],
         user_img: this.userProfile[1],
+        imgSrc: imgSrc,
       });
       console.log(this.notes[-1].user_img)
       var idx = this.notes.length - 1;
@@ -319,6 +320,7 @@ export default {
       category,
       tags,
       positioning,
+      imgSrc,
     }) {
       this.notes.splice(this.tempIdx, 1, {
         title: title,
@@ -335,6 +337,7 @@ export default {
         positioning: positioning,
         user_name: this.notes[this.tempIdx].user_name,
         user_img: this.notes[this.tempIdx].user_img,
+        imgSrc: imgSrc
       });
 
       this.editorOpen = false;
