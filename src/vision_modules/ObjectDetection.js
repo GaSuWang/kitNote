@@ -1,10 +1,11 @@
-<script>
 import * as cocoSSD from "@tensorflow-models/coco-ssd";
 
 export default class ObjectDetection {
+  model = null;
+
   constructor() {
     return (async () => {
-      this.model = cocoSSD.load();
+      this.model = await cocoSSD.load();
 
       return this;
     })();
@@ -17,10 +18,9 @@ export default class ObjectDetection {
     for (var i = 0; i < rst.length; i++) {
       predicted.push(rst[i].class);
 
-      if (i == 6) break;
+      if (i == 3) break;
     }
 
     return predicted;
   }
 }
-</script>

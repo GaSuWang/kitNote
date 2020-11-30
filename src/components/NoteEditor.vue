@@ -92,7 +92,7 @@
 
 <script>
 import KakaoMap from "./kakao-map.vue";
-//import ObjectDetection from "../vision_modules/ObjectDetection.vue";
+import ObjectDetection from "../vision_modules/ObjectDetection.js";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -113,6 +113,7 @@ export default {
       mapButton: "지도열기",
       tagString: "",
       imgSrc:"",
+      ObjDetect: null,
     };
   },
   watch: {
@@ -121,11 +122,11 @@ export default {
         this.initData();
       }
     },
-
   },
   async mounted() {
     this.categories = this.categorylist.slice();
     this.selected_category = this.categories[0];
+    this.ObjDetect = await Object.assign(ObjectDetection, {});
 
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
@@ -229,6 +230,10 @@ export default {
         this.tags.push(this.temp_tags[i]);
       }
 
+      this.temp_tags = [];
+    },
+
+    denyTagFromNN() {
       this.temp_tags = [];
     },
 
