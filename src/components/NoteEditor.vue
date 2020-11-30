@@ -36,11 +36,26 @@
         v-if="is_mapOpen"
         @getPosition="registPosition"
       ></app-kakao-map>
-      <textarea
-        rows="10"
-        v-model="text"
-        placeholder="Take a note..."
-      ></textarea>
+
+      <div class="note_content">
+        <textarea
+          rows="10"
+          v-model="text"
+          placeholder="Take a note..."
+        ></textarea>
+        <div class="image_upload">
+          <label for="img_file">이미지 넣기</label>
+           <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+          <div v-if="imgSrc" class="editor_img">
+            <img  :src="imgSrc"/>
+            <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
+          </div>
+         
+        
+          
+        </div>
+      </div>
+
       <span>태그</span>
       <div class="input_tag">
         <input placeholder="#tag1 #tag2 #tag3..." v-model="tagString" />
@@ -93,11 +108,11 @@ export default {
       temp_tags: [],
       temp: new Date(),
       checked: false,
-      img: null,
       positioning: null,
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
+      imgSrc:"",
       ObjDetect: null,
     };
   },
@@ -125,6 +140,8 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
+      this.imgSrc=this.beforeEditNote.imgSrc;
+     // this.ObjDetect = await new ObjectDetection();
     }
   },
 
@@ -153,7 +170,8 @@ export default {
             this.deadline.toLocaleDateString(),
             this.selected_category,
             this.tags,
-            this.positioning
+            this.positioning,
+            this.imgSrc
           );
         }
         this.initData();
@@ -174,6 +192,7 @@ export default {
         isFix: this.isFix,
         tags: this.tags,
         positioning: this.positioning,
+        imgSrc:this.imgSrc
       });
     },
     initData() {
@@ -186,6 +205,7 @@ export default {
       this.addChecklist = false;
       this.tags = [];
       this.temp_tags = [];
+      this.imgSrc="";
     },
 
     registPosition(position) {
@@ -201,7 +221,8 @@ export default {
     },
 
     loadTagFromNN() {
-      this.temp_tags = this.ObjDetect.predict(this.img);
+      this.temp_tags = this.ObjDetect.predict(this.imgSrc);
+      this.acceptTagFromNN();
     },
 
     acceptTagFromNN() {
@@ -219,6 +240,7 @@ export default {
     deleteTag(index) {
       this.tags.splice(index, 1);
     },
+
     tagSplit() {
       this.temp_tags = this.tagString.split("#");
       this.temp_tags.splice(0, 1);
@@ -228,8 +250,27 @@ export default {
       for (var i = 0; i < this.tags.length; i++) {
         this.tags[i] = this.tags[i].trim();
       }
-      console.log(this.tags);
     },
+
+    loadImg(event) {
+      var selectImg = event.target.files || event.dataTransfer.files
+      this.createImg(selectImg[0]);
+    },
+
+    createImg(file){
+      var reader = new FileReader( )
+      reader.onload = (e)=>{
+        this.imgSrc = e.target.result
+        //this.loadTagFromNN();
+      }
+      reader.readAsDataURL(file)
+    },
+
+    deleteImg(){
+      this.imgSrc="";
+    }
+
+
   },
 
   components: {
