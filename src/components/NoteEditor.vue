@@ -46,8 +46,9 @@
         <div class="image_upload">
           <label for="img_file">이미지 넣기</label>
           <input type="file" id="img_file" @change="loadImg" accept="image/*" />
-          <div v-if="imgSrc" class="editor_img">
-            <img :src="imgSrc" />
+          <div v-if="imgLoad" class="editor_img">
+            <img :src="imgSrc" id="image" />
+
             <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
           </div>
         </div>
@@ -111,6 +112,7 @@ export default {
       mapButton: "지도열기",
       tagString: "",
       imgSrc: "",
+      imgLoad: false,
       ObjDetect: null,
     };
   },
@@ -221,7 +223,9 @@ export default {
     },
 
     async loadTagFromNN() {
-      this.temp_tags = await this.ObjDetect.predict(this.imgSrc);
+      const img = document.getElementById("image");
+      this.temp_tags = await this.ObjDetect.predict(img);
+      console.log(this.temp_tags);
       this.acceptTagFromNN();
     },
 
@@ -253,6 +257,7 @@ export default {
     },
 
     loadImg(event) {
+      this.imgLoad = true;
       var selectImg = event.target.files || event.dataTransfer.files;
       this.createImg(selectImg[0]);
     },
@@ -269,6 +274,7 @@ export default {
 
     deleteImg() {
       this.imgSrc = "";
+      this.imgLoad = false;
     },
   },
 
