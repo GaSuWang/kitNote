@@ -144,6 +144,7 @@ export default {
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
       this.imgSrc = this.beforeEditNote.imgSrc;
+      this.imgLoad = true;
     }
   },
 
@@ -229,7 +230,6 @@ export default {
     },
 
     acceptTagFromNN() {
-      
       for (var i = 0; i < this.temp_tags.length; i++) {
         this.tags.push(this.temp_tags[i]);
       }
@@ -260,7 +260,6 @@ export default {
       this.imgLoad = true;
       var selectImg = event.target.files || event.dataTransfer.files;
       this.createImg(selectImg[0]);
-
     },
 
     async createImg(file) {
