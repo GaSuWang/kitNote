@@ -223,13 +223,13 @@ export default {
     },
 
     async loadTagFromNN() {
-      const img = document.getElementById("image");
+      const img = await document.getElementById("image");
       this.temp_tags = await this.ObjDetect.predict(img);
-      console.log(this.temp_tags);
       this.acceptTagFromNN();
     },
 
     acceptTagFromNN() {
+      
       for (var i = 0; i < this.temp_tags.length; i++) {
         this.tags.push(this.temp_tags[i]);
       }
@@ -260,6 +260,7 @@ export default {
       this.imgLoad = true;
       var selectImg = event.target.files || event.dataTransfer.files;
       this.createImg(selectImg[0]);
+
     },
 
     async createImg(file) {
