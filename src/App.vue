@@ -52,7 +52,7 @@
             <hr />
             <span class="note-title">{{ note.title }}</span>
             <p class="note-text">{{ note.text }}</p>
-             <img class="note_img" :src="note.imgSrc"/>
+            <img class="note_img" :src="note.imgSrc" />
             <div class="noteTag">
               <i class="fas fa-tags"></i>
               <span v-for="(tag, index) in note.tags" :key="`tag-${index}`">{{
@@ -159,7 +159,6 @@
         :index="tempIdx"
         :eventFlag="eventFlag_noteEditor"
         :categorylist="categories"
-        :ObjDetect="ObjDetect"
       ></app-note-editor>
     </div>
   </div>
@@ -212,8 +211,7 @@ export default {
       category,
       tags,
       positioning,
-      imgSrc,
-
+      imgSrc
     ) {
       if (this.animationFlag) {
         return;
@@ -331,7 +329,7 @@ export default {
         positioning: positioning,
         user_name: this.notes[this.tempIdx].user_name,
         user_img: this.notes[this.tempIdx].user_img,
-        imgSrc: imgSrc
+        imgSrc: imgSrc,
       });
 
       this.editorOpen = false;

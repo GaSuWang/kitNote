@@ -1,4 +1,6 @@
 import * as cocoSSD from "@tensorflow-models/coco-ssd";
+import * as tf from '@tensorflow/tfjs'
+
 
 export default class ObjectDetection {
   model = null;
@@ -20,7 +22,6 @@ export default class ObjectDetection {
 
       if (i == 3) break;
     }
-
     return predicted;
   }
 }

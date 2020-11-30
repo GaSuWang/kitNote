@@ -45,14 +45,12 @@
         ></textarea>
         <div class="image_upload">
           <label for="img_file">이미지 넣기</label>
-           <input type="file" id="img_file" @change="loadImg" accept="image/*" />
-          <div v-if="imgSrc" class="editor_img">
-            <img  :src="imgSrc"/>
+          <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+          <div v-if="imgLoad" class="editor_img">
+            <img :src="imgSrc" id="image" />
+
             <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
           </div>
-         
-        
-          
         </div>
       </div>
 
@@ -93,6 +91,7 @@
 <script>
 import KakaoMap from "./kakao-map.vue";
 import ObjectDetection from "../vision_modules/ObjectDetection.js";
+
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -112,7 +111,8 @@ export default {
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
-      imgSrc:"",
+      imgSrc: "",
+      imgLoad: false,
       ObjDetect: null,
     };
   },
@@ -123,10 +123,13 @@ export default {
       }
     },
   },
+  async created() {
+    this.ObjDetect = await new ObjectDetection();
+  },
+
   async mounted() {
     this.categories = this.categorylist.slice();
     this.selected_category = this.categories[0];
-    this.ObjDetect = await Object.assign(ObjectDetection, {});
 
     if (this.modifyMode) {
       this.title = this.beforeEditNote.title;
@@ -140,8 +143,8 @@ export default {
       this.isFix = this.beforeEditNote.isFix;
       this.tags = this.beforeEditNote.tags;
       this.positioning = this.beforeEditNote.positioning;
-      this.imgSrc=this.beforeEditNote.imgSrc;
-     // this.ObjDetect = await new ObjectDetection();
+      this.imgSrc = this.beforeEditNote.imgSrc;
+      this.imgLoad = true;
     }
   },
 
@@ -192,7 +195,7 @@ export default {
         isFix: this.isFix,
         tags: this.tags,
         positioning: this.positioning,
-        imgSrc:this.imgSrc
+        imgSrc: this.imgSrc,
       });
     },
     initData() {
@@ -205,7 +208,7 @@ export default {
       this.addChecklist = false;
       this.tags = [];
       this.temp_tags = [];
-      this.imgSrc="";
+      this.imgSrc = "";
     },
 
     registPosition(position) {
@@ -220,8 +223,9 @@ export default {
       }
     },
 
-    loadTagFromNN() {
-      this.temp_tags = this.ObjDetect.predict(this.imgSrc);
+    async loadTagFromNN() {
+      const img = await document.getElementById("image");
+      this.temp_tags = await this.ObjDetect.predict(img);
       this.acceptTagFromNN();
     },
 
@@ -253,24 +257,25 @@ export default {
     },
 
     loadImg(event) {
-      var selectImg = event.target.files || event.dataTransfer.files
+      this.imgLoad = true;
+      var selectImg = event.target.files || event.dataTransfer.files;
       this.createImg(selectImg[0]);
     },
 
-    createImg(file){
-      var reader = new FileReader( )
-      reader.onload = (e)=>{
-        this.imgSrc = e.target.result
-        //this.loadTagFromNN();
-      }
-      reader.readAsDataURL(file)
+    async createImg(file) {
+      var reader = new FileReader();
+      reader.onload = async (e) => {
+        this.imgSrc = e.target.result;
+        await this.loadTagFromNN();
+      };
+
+      reader.readAsDataURL(file);
     },
 
-    deleteImg(){
-      this.imgSrc="";
-    }
-
-
+    deleteImg() {
+      this.imgSrc = "";
+      this.imgLoad = false;
+    },
   },
 
   components: {
