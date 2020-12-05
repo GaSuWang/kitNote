@@ -44,8 +44,13 @@
           placeholder="Take a note..."
         ></textarea>
         <div class="image_upload">
-          <label for="img_file">이미지 넣기</label>
-          <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+          <div class="image_button">
+            <label for="img_file">이미지 넣기</label>
+            <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+            <div @click.prevent="removeBack">배경제거</div>
+            <div @click.prevent="composeBack">배경추가</div>
+          </div>
+          
           <div v-if="imgLoad" class="editor_img">
             <img :src="imgSrc" id="image" />
 
