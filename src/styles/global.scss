@@ -576,14 +576,13 @@ body {
 }
 .image_upload{
     width:50%;
-  
+
 }
 .image_upload {
     label{
-    
     display: block;
     border-radius: 5%;
-    width:30%;
+    width:40%;
     background-color: rgb(217, 239, 250);
     transition: 0.3s ;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
@@ -644,12 +643,26 @@ body {
     div{
         cursor: pointer;
         text-align: center;
-        width: 30%;
+        width: 40%;
         background-color: rgb(217, 239, 250);
         transition: 0.3s ;
         box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
         &:hover{
             transform: scale(1.2,1.2);    
         }
+    }
+}
+
+.editor-grid {
+    position: absolute;
+    left: 150px;
+    right: 150px;
+    top: 80px;
+    background: #fff;
+    padding: 16px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    border-radius: 3px;
+    img{
+        max-width: 100%;
     }
 }
