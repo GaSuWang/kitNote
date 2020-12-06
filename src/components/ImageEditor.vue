@@ -1,8 +1,16 @@
 <template>
   <div class="editor-grid">
-    <button>배경제거</button>
-    <button>배경추가</button>
-    <button>배경합성</button>
+    <div class="thumbnail">
+      <img :src="imgSrc">
+      <img>
+      <img>
+      <img>
+    </div>
+    <div>
+      <button>배경제거</button>
+      <button>배경추가</button>
+      <button>배경합성</button>
+    </div>
     <img :src="imgSrc" id="image" />
   </div>
 </template>
@@ -16,7 +24,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.ImageSrc);
+
   },
   methods: {},
   watch: {},

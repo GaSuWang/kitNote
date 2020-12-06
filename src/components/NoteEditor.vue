@@ -14,7 +14,10 @@
         v-model="title"
         placeholder="Title"
       />
-    <app-image-editor v-if="isOpenEditor" :ImageSrc="imgSrc"></app-image-editor>
+      <app-image-editor
+        v-if="isOpenEditor"
+        :ImageSrc="imgSrc"
+      ></app-image-editor>
       <div class="position">
         <div>
           <span>장소</span>
@@ -46,11 +49,15 @@
         <div class="image_upload">
           <div class="image_button">
             <label for="img_file">이미지 넣기</label>
-            <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+            <input
+              type="file"
+              id="img_file"
+              @change="loadImg"
+              accept="image/*"
+            />
             <div @click.prevent="openImageEditor">이미지 편집</div>
-          
           </div>
-          
+
           <div v-if="imgLoad" class="editor_img">
             <img :src="imgSrc" id="image" />
 
@@ -119,11 +126,10 @@ export default {
       imgSrc: "",
       imgLoad: false,
       ObjDetect: null,
-      isOpenEditor:false,
+      isOpenEditor: false,
     };
   },
   watch: {
-   
     modifyMode(newValue) {
       if (!newValue) {
         this.initData();
@@ -272,20 +278,24 @@ export default {
     async createImg(file) {
       var reader = new FileReader();
       reader.onload = async (e) => {
-        this.imgSrc = e.target.result;
+        await this.inputImgSrc(e.target.result);
         await this.loadTagFromNN();
       };
 
       reader.readAsDataURL(file);
     },
 
+    inputImgSrc(e) {
+      this.imgSrc = e;
+    },
+
     deleteImg() {
       this.imgSrc = "";
       this.imgLoad = false;
     },
-    openImageEditor(){
+    openImageEditor() {
       this.isOpenEditor = !this.isOpenEditor;
-    }
+    },
   },
 
   components: {
