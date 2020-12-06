@@ -14,7 +14,7 @@
         v-model="title"
         placeholder="Title"
       />
-
+    <app-image-editor v-if="isOpenEditor" :ImageSrc="imgSrc"></app-image-editor>
       <div class="position">
         <div>
           <span>장소</span>
@@ -44,8 +44,13 @@
           placeholder="Take a note..."
         ></textarea>
         <div class="image_upload">
-          <label for="img_file">이미지 넣기</label>
-          <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+          <div class="image_button">
+            <label for="img_file">이미지 넣기</label>
+            <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+            <div @click.prevent="openImageEditor">이미지 편집</div>
+          
+          </div>
+          
           <div v-if="imgLoad" class="editor_img">
             <img :src="imgSrc" id="image" />
 
@@ -91,7 +96,7 @@
 <script>
 import KakaoMap from "./kakao-map.vue";
 import ObjectDetection from "../vision_modules/ObjectDetection.js";
-
+import ImageEditor from "./ImageEditor.vue";
 export default {
   props: ["beforeEditNote", "modifyMode", "index", "categorylist", "eventFlag"],
   data: function () {
@@ -114,9 +119,11 @@ export default {
       imgSrc: "",
       imgLoad: false,
       ObjDetect: null,
+      isOpenEditor:false,
     };
   },
   watch: {
+   
     modifyMode(newValue) {
       if (!newValue) {
         this.initData();
@@ -276,10 +283,14 @@ export default {
       this.imgSrc = "";
       this.imgLoad = false;
     },
+    openImageEditor(){
+      this.isOpenEditor = !this.isOpenEditor;
+    }
   },
 
   components: {
     AppKakaoMap: KakaoMap,
+    AppImageEditor: ImageEditor,
   },
 };
 </script>
