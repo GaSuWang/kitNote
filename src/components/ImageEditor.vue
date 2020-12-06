@@ -1,7 +1,7 @@
 <template>
   <div class="editor-grid">
     <div class="button-box">
-      <span v-if="flag[0]">
+      <span v-if="flag0">
         <label for="img_file">배경선택</label>
         <input
           type="file"
@@ -12,14 +12,14 @@
       </span>
       <button
         class="imageEditorButton"
-        v-if="flag[1]"
+        v-if="flag1"
         @click.prevent="backgroundMasking()"
       >
         배경제거
       </button>
       <button
         class="imageEditorButton"
-        v-if="flag[2]"
+        v-if="flag2"
         @click.prevent="complete()"
       >
         완료
@@ -63,7 +63,9 @@ export default {
     return {
       imgSrc: this.ImageSrc,
       model: null,
-      flag: [true, false, false],
+      flag0: true,
+      flag1: false,
+      flag2: false,
     };
   },
   async mounted() {
@@ -77,6 +79,7 @@ export default {
 
   async created() {
     this.model = await new PersonSegmentation();
+    console.log("mat load");
   },
 
   methods: {
@@ -86,8 +89,8 @@ export default {
 
       await this.model.predict(canvasElement, backgroundElement);
 
-      this.flag[1] = false;
-      this.flag[2] = true;
+      this.flag1 = false;
+      this.flag2 = true;
     },
 
     addBackground(event) {
@@ -97,28 +100,36 @@ export default {
       var file = selectImg[0];
 
       reader.onload = async (e) => {
-        const image = document.getElementById("background_hidden");
-        image.src = e.target.result;
-        const canvas = document.getElementById("background");
-        const ctx = canvas.getContext("2d");
-
-        ctx.drawImage(image, 0, 0, 400, 400);
-        this.flag[0] = false;
-        this.flag[1] = true;
+        this.onLoadEvent(e);
       };
 
       reader.readAsDataURL(file);
     },
 
+    onLoadEvent(e) {
+      const image = document.getElementById("background_hidden");
+      image.src = e.target.result;
+      this.$nextTick(() => {
+        const canvas = document.getElementById("background");
+        const ctx = canvas.getContext("2d");
+        console.log("load Event");
+
+        ctx.drawImage(image, 0, 0, 400, 400);
+        this.flag0 = false;
+        this.flag1 = true;
+      });
+    },
+
     complete() {
-      const imageData = document
-        .getElementById("canvas")
-        .getContext("2d")
-        .getImageData(0, 0, 400, 400);
-      this.$emit("complete", imageData);
+      const imageURL = document.getElementById("canvas").toDataURL("image/png");
+      this.$emit("complete", imageURL);
     },
   },
 
-  watch: {},
+  watch: {
+    flag: {
+      deep: true,
+    },
+  },
 };
 </script>

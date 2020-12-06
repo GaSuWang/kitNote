@@ -14,7 +14,11 @@
         v-model="title"
         placeholder="Title"
       />
-    <app-image-editor v-if="isOpenEditor" :ImageSrc="imgSrc"></app-image-editor>
+      <app-image-editor
+        v-if="isOpenEditor"
+        :ImageSrc="imgSrc"
+        @complete="applyEditImage"
+      ></app-image-editor>
       <div class="position">
         <div>
           <span>장소</span>
@@ -43,20 +47,24 @@
           v-model="text"
           placeholder="Take a note..."
         ></textarea>
-        <div class="image_upload">
-          <div class="image_button">
+        <span class="image_upload">
+          <span class="image_button">
             <label for="img_file">이미지 넣기</label>
-            <input type="file" id="img_file" @change="loadImg" accept="image/*" />
+            <input
+              type="file"
+              id="img_file"
+              @change="loadImg"
+              accept="image/*"
+            />
             <div @click.prevent="openImageEditor">이미지 편집</div>
-          
-          </div>
-          
+          </span>
+
           <div v-if="imgLoad" class="editor_img">
-            <img :src="imgSrc" id="image" />
+            <img :src="imgSrc" id="image" width="400" height="400" />
 
             <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
           </div>
-        </div>
+        </span>
       </div>
 
       <span>태그</span>
@@ -119,11 +127,10 @@ export default {
       imgSrc: "",
       imgLoad: false,
       ObjDetect: null,
-      isOpenEditor:false,
+      isOpenEditor: false,
     };
   },
   watch: {
-   
     modifyMode(newValue) {
       if (!newValue) {
         this.initData();
@@ -283,9 +290,13 @@ export default {
       this.imgSrc = "";
       this.imgLoad = false;
     },
-    openImageEditor(){
+    openImageEditor() {
       this.isOpenEditor = !this.isOpenEditor;
-    }
+    },
+    applyEditImage(imageData) {
+      this.isOpenEditor = !this.isOpenEditor;
+      this.imgSrc = imageData;
+    },
   },
 
   components: {
