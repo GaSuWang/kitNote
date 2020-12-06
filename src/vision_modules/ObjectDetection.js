@@ -8,7 +8,7 @@ export default class ObjectDetection {
   constructor() {
     return (async () => {
       this.model = await cocoSSD.load();
-      console.log( tf.version)
+      console.log(tf.version)
       return this;
     })();
   }
