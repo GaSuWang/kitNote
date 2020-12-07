@@ -37,13 +37,17 @@ export default {
       categories: [],
       isLogin: true,
       username: "UserName",
-      userImg:"",
-        
+      userImg: "",
     };
   },
   mounted() {
     this.categories = this.categorylist.slice();
     this.isLogin = this.Login;
+
+    if (this.isLogin == true) {
+      this.username = this.userProfile[0];
+      this.userImg = this.userProfile[1];
+    }
   },
   methods: {
     openEditor: function () {
@@ -75,9 +79,11 @@ export default {
       handler() {
         this.username = this.userProfile[0];
         this.userImg = this.userProfile[1];
+        console("header handler");
         console.log(this.username);
         console.log(this.userImg);
       },
+      deep: true,
     },
   },
 };

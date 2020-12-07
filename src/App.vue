@@ -459,6 +459,11 @@ export default {
 
       this.userProfile.push(userName);
       this.userProfile.push(userImg);
+
+      this.setCookie("name", userName, 1);
+      this.setCookie("img", userImg, 1);
+
+      console.log("userProfile");
       console.log(this.userProfile);
     },
 
@@ -469,10 +474,56 @@ export default {
       this.logOutPop = !this.logOutPop;
       this.isLogin = !this.isLogin;
       alert("쿠키삭제,  페이지 새로고침");
+      this.deleteCookie("name");
+      this.deleteCookie("img");
+    },
+
+    setCookie(name, value, exp) {
+      var date = new Date();
+      date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+      document.cookie =
+        name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+    },
+
+    getCookie(name) {
+      name = name + "=";
+      var cookieData = document.cookie;
+      var start = cookieData.indexOf(name);
+      var value = "";
+      if (start != -1) {
+        start += name.length;
+        var end = cookieData.indexOf(";", start);
+        if (end == -1) end = cookieData.length;
+        value = cookieData.substring(start, end);
+        value = unescape(value);
+      }
+
+      if (value == "") return null;
+      else return value;
+    },
+
+    deleteCookie(name) {
+      document.cookie = name + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
     },
   },
 
   async created() {
+    var name = this.getCookie("name");
+    var img = this.getCookie("img");
+
+    console.log("쿠키확인");
+    console.log(name, img);
+
+    if (name != null) {
+      console.log("쿠키로그인");
+
+      this.isLogin = true;
+
+      this.userProfile.push(name);
+      this.userProfile.push(img);
+      console.log(this.userProfile);
+    }
+
     if (localStorage.getItem("categories")) {
       var temp = JSON.parse(localStorage.getItem("categories"));
       this.categories.splice(1, ...temp);
