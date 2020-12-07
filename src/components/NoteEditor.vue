@@ -56,7 +56,7 @@
               @change="loadImg"
               accept="image/*"
             />
-            <div @click.prevent="openImageEditor">이미지 편집</div>
+            <div @click.prevent="openImageEditor" v-if="imgSrc" >이미지 편집</div>
           </span>
           
 
@@ -124,7 +124,7 @@ export default {
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
-      imgSrc: "",
+      imgSrc: null,
       imgLoad: false,
       ObjDetect: null,
       isOpenEditor: false,
@@ -222,7 +222,7 @@ export default {
       this.addChecklist = false;
       this.tags = [];
       this.temp_tags = [];
-      this.imgSrc = "";
+      this.imgSrc = null;
     },
 
     registPosition(position) {
@@ -291,7 +291,7 @@ export default {
     },
 
     deleteImg() {
-      this.imgSrc = "";
+      this.imgSrc = null;
       this.imgLoad = false;
     },
     openImageEditor() {
