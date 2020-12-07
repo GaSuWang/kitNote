@@ -1,10 +1,10 @@
 <template>
   <div class="editor-grid">
     <div class="thumbnail">
-      <img :src="imgSrc">
-      <img>
-      <img>
-      <img>
+      <img @click.prevent="changeMainImg" :src="originalImg" >
+      <img @click.prevent="changeMainImg" :src="backImg">
+      <img @click.prevent="changeMainImg" :src="removedBack">
+      <img @click.prevent="changeMainImg" :src="composedImg">
     </div>
     <div>
       <button>배경제거</button>
@@ -20,13 +20,22 @@ export default {
   props: ["ImageSrc"],
   data: function () {
     return {
+      originalImg:this.ImageSrc,
       imgSrc: this.ImageSrc,
+      backImg: null,
+      removedBack:null,
+      composedImg:null,
     };
   },
   mounted() {
 
   },
-  methods: {},
+  methods: {
+    changeMainImg(e){
+      this.imgSrc=e.target.src
+    }
+
+  },
   watch: {},
 };
 </script>
