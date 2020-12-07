@@ -7,7 +7,7 @@
       <img class="icon" src="../assets/logo.png" />
       <p>KIT Sticky Notes</p>
       <button class="add-btn" @click.prevent="openEditor">
-        <i class="fas fa-plus"></i>
+        <i id="add-btn-icon" class="fas fa-plus"></i>
       </button>
 
       <select v-model="selectedCategory" @change="selectCategory">
@@ -38,6 +38,7 @@ export default {
       isLogin: true,
       username: "UserName",
       userImg: "",
+      isEditorOpen: false,
     };
   },
   mounted() {
@@ -52,6 +53,15 @@ export default {
   methods: {
     openEditor: function () {
       this.$emit("openEditor");
+
+      this.isEditorOpen != this.isEditorOpen;
+      var e = document.getElementById("add-btn-icon");
+
+      if (this.isEditorOpen) {
+        e.className = "fas fa-plus";
+      } else {
+        e.className = "fas fa-minus";
+      }
     },
     openSidebar: function () {
       this.$emit("openSidebar");
