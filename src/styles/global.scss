@@ -575,8 +575,9 @@ body {
     }
 }
 .image_upload{
-    width:20%;
+    width:500px;
     display: inline-block;
+    text-align: center;
     position: absolute;
     right: 20px;
     top:135px;
@@ -626,10 +627,10 @@ body {
         font-size: 30px;
         display: inline-block;
         position: absolute;
-        right: 80px;
-        top:30px;
+        right: 140px;
+        top:45px;
         cursor: pointer;
-        z-index: 1;
+
         border-radius: 50%;
         background-color: white;
         transition: 0.3s ;
@@ -657,18 +658,27 @@ body {
 }
 
 .editor-grid {
+    z-index: 1;
+    text-align: center;
     position: absolute;
     left: 150px;
     right: 150px;
     top: 80px;
-    background: #fff;
+    background: rgb(252, 244, 244);
     padding: 16px;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
     border-radius: 3px;
     img{
-        max-width: 100%;
+        max-height: 400px;
     }
+    button{
+        margin: 10px;
+    }
+
+  
 }
+
+
 
 .button-box label { 
     display: inline-block;
@@ -707,4 +717,14 @@ body {
     border: 1px solid #ebebeb; 
     border-bottom-color: #e2e2e2; 
     border-radius: .25em;
+}
+.editImg{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 20px;
+    div{
+        display: flex;
+        flex-direction: column;
+    }
 }

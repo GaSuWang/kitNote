@@ -1,5 +1,6 @@
 <template>
   <div class="editor-grid">
+
     <div class="button-box">
       <span v-if="flag0">
         <label for="img_file">배경선택</label>
@@ -26,7 +27,8 @@
       </button>
     </div>
 
-    <div>
+    <div class="editImg">
+      <div>
       <label>편집 이미지</label>
       <canvas id="canvas" width="400px" height="400px"
         >This browser doesn't support canvas</canvas
@@ -38,7 +40,8 @@
         height="400px"
         style="display: none"
       />
-    </div>
+      </div>
+    
     <div>
       <label>배경 이미지</label>
       <canvas id="background" width="400px" height="400px"
@@ -51,6 +54,7 @@
         style="display: none"
       />
     </div>
+    </div>
   </div>
 </template>
 
@@ -61,11 +65,15 @@ export default {
   props: ["ImageSrc"],
   data: function () {
     return {
+      originalImg:this.ImageSrc,
       imgSrc: this.ImageSrc,
       model: null,
       flag0: true,
       flag1: false,
       flag2: false,
+      backImg: null,
+      removedBack:null,
+      composedImg:null,
     };
   },
   async mounted() {
@@ -124,6 +132,10 @@ export default {
       const imageURL = document.getElementById("canvas").toDataURL("image/png");
       this.$emit("complete", imageURL);
     },
+
+     changeMainImg(e){
+      this.imgSrc=e.target.src
+    }
   },
 
   watch: {

@@ -47,7 +47,7 @@
           v-model="text"
           placeholder="Take a note..."
         ></textarea>
-        <span class="image_upload">
+        <div class="image_upload">
           <span class="image_button">
             <label for="img_file">이미지 넣기</label>
             <input
@@ -56,15 +56,15 @@
               @change="loadImg"
               accept="image/*"
             />
-            <div @click.prevent="openImageEditor">이미지 편집</div>
+            <div @click.prevent="openImageEditor" v-if="imgSrc" >이미지 편집</div>
           </span>
+          
 
           <div v-if="imgLoad" class="editor_img">
             <img :src="imgSrc" id="image" width="400" height="400" />
-
             <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
           </div>
-        </span>
+        </div>
       </div>
 
       <span>태그</span>
@@ -124,7 +124,7 @@ export default {
       is_mapOpen: false,
       mapButton: "지도열기",
       tagString: "",
-      imgSrc: "",
+      imgSrc: null,
       imgLoad: false,
       ObjDetect: null,
       isOpenEditor: false,
@@ -222,7 +222,7 @@ export default {
       this.addChecklist = false;
       this.tags = [];
       this.temp_tags = [];
-      this.imgSrc = "";
+      this.imgSrc = null;
     },
 
     registPosition(position) {
@@ -279,15 +279,19 @@ export default {
     async createImg(file) {
       var reader = new FileReader();
       reader.onload = async (e) => {
-        this.imgSrc = e.target.result;
+        await this.inputImgSrc(e.target.result);
         await this.loadTagFromNN();
       };
 
       reader.readAsDataURL(file);
     },
 
+    inputImgSrc(e) {
+      this.imgSrc = e;
+    },
+
     deleteImg() {
-      this.imgSrc = "";
+      this.imgSrc = null;
       this.imgLoad = false;
     },
     openImageEditor() {
