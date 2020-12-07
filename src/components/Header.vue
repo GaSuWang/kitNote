@@ -79,9 +79,6 @@ export default {
       handler() {
         this.username = this.userProfile[0];
         this.userImg = this.userProfile[1];
-        console("header handler");
-        console.log(this.username);
-        console.log(this.userImg);
       },
       deep: true,
     },

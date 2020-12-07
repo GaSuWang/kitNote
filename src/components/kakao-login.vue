@@ -16,7 +16,7 @@ import KakaoLogin from "vue-kakao-login";
 
 export default {
   data: function () {
-    return { userName: null, userImg: null, updateCookie: false };
+    return { userName: null, userImg: null };
   },
 
   components: {
@@ -46,9 +46,17 @@ export default {
       this.userImg = res.kakao_account.profile.thumbnail_image_url;
 
       this.$emit("SuccessLogin", this.userName, this.userImg);
+
+      window.Kakao.API.request({
+        url: "/v1/user/unlink",
+        success: function (response) {
+          console.log(response);
+        },
+        fail: function (error) {
+          console.log(error);
+        },
+      });
     },
   },
-
-  created() {},
 };
 </script>
