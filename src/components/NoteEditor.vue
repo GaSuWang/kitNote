@@ -17,6 +17,7 @@
       <app-image-editor
         v-if="isOpenEditor"
         :ImageSrc="imgSrc"
+        @complete="applyEditImage"
       ></app-image-editor>
       <div class="position">
         <div>
@@ -47,7 +48,7 @@
           placeholder="Take a note..."
         ></textarea>
         <div class="image_upload">
-          <div class="image_button">
+          <span class="image_button">
             <label for="img_file">이미지 넣기</label>
             <input
               type="file"
@@ -56,11 +57,11 @@
               accept="image/*"
             />
             <div @click.prevent="openImageEditor">이미지 편집</div>
-          </div>
+          </span>
+          
 
           <div v-if="imgLoad" class="editor_img">
-            <img :src="imgSrc" id="image" />
-
+            <img :src="imgSrc" id="image" width="400" height="400" />
             <span @click.prevent="deleteImg"><i class="fas fa-times"></i></span>
           </div>
         </div>
@@ -295,6 +296,10 @@ export default {
     },
     openImageEditor() {
       this.isOpenEditor = !this.isOpenEditor;
+    },
+    applyEditImage(imageData) {
+      this.isOpenEditor = !this.isOpenEditor;
+      this.imgSrc = imageData;
     },
   },
 
