@@ -22,4 +22,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 심화과제 영상
- [![동영상](https://youtu.be/f2Sxu4tkAZc)]
+ [![동영상](https://www.youtube.com/watch?v=f2Sxu4tkAZc)]
