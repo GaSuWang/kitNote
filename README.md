@@ -21,6 +21,9 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+---
+## 실행 영상
+
 ### 기본과제 영상
  [![유튜브 링크]()](https://www.youtube.com/watch?v=x-VeXsorT-I)
  
