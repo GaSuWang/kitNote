@@ -26,6 +26,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
  
  
 ### 심화과제 영상
- [![]()](https://www.youtube.com/watch?v=f2Sxu4tkAZc)
+ [![유튜브 링크]()](https://www.youtube.com/watch?v=f2Sxu4tkAZc)
  
 
